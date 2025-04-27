@@ -1,6 +1,6 @@
 apiVersion: v2
-name: k8sCA
-description: k8s Cluster Autoscaler
+name: testca
+description: cluster autoscaler
 
 # A chart can be either an 'application' or a 'library' chart.
 #
