@@ -1,0 +1,51 @@
+
+associate-iam-oidc-provider
+    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab --approve
+
+
+get oicd provider 
+    aws eks describe-cluster --region us-east-1 --name cluster-lab --query "cluster.identity.oidc.issuer" --output text
+
+Role setup
+    1: 
+        aws iam create-policy \
+        --policy-name ClusterAutoscalerPolicy \
+        --policy-document file://autoscaler-policy.json
+
+    2: 
+        aws iam create-role \
+        --role-name ClusterAutoscalerRole \
+        --assume-role-policy-document file://autoscaler-trust-policy.json
+
+    3:
+        aws iam attach-role-policy \
+        --policy-arn arn:aws:iam::722249351142:policy/ClusterAutoscalerPolicy \
+        --role-name ClusterAutoscalerRole
+
+ServiceAccount setup 
+    1: k apply -f ./svc-acc.yml
+
+Tag / Label Node Groups Properly
+    1: node group
+        k8s.io/cluster-autoscaler/enabled = true
+        k8s.io/cluster-autoscaler/<your-cluster-name> = owned
+    2: nodes 
+        k label nodes ip-192-168-0-237.ec2.internal cluster-autoscaler-enabled=true
+        k label nodes ip-192-168-34-129.ec2.internal cluster-autoscaler-enabled=true
+            
+Deploy Cluster Autoscaler
+    k apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/cluster-autoscaler-1.28.0/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+    k delete -f https://raw.githubusercontent.com/kubernetes/autoscaler/cluster-autoscaler-1.28.0/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+
+
+
+
+
+* redeployed service account cuz deployment overwritten the role setup
+
+Customize the Deployment
+    k edit deployment cluster-autoscaler -n kube-system
+
+
+
+
