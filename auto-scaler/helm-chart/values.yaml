@@ -1,0 +1,3 @@
+appName: k8s-CA
+clusterSvcAccRoleArn: arn:aws:iam::722249351142:role/ClusterAutoscalerRole
+clusterName: cluster-lab

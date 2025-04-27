@@ -1,0 +1,23 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: http_requests_per_second  # Custom metric (exported via Prometheus Adapter)
+      describedObject:
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        name: my-ingress
+      target:
+        type: Value
+        value: 100  # Scale when RPS > 100

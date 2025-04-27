@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  generation: 4
+  labels:
+    app: pink-depl-cka14-trb
+  name: pink-depl-cka14-trb
+  namespace: default
+  resourceVersion: "11178"
+  uid: 9a2a1ba6-e9b8-416a-89de-d5a73f378cf1
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pink-depl-cka14-trb
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pink-depl-cka14-trb
+    spec:
+      containers:
+      - image: gcr.io/google-samples/gb-frontend-amd64:v5
+        imagePullPolicy: IfNotPresent
+        name: gb-frontend-amd64
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Exists

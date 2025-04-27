@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webapp1
+  template:
+    metadata:
+      labels:
+        app: webapp1
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: my-app-deployment
+# spec:
+#   replicas: 3
+#   template:
+#     spec:
+#       containers:
+#       - name: my-app-container
+#         image: my-app-image
+#         ports:
+#         - containerPort: 80
+#         env:
+#         - name: DATABASE_HOST
+#           value: db.example.com
+#         - name: API_KEY
+#           valueFrom:
+#             secretKeyRef:
+#               name: my-secret
+#               key: api-key
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx-deployment
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:latest
+#         ports:
+#         - containerPort: 80
+#         resources:
+#           limits:
+#             memory: "256Mi"  # Maximum memory allowed
+#             cpu: "200m"       # Maximum CPU allowed (200 milliCPU)
+#           requests:
+#             memory: "128Mi"  # Initial memory request
+#             cpu: "100m"       # Initial CPU request
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx-deployment
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:latest
+#         ports:
+#         - containerPort: 80
+#         livenessProbe:
+#           httpGet:
+#             path: /                # The path to check for the liveness probe
+#             port: 80               # The port to check on
+#           initialDelaySeconds: 15  # Wait this many seconds before starting the probe
+#           periodSeconds: 10        # Check the probe every 10 seconds
+#         readinessProbe:
+#           httpGet:
+#             path: /                # The path to check for the readiness probe
+#             port: 80               # The port to check on
+#           initialDelaySeconds: 5   # Wait this many seconds before starting the probe
+#           periodSeconds: 5         # Check the probe every 5 seconds
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx-deployment
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:latest
+#         ports:
+#         - containerPort: 80
+#       volumes:
+#       - name: data
+#         persistentVolumeClaim:
+#           claimName: my-pvc  # Name of the Persistent Volume Claim
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx-deployment
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       affinity:
+#         nodeAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#             nodeSelectorTerms:
+#             - matchExpressions:
+#               - key: node-type
+#                 operator: In
+#                 values:
+#                 - nginx-node
+#         podAntiAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#           - labelSelector:
+#               matchExpressions:
+#               - key: app
+#                 operator: In
+#                 values:
+#                 - nginx
+#             topologyKey: "kubernetes.io/hostname"
+#       containers:
+#       - name: nginx-container
+#         image: nginx:latest
+#         ports:
+#         - containerPort: 80
+
+
+

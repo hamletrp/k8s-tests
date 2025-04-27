@@ -1,0 +1,364 @@
+
+K8s
+    Commands 
+        k config get-clusters
+        k config get-contexts 
+        k config use-context ctxname
+
+        kubectl create namespace argocd
+        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+        kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+        servicename=$(k get service -l "app={{ .Values.appName }}" -o jsonpath="{.items[0].metadata.name}")
+
+        kubectl --namespace <namespace> port-forward service/{{ .Values.appName }} 8888:80
+
+        kubectl port-forward service/argocd-server -n argocd 8080:443
+
+        k create deploy nginxx --image nginx --dry-run=client -o yaml > deployyyy.yml
+        
+        kubectl replace -f /tmp/kubectl-edit-xxxx.yaml --force
+
+        test static pods creation 
+            kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+            kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+
+        k top pod -n namespace
+
+        # check etcd file locations 
+        ps aux | grep etcd 
+
+        # force delete pod 
+        k delete -n namesp pods podname  --grace-period=0
+
+        # replace 
+        k replace -f --foce -n namesapce
+
+        # allow update to package kubeadm
+        apt-mark unhold kubeadm
+
+        # block auto update to package kubeadm
+        apt-mark hold kubeadm
+
+        kubectl exec -it super-user-pod -- /bin/sh
+        capsh --print | grep SYS_TIME
+
+        k set image deploy/dep_name cntnr=img
+
+        kubectl get nodes -o jsonpath='{range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address} {.metadata.name}{"\n"}{end}'
+
+        k get nodes -o jsonpath="{.items[*].status.addresses[0].address}"
+
+        kubectl get nodes -o jsonpath='{range .items[*]}"Internal IP: "{.status.addresses[?(@.type=="InternalIP")].address} " "{.metadata.name}{"\n"}{end}' >> /root/CKA/node_ips
+
+        kubectl top nodes --sort-by=cpu
+
+        k top -h
+
+        # network test
+        kubectl exec -it mypod -- nc -zv google.com 80
+
+        # pod command
+        kubectl run alpine-sleeper-cka15-arch --image=alpine --command -- sleep 200
+
+        # check auth permissions 
+        kubectl auth can-i get namespaces --as=system:serviceaccount:default:green-sa-cka22-arch
+            - apiGroups:
+            - "*"
+            resources:
+            - namespaces
+            verbs:
+            - get
+
+        ssh nodename
+        nano /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+        kubectl get pv papaya-pv-cka09-str -o yaml > /tmp/papaya-pv-cka09-str.yaml
+        nano /tmp/papaya-pv-cka09-str.yaml
+        Delete all entries for uid:, annotations, status:, claimRef:
+
+        Update pvc increase size only, access mode and storage class cannot be changed 
+            pre-requisites: 
+                Check If Your StorageClass Supports Expansion
+                    kubectl get storageclass <name> -o yaml | grep allowVolumeExpansion
+
+            1- kubectl patch pvc my-pvc -p '{"spec": {"resources": {"requests": {"storage": "10Gi"}}}}'
+            2- kubectl edit pvc my-pvc
+
+
+
+        etcd backup
+            ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+            --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
+            snapshot save <backup-file-location>
+
+            replace the variables from 
+                cat /etc/kubernetes/manifests/etcd.yaml | grep file 
+
+        k create deployment name --image=image --replicas=2 --dry-run=client -o yaml
+        
+        update deployment image: 
+            k set image deploy dpname cntner=image:tag --record
+
+        check deployment changes:
+            k rollout history deploy dpname
+        
+        # service 
+            k expose <resource-type> <resource-name> --port=<port> --target-port=<container-port> --type=<service-type> [options]
+            k expose deployment my-app --port=80 --target-port=8080 --type=ClusterIP
+            k expose pod podname --name=svcname  --port 80
+            k expose pod podname --name=svcname  --port 80 --type=NodePort
+
+        # test a service or a pod is reachable from another pod
+            k exec -it podname -- nslookup svc name
+
+        # autoscale
+            k autoscale deployment <deployment-name> --cpu-percent=80 --min=1 --max=10
+
+        # check kubelet service status
+            systemctl status kubelet 
+
+        # pods connection pods communication check 
+            k exec podid -- telnet otherpod-ip-address
+
+
+        # check pods resource requests/limits
+            kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].resources}{"\n"}{end}'
+
+
+        
+
+
+
+
+
+
+    TODO'S  
+        - To practice cluster admin labs 
+            https://killercoda.com/killer-shell-cka
+                # kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=NumCPU,Mem --control-plane-endpoint=10.96.0.1:443
+                kubeadm init --k`ubernetes-version=1.30.0 --pod-network-cidr 192.168.0.0/16 --ignore-preflight-errors=NumCPU,Mem
+                cp /etc/kubernetes/admin.conf /root/.kube/config
+        - EKS
+            - then deploying EKS with eksctl
+            - then https://youtu.be/MTnQW9MxnRI?si=KeYg-dUU_4UGV0KQ
+        - to learn tooling like
+            - https://kodekloud.com/?utm_source=google&utm_medium=cpc&utm_campaign=KK_PMAX_US_B2C-Kubernetes_CONV_B_PROS_MULT_NA&utm_content=kubernetes-combined-interest&utm_source=google&utm_medium=cpc&utm_campaign=KK_PMAX_US_B2C-Kubernetes_CONV_NAN_PROS_MULT_NA&utm_term=&utm_content=&utm_source=google&utm_medium=cpc&utm_campaign=21366696865&utm_term=&utm_content=&hsa_acc=8039903603&hsa_cam=21366696865&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=1&_gl=1*1rnpibl*_up*MQ..&gclid=Cj0KCQjwurS3BhCGARIsADdUH51Z1QB98jS5gVfL7P65OrwAOvgEST3LLP7dserFtTQ5h2LIu7eGBakaAlaWEALw_wcB
+                CKA 
+                CKAD 
+                    labs
+                        Deployment 
+                            Stack 
+                                web 
+                                db: mysql / postgress
+                                redis
+                                nginx
+                        Checks 
+                            to validate the data/files on the volume attached to db instances
+            - FluxCD
+            - grafana stack
+                Metrics (Prometheus)
+                    https://www.youtube.com/watch?v=9TJx7QTrTyo
+                Logs (Loki)
+                    https://www.youtube.com/watch?v=UM8NiQLZ4K0
+                Traces (Tempo)
+                    https://grafana.com/docs/tempo/latest/
+                    OpenTelemetry/Jaeger/Zipkin
+                Alerts (Alertmanager) Prometheus
+            -  mimir stack
+                https://grafana.com/docs/tempo/latest/
+            - Multi-container patterns 
+                - sidecar
+                - adapter
+                - ambassador
+            - cluster testing
+
+
+            - setting up 
+                eks cluster 
+
+            #here   
+
+                "let him know that as they are looking forward r fte's you are not a good fit, 
+                that if that changes to let you know and and wishing him the best"... Then be silent, no need to elaborate
+
+                - how to Cluster Autoscaler (official, native)?
+                - setups and configs of those main components that he showed 
+                    - prometheous
+                    - grafana 
+                    - Alertmanager
+                    - Logging stack
+                - best practices  
+                    - CNI 
+                    - Ingress controllers 
+                    - DNS Resolvers 
+
+                how to configured API Server authentication and authorization fully configured
+                    For authentication and stuff tools like rancher, rafay bring user management
+                rancher
+                Karpenter
+
+
+                 Admission Controllers like:
+                    NamespaceLifecycle
+                    NodeRestriction
+                    PodSecurityAdmission (or Kyverno/Gatekeeper)
+                PodSecurity Standards are enforced (baseline or restricted mode)
+                etcd encryption for secrets 
+                Audit logs are enabled on the API Server
+                etcd communication is secured with TLS
+
+                redis on k8s
+                how to Karpenter (modern alternative from AWS)
+                killer coda scenarios practices
+
+                Prometheus
+                Grafana
+                Logstash
+                Kibana
+                priority and priority class
+                use k expose for Pod, Deployment, ReplicaSet, or StatefulSet
+                eks youtube video
+
+
+                 - https://youtu.be/p_g-zxZ0eL0?si=s_3L-PkI_VEhcCmR
+s                - For that learn about deploying istio, haproxy controllers for Kubertnetes and nginx controller for Kubertnetes
+                - Questions to Nikho 
+                    - 
+
+            Sections covered in the exam : 
+                - https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/
+
+
+exam 
+ 20KODE – handy to get a 20% discount while registering for the CKA exam with Linux Foundation.
+
+
+Questions: TODO: 
+    - Can operate in BGP mode, VXLAN, or IPIP tunneling
+
+# eks-nodes-pem
+# patch the svc to make it publicly available
+    # kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+
+https://eksctl.io/usage/creating-and-managing-clusters/
+pass a config file and set the ssh
+
+eksctl delete cluster --name cluster-lab
+
+# set node group to include ssh
+# https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
+# or https://github.com/eksctl-io/eksctl/issues/227
+eksctl create cluster \
+--name cluster-lab \
+--version 1.32 \
+--region us-east-1 \
+--nodegroup-name linux-nodes \
+--node-type t3.medium \ 
+--nodes 2
+
+https://medium.com/@chauhanhimani512/install-argocd-on-the-eks-cluster-and-configure-sync-with-the-github-manifest-repository-9e3d62e1c093
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+
+Secret Store CSI Driver - hands on 
+    Dependencies:
+        - helm 
+    steps:
+        - install the driver into the cluster
+          helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+          helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --namespace kube-system
+        - install aws provider 
+          kubectl apply -f https://raw.githubusercontent.com/aws/secrets-store-csi-driver-provider-aws/main/deployment/aws-provider-installer.yaml
+        - pending post eks brushup and cluster deploy
+
+
+
+K8s Cluster Infrastructure setup
+    - Manual process
+        - ssh into each server / virtual machine / ec2 etc
+        - update server
+            sudo apt update
+            sudo apt upgrade -y
+            sudo reboot
+        - name the servers
+            sudo hostnamectl set-hostname "hostname-abc"
+        - install an editor
+            sudo apt install nano
+        - update /etc/hosts file 
+            sudo nano /etc/hosts
+            <ipaddr> <hostname>
+        - to disable swap 
+            sudo swapoff <partition> e.g sudo swapoff /dev/sda2
+            sudo swapoff -a e.g for all spaces
+        - disable swap on start-up, on the static file system
+            sudo nano /etc/fstab
+            and comment out swap line
+        - add the next [ kernel modules ] into the [ linux kernel ]
+             sudo modprobe <module_name>
+             sudo modprobe overlay
+             sudo modprobe br_netfilter
+        - run the next tee commands for kubernetes
+            sudo tee /etc/sysctl.d/kubernetes.conf <<EOF
+            net.bridge.bridge-nf-call-ip6tables = 1
+            net.bridge.bridge-nf-call-iptables = 1
+            net.ipv4.ip_forward = 1
+        - reload all changes made to the file system
+            sudo sysctl --system 
+        - to install container runtime
+            TODO: how to install docker on a K8s cluster
+        - to enable docker repo
+            TODO: how to?
+        - to update lix dist
+            sudo apt update
+        - restart and enable container service
+            sudo systemctl restart <docker | containerd>
+        - instal k8s components
+            sudo apt install -y kubelet kubeadm kubectl
+        - block k8s component from being automatically updated
+            sudo apt-mark hold kubelet kubeadm kubectl
+        - maybe check version of k8s components
+        - initialize k8s cluster, on master node ONLY
+            sudo kubeadm init \
+            --pod-network-cidr=10.10.0.0/16 \
+            --control-plane-endpoint=<endpointname || hostname || ipaddress>
+        - add all the nodes into the cluster
+            - from control plane
+                 kubeadm token create --print-join-command
+                 ssh node01
+                # execute command printed out by command above
+                kubeadm join 172.30.1.2:6443 --token ...
+                exit
+        - use calico to relate the nodes to the network and setting them as ready
+        - install calico network plugin for k8s, on master node ONLY
+        - check pods on kube-system namespace
+            kubectl get pods -n kube-system
+            and check all pods to be RUNNING
+        - 
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

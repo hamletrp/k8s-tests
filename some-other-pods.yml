@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: super-user-pod
+  labels:
+    app: busybox
+spec:
+  containers:
+  - name: super-user-pod
+    image: busybox:1.28
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        sleep 4800
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+          - SYS_TIME
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: non-root-pod
+spec:
+  securityContext:
+    fsGroup: 2000  # Set group ID for file system
+  containers:
+  - name: redis-container
+    image: redis:alpine
+    securityContext:
+      runAsUser: 1000  # Runs as user 1000 instead of root
