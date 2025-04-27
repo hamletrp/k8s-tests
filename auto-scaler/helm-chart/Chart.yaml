@@ -1,5 +1,5 @@
 apiVersion: v2
-name: k8s-CA
+name: k8sCA
 description: k8s Cluster Autoscaler
 
 # A chart can be either an 'application' or a 'library' chart.
