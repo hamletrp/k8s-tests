@@ -179,16 +179,14 @@ K8s
                 eks cluster 
 
             #here   
-
-                "let him know that as they are looking forward r fte's you are not a good fit, 
-                that if that changes to let you know and and wishing him the best"... Then be silent, no need to elaborate
-
                 - how to Cluster Autoscaler (official, native)?
+                    Done 
+                    How are logs handled ?
                 - setups and configs of those main components that he showed 
+                    - Logging stack
                     - prometheous
                     - grafana 
                     - Alertmanager
-                    - Logging stack
                 - best practices  
                     - CNI 
                     - Ingress controllers 
@@ -196,8 +194,8 @@ K8s
 
                 how to configured API Server authentication and authorization fully configured
                     For authentication and stuff tools like rancher, rafay bring user management
-                rancher
                 Karpenter
+                rancher
 
 
                  Admission Controllers like:
