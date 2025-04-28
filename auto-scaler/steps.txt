@@ -39,14 +39,8 @@ Deploy Cluster Autoscaler
     or from a helm chart thru argo
 
 
-
-
-
 * redeployed service account cuz deployment overwritten the role setup
+* or to edit [cluster-autoscaler-autodiscover.yaml] and set the svc account role arn
 
 Customize the Deployment
     k edit deployment cluster-autoscaler -n kube-system
-
-
-
-
