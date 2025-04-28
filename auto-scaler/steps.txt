@@ -36,6 +36,7 @@ Tag / Label Node Groups Properly
 Deploy Cluster Autoscaler
     k apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/cluster-autoscaler-1.28.0/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
     k delete -f https://raw.githubusercontent.com/kubernetes/autoscaler/cluster-autoscaler-1.28.0/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+    or from a helm chart thru argo
 
 
 
