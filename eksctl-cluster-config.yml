@@ -1,0 +1,129 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cluster-lab3
+  region: us-east-1
+  version: "1.32"
+  tags:
+    environment: dev
+    team: platform
+
+# vpc:
+#   id: vpc-xxxxxxxx     # (Optional) use an existing VPC
+#   cidr: "192.168.0.0/16" # (Optional) for eksctl-created VPC
+#   subnets:
+#     private:
+#       us-east-1a:
+#         id: subnet-aaaaaaa
+#       us-east-1b:
+#         id: subnet-bbbbbbb
+#     public:
+#       us-east-1a:
+#         id: subnet-ccccccc
+#       us-east-1b:
+#         id: subnet-ddddddd
+#   clusterEndpoints:
+#     publicAccess: true
+#     privateAccess: true
+#   manageSharedNodeSecurityGroupRules: true
+
+addons:
+  # - name: vpc-cni
+  #   version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: aws-ebs-csi-driver
+    version: latest
+
+# iam:
+#   withOIDC: true
+#   serviceAccounts:
+#     - metadata:
+#         name: external-dns
+#         namespace: kube-system
+#       attachPolicyARNs:
+#         - arn:aws:iam::aws:policy/AmazonRoute53FullAccess
+#     - metadata:
+#         name: alb-ingress-controller
+#         namespace: kube-system
+#       attachPolicyARNs:
+#         - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+
+# nodeGroups:
+#   - name: linux-nodes3
+#     instanceType: t3.medium
+#     desiredCapacity: 2
+#     minSize: 2
+#     maxSize: 5
+#     spot: false
+#     volumeSize: 40
+#     volumeType: gp3
+    # volumeEncrypted: true
+    # volumeKmsKeyID: arn:aws:kms:us-east-1:123456789012:key/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    # privateNetworking: true
+    # ssh:
+    #   allow: true
+    #   publicKeyName: my-keypair
+    # labels:
+    #   cluster-autoscaler-enabled: "true"
+    #   environment: dev
+    # taints:
+    #   - key: dedicated
+    #     value: apps
+    #     effect: NoSchedule
+    # maxPodsPerNode: 110
+    # disableIMDSv1: true
+    # iam:
+    #   withAddonPolicies:
+    #     autoScaler: true
+    #     albIngress: true
+    #     cloudWatch: true
+    #     ebs: true
+    #     appMesh: true
+    # updateConfig:
+    #   maxUnavailable: 1
+
+managedNodeGroups:
+  - name: linux-nodes3
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 5
+    volumeSize: 40
+    maxPodsPerNode: 110
+    # ssh:
+    #   allow: true
+    #   publicKeyName: my-keypair
+    # privateNetworking: true
+    labels:
+      cluster-autoscaler-enabled: "true"
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/cluster-lab3: owned
+    # iam:
+    #   withAddonPolicies:
+    #     autoScaler: true
+    #     cloudWatch: true
+    # updateConfig:
+    #   maxUnavailablePercentage: 50
+
+# fargateProfiles:
+#   - name: fargate-default
+#     selectors:
+#       - namespace: fargate-apps
+
+# cloudWatch:
+#   clusterLogging:
+#     enableTypes:
+#       - api
+#       - audit
+#       - authenticator
+#       - controllerManager
+#       - scheduler
+
+# karpenter:
+#   version: 'v0.34.0'
+#   createServiceAccount: true

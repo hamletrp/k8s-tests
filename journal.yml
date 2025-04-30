@@ -1,4 +1,9 @@
 
+- Questions
+    What is managed by eks vs user accounts ?
+
+
+
 K8s
     Commands 
         k config get-clusters
@@ -16,9 +21,14 @@ K8s
 
         kubectl port-forward service/argocd-server -n argocd 8080:443
 
+        patch argocd 
+            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
         k create deploy nginxx --image nginx --dry-run=client -o yaml > deployyyy.yml
         
         kubectl replace -f /tmp/kubectl-edit-xxxx.yaml --force
+
+        kubectl run -it busybox --rm --image=busybox --restart=Never -- /bin/sh
 
         test static pods creation 
             kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
@@ -103,6 +113,12 @@ K8s
 
         check deployment changes:
             k rollout history deploy dpname
+
+        for i in {1..35}; do
+            kubectl exec --namespace=kube-public curl -- sh -c 'test=`wget -qO- -T 2  http://webapp-service.default.svc.cluster.local:8080/info 2>&1` && echo "$test OK" || echo "Failed"';
+            echo ""
+        done
+
         
         # service 
             k expose <resource-type> <resource-name> --port=<port> --target-port=<container-port> --type=<service-type> [options]
@@ -162,6 +178,7 @@ K8s
                     https://www.youtube.com/watch?v=9TJx7QTrTyo
                 Logs (Loki)
                     https://www.youtube.com/watch?v=UM8NiQLZ4K0
+                    promtail vs fluent-bit
                 Traces (Tempo)
                     https://grafana.com/docs/tempo/latest/
                     OpenTelemetry/Jaeger/Zipkin
@@ -179,9 +196,15 @@ K8s
                 eks cluster 
 
             #here   
-                - how to Cluster Autoscaler (official, native)?
+                - ArgoCD 
                     Done 
-                    How are logs handled ?
+                    https setup
+                    HA setup 
+                - Logs (Loki)
+                    https://www.youtube.com/watch?v=UM8NiQLZ4K0
+                    promtail vs fluent-bit
+                - how to Cluster Autoscaler (official, native)?
+                    Done
                 - setups and configs of those main components that he showed 
                     - Logging stack
                     - prometheous
@@ -222,7 +245,6 @@ K8s
 
                  - https://youtu.be/p_g-zxZ0eL0?si=s_3L-PkI_VEhcCmR
 s                - For that learn about deploying istio, haproxy controllers for Kubertnetes and nginx controller for Kubertnetes
-                - Questions to Nikho 
                     - 
 
             Sections covered in the exam : 
@@ -244,18 +266,28 @@ Questions: TODO:
 https://eksctl.io/usage/creating-and-managing-clusters/
 pass a config file and set the ssh
 
-eksctl delete cluster --name cluster-lab
+eksctl delete cluster --name cluster-lab3
 
 # set node group to include ssh
 # https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
 # or https://github.com/eksctl-io/eksctl/issues/227
 eksctl create cluster \
---name cluster-lab \
+--name cluster-lab2 \
 --version 1.32 \
 --region us-east-1 \
---nodegroup-name linux-nodes \
+--nodegroup-name linux-nodes2 \
 --node-type t3.medium \ 
---nodes 2
+--node-volume-size 40 \
+--node-volume-type gp3 \
+--nodes-min 2 \
+--nodes-max 5 \
+--max-pods-per-node 110 \
+--with-oidc \
+--node-labels "cluster-autoscaler-enabled=true" \
+--tags "k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/cluster-lab2 = owned"
+
+
+
 
 https://medium.com/@chauhanhimani512/install-argocd-on-the-eks-cluster-and-configure-sync-with-the-github-manifest-repository-9e3d62e1c093
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
