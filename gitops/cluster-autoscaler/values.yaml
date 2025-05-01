@@ -1,0 +1,17 @@
+autoDiscovery:
+  clusterName: cluster-lab3 # cluster.local
+  namespace: kube-system  # default
+  tags:
+    - k8s.io/cluster-autoscaler/enabled
+    - k8s.io/cluster-autoscaler/{{ .Values.autoDiscovery.clusterName }}
+
+awsRegion: "us-east-1"
+cloudProvider: aws
+
+rbac:
+  serviceAccount:
+    annotations: 
+      eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role
+    create: true
+
+replicaCount: 2

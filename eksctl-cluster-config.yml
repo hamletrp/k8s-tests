@@ -6,7 +6,7 @@ metadata:
   region: us-east-1
   version: "1.32"
   tags:
-    environment: dev
+    environment: staging
     team: platform
 
 # vpc:

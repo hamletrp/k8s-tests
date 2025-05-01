@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-autoscaler
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: cluster-autoscaler
+      repoURL: https://kubernetes.github.io/autoscaler
+      # repoURL: https://github.com/kubernetes/autoscaler/tree/master/charts
+      targetRevision: 9.46.6
+      helm:
+        valueFiles:
+          - $values/path/to/your/git/values.yaml
+    - repoURL: https://git.github.com/cool-repo.git
+      # repoURL: https://github.com/kubernetes/autoscaler/tree/master/charts
+      targetRevision: HEAD
+      ref: values    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
