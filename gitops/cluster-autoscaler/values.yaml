@@ -1,5 +1,5 @@
 autoDiscovery:
-  clusterName: cluster-lab3 # cluster.local
+  clusterName: cluster-lab4 # cluster.local
   namespace: kube-system  # default
   tags:
     - k8s.io/cluster-autoscaler/enabled

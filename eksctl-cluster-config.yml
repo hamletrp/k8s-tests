@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: cluster-lab3
+  name: cluster-lab4
   region: us-east-1
   version: "1.32"
   tags:
@@ -37,6 +37,8 @@ addons:
     version: latest
   - name: aws-ebs-csi-driver
     version: latest
+    # TODO: to update role with oidc-provider
+    serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole
 
 # iam:
 #   withOIDC: true
@@ -95,7 +97,7 @@ managedNodeGroups:
     volumeSize: 40
     maxPodsPerNode: 110
     iam:
-      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab3-nodegroup-linu-NodeInstanceRole
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab4-nodegroup-linu-NodeInstanceRole
     # ssh:
     #   allow: true
     #   publicKeyName: my-keypair
@@ -104,7 +106,7 @@ managedNodeGroups:
       cluster-autoscaler-enabled: "true"
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/cluster-lab3: owned
+      k8s.io/cluster-autoscaler/cluster-lab4: owned
     # iam:
     #   withAddonPolicies:
     #     autoScaler: true
