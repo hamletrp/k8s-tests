@@ -14,4 +14,4 @@ rbac:
       eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role
     create: true
 
-replicaCount: 2
+replicaCount: 1
