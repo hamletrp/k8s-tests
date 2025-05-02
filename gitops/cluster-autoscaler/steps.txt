@@ -8,6 +8,9 @@ provission cluster
 
     eksctl create cluster -f ./eksctl-cluster-config.yml
 
+provision storage classes 
+    k apply -f ebs-storageclass.yml
+
 associate-iam-oidc-provider
     eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab3 --approve
 
@@ -34,8 +37,6 @@ provission Role
         --policy-arn arn:aws:iam::722249351142:policy/ClusterAutoscalerPolicy \
         --role-name ClusterAutoscalerRole
 
-provision storage classes 
-    k apply -f ebs-storageclass.yml
 
 ArgoCD install 
     https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
@@ -46,8 +47,9 @@ ArgoCD install
         kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
         
         log int argo cli 
-            argocd login localhost:9090 --username admin --password JYM0o6YWOkZe9u0y --insecure
+            argocd login localhost:9090 --username admin --password Bj3WF7IlHWAD493Q --insecure
 
+        here
         *Deployed on EKS required to expose the service:
             - changing the type to LoadBalancer
             - Option 2: Expose Using Ingress + AWS ALB (Production-Grade)
@@ -58,22 +60,12 @@ Deploy Cluster Autoscaler
     ServiceAccount setup 
         set clusterSvcAccRoleArn var in ca values.yaml file
 
-
-
-
-    or
-        k apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/cluster-autoscaler-1.28.0/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
-        k delete -f https://raw.githubusercontent.com/kubernetes/autoscaler/cluster-autoscaler-1.28.0/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
-    or from a helm chart thru argo
-        https://github.com/hamletrp/k8s-tests.git
-            argocd login localhost:8080 --username admin --password qM9eJsCZgkNckG4m --insecure
-            values.yaml
-                clusterSvcAccRoleArn
-                clusterName
-            k apply -f ./helm-chart/k8sca-stack-app.yaml
+    https://github.com/hamletrp/k8s-tests.git
+        update gitops/cluster-autoscaler/values.yaml
+        k apply -f ./gitops/cluster-autoscaler/cluster-autoscaler-argo-app.yaml
 
         stress test 
-            k create deploy stress --image=busybox --replicas=300 -- sleep 3600
+            k create deploy stress --image=busybox --replicas=340 -- sleep 3600
             k scale deploy stress --replicas 20
             k delete deploy stress
         

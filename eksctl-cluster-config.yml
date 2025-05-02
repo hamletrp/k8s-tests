@@ -94,6 +94,8 @@ managedNodeGroups:
     maxSize: 5
     volumeSize: 40
     maxPodsPerNode: 110
+    iam:
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab3-nodegroup-linu-NodeInstanceRole
     # ssh:
     #   allow: true
     #   publicKeyName: my-keypair

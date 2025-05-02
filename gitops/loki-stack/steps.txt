@@ -1,0 +1,5 @@
+
+k apply -f ./gitops/loki-stack/loki-stack-app.yaml
+
+
+

@@ -29,7 +29,7 @@ TODO:
     - ArgoCD 
         Done 
         https setup
-        HA setup 
+        HA setup Kikho style
     - Logs (Loki)
         https://www.youtube.com/watch?v=UM8NiQLZ4K0
         promtail vs fluent-bit
@@ -254,6 +254,7 @@ eksctl delete cluster --name cluster-lab3
 # or https://github.com/eksctl-io/eksctl/issues/227
 
 eksctl create cluster -f ./eksctl-cluster-config.yml
+k apply -f ebs-storageclass.yml
 
 eksctl create cluster \
 --name cluster-lab2 \

@@ -1,3 +1,0 @@
-appName: testca
-clusterSvcAccRoleArn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role
-clusterName: cluster-lab3
