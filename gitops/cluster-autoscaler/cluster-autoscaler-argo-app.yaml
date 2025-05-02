@@ -8,13 +8,11 @@ spec:
   sources:
     - chart: cluster-autoscaler
       repoURL: https://kubernetes.github.io/autoscaler
-      # repoURL: https://github.com/kubernetes/autoscaler/tree/master/charts
       targetRevision: 9.46.6
       helm:
         valueFiles:
-          - $values/path/to/your/git/values.yaml
-    - repoURL: https://git.github.com/cool-repo.git
-      # repoURL: https://github.com/kubernetes/autoscaler/tree/master/charts
+          - $values/gitops/cluster-autoscaler/values.yaml
+    - repoURL: https://github.com/hamletrp/k8s-tests.git
       targetRevision: HEAD
       ref: values    
   destination:

@@ -1,7 +1,45 @@
 
-- Questions
-    What is managed by eks vs user accounts ?
+TODO:
+    - Questions
+        screen in linux
+        Argo App Umbrella pattern ?    
+        how to install a package from a binary   
 
+
+    to build a multi cluster argo applicationset 
+        a 3 cluster setup using kind 
+
+    Building a eksanywhere cluster
+        vmware
+        eksanywhere  
+
+    - FluxCD
+    - grafana stack
+        Metrics (Prometheus)
+            https://www.youtube.com/watch?v=9TJx7QTrTyo
+        Logs (Loki)
+            https://www.youtube.com/watch?v=UM8NiQLZ4K0
+            promtail vs fluent-bit
+        Traces (Tempo)
+            https://grafana.com/docs/tempo/latest/
+            OpenTelemetry/Jaeger/Zipkin
+        Alerts (Alertmanager) Prometheus
+    -  mimir stack
+        https://grafana.com/docs/tempo/latest/
+    - ArgoCD 
+        Done 
+        https setup
+        HA setup 
+    - Logs (Loki)
+        https://www.youtube.com/watch?v=UM8NiQLZ4K0
+        promtail vs fluent-bit
+    - how to Cluster Autoscaler (official, native)?
+        Done
+    - setups and configs of those main components that he showed 
+        - Logging stack
+        - prometheous
+        - grafana 
+        - Alertmanager
 
 
 K8s
@@ -151,74 +189,17 @@ K8s
 
 
     TODO'S  
-        - To practice cluster admin labs 
-            https://killercoda.com/killer-shell-cka
-                # kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=NumCPU,Mem --control-plane-endpoint=10.96.0.1:443
-                kubeadm init --k`ubernetes-version=1.30.0 --pod-network-cidr 192.168.0.0/16 --ignore-preflight-errors=NumCPU,Mem
-                cp /etc/kubernetes/admin.conf /root/.kube/config
-        - EKS
-            - then deploying EKS with eksctl
-            - then https://youtu.be/MTnQW9MxnRI?si=KeYg-dUU_4UGV0KQ
         - to learn tooling like
             - https://kodekloud.com/?utm_source=google&utm_medium=cpc&utm_campaign=KK_PMAX_US_B2C-Kubernetes_CONV_B_PROS_MULT_NA&utm_content=kubernetes-combined-interest&utm_source=google&utm_medium=cpc&utm_campaign=KK_PMAX_US_B2C-Kubernetes_CONV_NAN_PROS_MULT_NA&utm_term=&utm_content=&utm_source=google&utm_medium=cpc&utm_campaign=21366696865&utm_term=&utm_content=&hsa_acc=8039903603&hsa_cam=21366696865&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=1&_gl=1*1rnpibl*_up*MQ..&gclid=Cj0KCQjwurS3BhCGARIsADdUH51Z1QB98jS5gVfL7P65OrwAOvgEST3LLP7dserFtTQ5h2LIu7eGBakaAlaWEALw_wcB
-                CKA 
-                CKAD 
-                    labs
-                        Deployment 
-                            Stack 
-                                web 
-                                db: mysql / postgress
-                                redis
-                                nginx
-                        Checks 
-                            to validate the data/files on the volume attached to db instances
-            - FluxCD
-            - grafana stack
-                Metrics (Prometheus)
-                    https://www.youtube.com/watch?v=9TJx7QTrTyo
-                Logs (Loki)
-                    https://www.youtube.com/watch?v=UM8NiQLZ4K0
-                    promtail vs fluent-bit
-                Traces (Tempo)
-                    https://grafana.com/docs/tempo/latest/
-                    OpenTelemetry/Jaeger/Zipkin
-                Alerts (Alertmanager) Prometheus
-            -  mimir stack
-                https://grafana.com/docs/tempo/latest/
-            - Multi-container patterns 
-                - sidecar
-                - adapter
-                - ambassador
-            - cluster testing
+            - best practices  
+                - CNI 
+                - Ingress controllers 
+                - DNS Resolvers 
 
-
-            - setting up 
-                eks cluster 
-
-            #here   
-                - ArgoCD 
-                    Done 
-                    https setup
-                    HA setup 
-                - Logs (Loki)
-                    https://www.youtube.com/watch?v=UM8NiQLZ4K0
-                    promtail vs fluent-bit
-                - how to Cluster Autoscaler (official, native)?
-                    Done
-                - setups and configs of those main components that he showed 
-                    - Logging stack
-                    - prometheous
-                    - grafana 
-                    - Alertmanager
-                - best practices  
-                    - CNI 
-                    - Ingress controllers 
-                    - DNS Resolvers 
-
-                how to configured API Server authentication and authorization fully configured
-                    For authentication and stuff tools like rancher, rafay bring user management
-                Karpenter
-                rancher
+            how to configured API Server authentication and authorization fully configured
+                For authentication and stuff tools like rancher, rafay bring user management
+            Karpenter
+            rancher
 
 
                  Admission Controllers like:
@@ -374,26 +355,3 @@ K8s Cluster Infrastructure setup
         - 
 
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
