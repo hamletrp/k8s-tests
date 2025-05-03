@@ -11,13 +11,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    chart: httpbingo
-    repoURL: https://estahn.github.io/charts
-    targetRevision: 0.1.1
-    helm:
-      valueFiles:
-        - values.yaml
+  sources:
+    - chart: httpbingo
+      repoURL: https://estahn.github.io/charts
+      targetRevision: 0.1.1
+      helm:
+        valueFiles:
+          - $values/gitops/httpbingo/values.yaml
+    - repoURL: https://github.com/hamletrp/k8s-tests.git
+      targetRevision: HEAD
+      ref: values 
   destination:
     server: https://kubernetes.default.svc
     namespace: httpbingo

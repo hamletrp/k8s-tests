@@ -29,18 +29,12 @@ metadata:
 #   manageSharedNodeSecurityGroupRules: true
 
 addons:
-  # - name: vpc-cni
-  #   version: latest
   - name: coredns
     version: latest
   - name: kube-proxy
     version: latest
   - name: aws-ebs-csi-driver
     version: latest
-    # this didn't work
-    # attachPolicyARNs:
-      # - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
-    # serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole
 
 # iam:
 #   withOIDC: true
