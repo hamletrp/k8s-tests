@@ -1,0 +1,24 @@
+
+1. ✅ Install cert-manager
+    kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+    and the crds 
+        kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.crds.yaml
+
+
+2. Create aws credentials secret 
+    k create namespace cert-manager
+    kubectl create secret generic route53-credentials-secret \
+    --from-literal=secret-access-key=b8X4aQm5hbqk36Jn6+gt3vH6D0uz4Xvxk00YIbsO \
+    -n cert-manager
+
+3. ✅ Create a ClusterIssuer using Route 53
+    k apply -f ./gitops/argocd/ClusterIssuer.yaml
+
+3. ✅ Create a Certificate resource for your Argo CD domain
+    k apply -f ./gitops/argocd/cert-request.yaml
+
+
+
+
+
+

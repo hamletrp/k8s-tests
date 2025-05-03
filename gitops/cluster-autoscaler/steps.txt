@@ -1,64 +1,20 @@
 
-provission cluster 
-    node group tags 
-        k8s.io/cluster-autoscaler/enabled = true
-        k8s.io/cluster-autoscaler/<your-cluster-name> = owned
-    nodes labels 
-        cluster-autoscaler-enabled=true
-
-    eksctl create cluster -f ./eksctl-cluster-config.yml
-
-
-provision storage classes 
-    k apply -f ebs-storageclass.yml
-
-
-associate-iam-oidc-provider
-    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab4 --approve
-
-get oicd provider 
-    aws eks describe-cluster --region us-east-1 --name cluster-lab4 --query "cluster.identity.oidc.issuer" --output text
-
-
-provission Role
-    thru terraform
-        update .tfvars file with the oidc-provider id
-        terraform apply --auto-approve
-    or
-    1: 
-        aws iam create-policy \
-        --policy-name ClusterAutoscalerPolicy \
-        --policy-document file://autoscaler-policy.json
-
-    2: 
-        aws iam create-role \
-        --role-name ClusterAutoscalerRole \
-        --assume-role-policy-document file://autoscaler-trust-policy.json
-
-    3:
-        aws iam attach-role-policy \
-        --policy-arn arn:aws:iam::722249351142:policy/ClusterAutoscalerPolicy \
-        --role-name ClusterAutoscalerRole
-
-
-patch serviceaccount/ebs-csi-controller-sa
-    . ./gitops/patch-ebs-csi-sa.sh
-
-
 ArgoCD install 
     https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
         kubectl create namespace argocd
         kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-        k get services -n argocd
+        k get service/argocd-server -n argocd
         kubectl port-forward service/argocd-server -n argocd 9090:443
         kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
         
         log int argo cli 
-            argocd login localhost:9090 --username admin --password hVW37lbcvP6rDB1A --insecure
+            argocd login localhost:9090 --username admin --password mHW9wHkmwZCSXfjb --insecure
 
         here
         *Deployed on EKS required to expose the service:
             - changing the type to LoadBalancer
+                kubectl -n argocd edit svc argocd-server
+                set type to: LoadBalancer
             - Option 2: Expose Using Ingress + AWS ALB (Production-Grade)
             - or port fowarding
 
@@ -80,4 +36,10 @@ Deploy Cluster Autoscaler
 
     argocd app delete --cascade cluster-autoscaler
     argocd app delete --cascade cluster-autoscaler -y 
+
+
+- ArgoCD 
+    https setup
+    HA setup
+        just read 
     

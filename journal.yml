@@ -26,10 +26,6 @@ TODO:
         Alerts (Alertmanager) Prometheus
     -  mimir stack
         https://grafana.com/docs/tempo/latest/
-    - ArgoCD 
-        Done 
-        https setup
-        HA setup Kikho style
     - Logs (Loki)
         https://www.youtube.com/watch?v=UM8NiQLZ4K0
         promtail vs fluent-bit
@@ -179,12 +175,6 @@ K8s
 
         # check pods resource requests/limits
             kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].resources}{"\n"}{end}'
-
-
-        
-
-
-
 
 
 

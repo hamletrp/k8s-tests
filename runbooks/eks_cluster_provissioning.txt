@@ -1,0 +1,32 @@
+
+Pre-requisites 
+    Cluster provissioning permissions 
+        ~/.aws/credentials 
+        or a sts token 
+        or a role setup
+
+Create cluster 
+    node group tags 
+        k8s.io/cluster-autoscaler/enabled = true
+        k8s.io/cluster-autoscaler/<your-cluster-name> = owned
+    nodes labels 
+        cluster-autoscaler-enabled=true
+        
+    eksctl create cluster -f ./eksctl-cluster-config.yml
+
+Set storage classes
+    k apply -f ebs-storageclass.yml
+
+associate-iam-oidc-provider
+    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab4 --approve
+
+get oicd provider 
+    aws eks describe-cluster --region us-east-1 --name cluster-lab4 --query "cluster.identity.oidc.issuer" --output text
+
+copy oidc provider to tfvars
+
+deploy terraform project 
+    terraform apply --auto-approve
+
+patch serviceaccount/ebs-csi-controller-sa
+    . ./gitops/patch-ebs-csi-sa.sh

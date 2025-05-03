@@ -1,0 +1,45 @@
+Manual install 
+    ArgoCD install 
+    https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
+        kubectl create namespace argocd
+        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+
+run aws-certs-provisioning.txt
+
+update values.yaml
+
+deploy 
+
+
+---
+NGINX Controller Setup 
+    ingress-ctrler-setup.txt
+
+Expose Using Ingress + AWS ALB (Production-Grade)
+
+    here:
+        switch to nginx 
+        make argocd https 
+
+    install AWS Load Balancer Controller
+        helm repo add aws https://aws.github.io/eks-charts
+
+        helm repo update
+
+        helm install aws-load-balancer-controller aws/aws-load-balancer-controller --set clusterName=cluster-lab4 -n kube-system
+
+    Create an Ingress object for ArgoCD 
+
+Set HTTPS 
+    Install Cert-Manager
+        kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+
+    Create a ClusterIssuer (for Let’s Encrypt)
+        k apply -f ./gitops/argocd-ingress/ClusterIssuer.yaml
+
+
+
+
+
+

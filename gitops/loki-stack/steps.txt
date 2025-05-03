@@ -1,9 +1,5 @@
 
-k create namespace loki
-
-
 k apply -f ./gitops/loki-stack/loki-stack-app.yaml
-
 
 k get services -n loki
 kubectl port-forward service/loki-stack-grafana -n loki 3000:80

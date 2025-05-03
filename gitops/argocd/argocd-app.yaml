@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-self-manage
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/hamletrp/k8s-tests.git
+      targetRevision: HEAD
+      ref: values 
+    - chart: argo-cd
+      repoURL: https://argoproj.github.io/argo-helm
+      targetRevision: latest
+      helm:
+        valueFiles:
+          - $values/gitops/argocd/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

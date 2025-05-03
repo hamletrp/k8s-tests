@@ -1,0 +1,65 @@
+# Helm values.yaml for Argo CD with cert-manager-based HTTPS via Ingress (Production-Grade)
+
+
+## PRE:
+# - Replace `a381a09ead5c34042ba723b2c53eafe7-681135908.us-east-1.elb.amazonaws.com` with your domain
+# - Ensure `letsencrypt-prod` ClusterIssuer exists and cert-manager is installed
+# - Ensure DNS is properly pointed to your Ingress controller
+# Helm values.yaml for Argo CD with AWS ACM Certificate via NGINX Ingress (Production-Grade)
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/server-snippet: |
+        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    hosts:
+      - doordress.us
+    paths:
+      - /
+    pathType: Prefix
+    tls:
+      - hosts:
+          - doordress.us
+        secretName: argocd-acm-tls
+
+  extraArgs:
+    - --insecure
+
+  config:
+    url: https://doordress.us
+
+  service:
+    type: ClusterIP
+
+  ingressGrpc:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    hosts:
+      - doordress.us
+    tls:
+      - hosts:
+          - doordress.us
+        secretName: argocd-acm-tls
+
+  metrics:
+    enabled: true
+
+  rbac:
+    create: true
+
+configs:
+  params:
+    server.insecure: "true"
+  cm:
+    admin.enabled: "false"
+  rbac:
+    policy.default: role:readonly

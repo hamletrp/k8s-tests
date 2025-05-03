@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress
+  namespace: argocd
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - a381a09ead5c34042ba723b2c53eafe7-681135908.us-east-1.elb.amazonaws.com
+      secretName: argocd-cert
+  rules:
+  - host: a381a09ead5c34042ba723b2c53eafe7-681135908.us-east-1.elb.amazonaws.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 443
