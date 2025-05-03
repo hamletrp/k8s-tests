@@ -25,7 +25,7 @@ spec:
               enabled: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: loki
   syncPolicy:
     automated:
       prune: true

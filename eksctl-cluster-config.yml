@@ -37,8 +37,10 @@ addons:
     version: latest
   - name: aws-ebs-csi-driver
     version: latest
-    # TODO: to update role with oidc-provider
-    serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole
+    # this didn't work
+    # attachPolicyARNs:
+      # - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+    # serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole
 
 # iam:
 #   withOIDC: true
