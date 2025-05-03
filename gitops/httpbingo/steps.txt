@@ -1,0 +1,6 @@
+
+
+kubectl port-forward service/httpbingo -n httpbingo 4000:80
+
+argocd app delete --cascade httpbingo -y 
+
