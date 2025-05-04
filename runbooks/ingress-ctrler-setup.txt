@@ -1,43 +1,23 @@
 
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+Install nginx ingress controller 
+  k apply -f ./gitops/nginx/nginx-argocd-app.yaml
 
 
-An example Ingress that makes use of the controller:
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: example
-    namespace: foo
-  spec:
-    ingressClassName: nginx
-    rules:
-      - host: www.example.com
-        http:
-          paths:
-            - pathType: Prefix
-              backend:
-                service:
-                  name: exampleService
-                  port:
-                    number: 80
-              path: /
-    # This section is only required if TLS is to be enabled for the Ingress
-    tls:
-      - hosts:
-        - www.example.com
-        secretName: example-tls
+if HTTP 
+  # non-https requires to ask argo to allow insecure
+  kubectl -n argocd patch deployment argocd-server \
+  --type='json' \
+  -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}]'
 
-If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+Apply any ingress object 
+  e.g: 
+    k apply -f ./gitops/argocd/argocd-ingress.yaml
 
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: example-tls
-    namespace: foo
-  data:
-    tls.crt: <base64 encoded cert>
-    tls.key: <base64 encoded key>
-  type: kubernetes.io/tls
+Update the hostedzone records 
+  map domain to nginx LoadBalancer endpoint 
+  e.g route53
+    CNAME
+    argocd.doordress.us : a12cbb480f36c41519138c7586af129d-660904573.us-east-1.elb.amazonaws.com 
+
+
 

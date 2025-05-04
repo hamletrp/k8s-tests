@@ -1,5 +1,6 @@
 # Helm values.yaml for Argo CD with cert-manager-based HTTPS via Ingress (Production-Grade)
 
+# TODO: pending to test
 
 ## PRE:
 # - Replace `a381a09ead5c34042ba723b2c53eafe7-681135908.us-east-1.elb.amazonaws.com` with your domain
@@ -24,19 +25,19 @@ server:
     paths:
       - /
     pathType: Prefix
-    tls:
-      - hosts:
-          - doordress.us
-        secretName: argocd-acm-tls
+    # tls:
+    #   - hosts:
+    #       - doordress.us
+    #     secretName: argocd-acm-tls
 
   extraArgs:
     - --insecure
 
   config:
-    url: https://doordress.us
+    url: http://argocd.doordress.us
 
   service:
-    type: ClusterIP
+    type: LoadBalancer
 
   ingressGrpc:
     enabled: true
@@ -44,11 +45,11 @@ server:
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
     hosts:
-      - doordress.us
-    tls:
-      - hosts:
-          - doordress.us
-        secretName: argocd-acm-tls
+      - argocd.doordress.us
+    # tls:
+    #   - hosts:
+    #       - argocd.doordress.us
+    #     secretName: argocd-acm-tls
 
   metrics:
     enabled: true
