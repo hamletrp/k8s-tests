@@ -12,7 +12,7 @@ Create cluster
     nodes labels 
         cluster-autoscaler-enabled=true
 
-    eksctl create cluster -f ./eksctl-cluster-config.yml
+    eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
 
 Set storage classes
     k apply -f ./gitops/ebs-storageclass.yml
@@ -30,3 +30,7 @@ deploy terraform project
 
 patch serviceaccount/ebs-csi-controller-sa
     . ./gitops/patch-ebs-csi-sa.sh
+
+
+OJO TO DELETE 
+    eksctl delete cluster --region=us-east-1 --name cluster-lab4
