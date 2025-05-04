@@ -11,11 +11,11 @@ Create cluster
         k8s.io/cluster-autoscaler/<your-cluster-name> = owned
     nodes labels 
         cluster-autoscaler-enabled=true
-        
+
     eksctl create cluster -f ./eksctl-cluster-config.yml
 
 Set storage classes
-    k apply -f ebs-storageclass.yml
+    k apply -f ./gitops/ebs-storageclass.yml
 
 associate-iam-oidc-provider
     eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab4 --approve
