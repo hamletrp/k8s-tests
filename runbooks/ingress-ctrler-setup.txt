@@ -35,11 +35,15 @@ Update the hostedzone records
   e.g route53
     CNAME
     argocd.doordress.us : a12cbb480f36c41519138c7586af129d-660904573.us-east-1.elb.amazonaws.com 
+    
+    and for wildcards
+    *.doordress.us : a12cbb480f36c41519138c7586af129d-660904573.us-east-1.elb.amazonaws.com 
 
 
 TOOLS
   check cert validity
     echo | openssl s_client -connect argocd.doordress.us:443 -servername argocd.doordress.us
+    curl -vvvvv https://argcd.doordress.us
 
   kubectl get service nginx-ingress-ingress-nginx-controller -n ingress-nginx -o jsonpath="{.metadata.annotations}"
 
