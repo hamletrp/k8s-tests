@@ -17,15 +17,21 @@ if HTTP
     --type=json \
     -p='[{"op": "remove", "path": "/spec/template/spec/containers/0/args/0"}]'
 
+    
+    k -n argocd patch deployment argocd-server \
+    --type='json' \
+    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "/usr/local/bin/argocd-server"}]'
+
+
 
 HTTPS 
   to provission role eks_alb_controller_irsa_role
   to annotate serviceaccount nginx-ingress-ingress-nginx and set eks.amazonaws.com/role-arn
-    annotate-serv-acc-nginx-ingress.sh
+    . ./gitops/annotate-serv-acc-nginx-ingress.sh
   tp annotate service nginx-ingress-ingress-nginx-controller  
-    annotate-service-nginx-ingress.sh
+    . ./gitops/annotate-service-nginx-ingress.sh
 
-
+    
 Apply any ingress object 
   e.g: 
     k apply -f ./gitops/argocd/argocd-ingress.yaml

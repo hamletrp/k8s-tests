@@ -2,7 +2,18 @@
 k apply -f ./gitops/loki-stack/loki-stack-app.yaml
 
 k get services -n loki
-kubectl port-forward service/loki-stack-grafana -n loki 3000:80
+
+to expose it 
+    kubectl port-forward service/loki-stack-grafana -n loki 3000:80
+    or 
+     k apply -f ./gitops/loki-stack/loki-ingress.yaml
+
+to edit service/loki-stack-grafana and add https port entry
+    - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 3000
+
 kubectl -n loki get secret loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d; echo
 
 argocd app delete --cascade loki-stack -y 

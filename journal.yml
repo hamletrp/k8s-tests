@@ -15,22 +15,16 @@ TODO:
 
     - FluxCD
     - grafana stack
-        Metrics (Prometheus)
-            https://www.youtube.com/watch?v=9TJx7QTrTyo
         Logs (Loki)
             https://www.youtube.com/watch?v=UM8NiQLZ4K0
             promtail vs fluent-bit
+        Metrics & Alert Manager (Prometheus)
+            https://www.youtube.com/watch?v=9TJx7QTrTyo
         Traces (Tempo)
             https://grafana.com/docs/tempo/latest/
             OpenTelemetry/Jaeger/Zipkin
-        Alerts (Alertmanager) Prometheus
     -  mimir stack
         https://grafana.com/docs/tempo/latest/
-    - Logs (Loki)
-        https://www.youtube.com/watch?v=UM8NiQLZ4K0
-        promtail vs fluent-bit
-    - how to Cluster Autoscaler (official, native)?
-        Done
     - setups and configs of those main components that he showed 
         - Logging stack
         - prometheous

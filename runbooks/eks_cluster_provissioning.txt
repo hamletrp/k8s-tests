@@ -29,7 +29,7 @@ deploy terraform project
     terraform apply --auto-approve
 
 patch serviceaccount/ebs-csi-controller-sa
-    . ./gitops/patch-ebs-csi-sa.sh
+    . ./gitops/annotate-serv-acc-ebs-csi.sh
 
 
 OJO TO DELETE 
