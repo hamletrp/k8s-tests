@@ -15,3 +15,8 @@ rbac:
     create: true
 
 replicaCount: 2
+
+extraArgs:
+  scale-down-enabled: true
+  scale-down-unneeded-time: 3m
+  scale-down-delay-after-add: 5m
