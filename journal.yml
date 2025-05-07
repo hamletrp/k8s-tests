@@ -4,6 +4,7 @@ TODO:
         screen in linux
         Argo App Umbrella pattern ?    
         how to install a package from a binary   
+        prod grade secrets for e.g argocd and loki
 
 
     to build a multi cluster argo applicationset 
@@ -18,11 +19,13 @@ TODO:
         Logs (Loki)
             https://www.youtube.com/watch?v=UM8NiQLZ4K0
             promtail vs fluent-bit
+
         Metrics & Alert Manager (Prometheus)
             https://www.youtube.com/watch?v=9TJx7QTrTyo
         Traces (Tempo)
             https://grafana.com/docs/tempo/latest/
             OpenTelemetry/Jaeger/Zipkin
+        ElasticSearch
     -  mimir stack
         https://grafana.com/docs/tempo/latest/
     - setups and configs of those main components that he showed 

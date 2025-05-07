@@ -1,24 +1,4 @@
 
-ArgoCD install 
-    https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
-        kubectl create namespace argocd
-        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-        k get service/argocd-server -n argocd
-        kubectl port-forward service/argocd-server -n argocd 9090:443
-        kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-        
-        log int argo cli 
-            argocd login localhost:9090 --username admin --password mHW9wHkmwZCSXfjb --insecure
-
-        here
-        *Deployed on EKS required to expose the service:
-            - changing the type to LoadBalancer
-                kubectl -n argocd edit svc argocd-server
-                set type to: LoadBalancer
-            - Option 2: Expose Using Ingress + AWS ALB (Production-Grade)
-            - or port fowarding
-
-            
 Deploy Cluster Autoscaler
     ServiceAccount setup 
         set clusterSvcAccRoleArn var in ca values.yaml file

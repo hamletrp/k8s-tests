@@ -31,6 +31,5 @@ deploy terraform project
 patch serviceaccount/ebs-csi-controller-sa
     . ./gitops/annotate-serv-acc-ebs-csi.sh
 
-
 OJO TO DELETE 
     eksctl delete cluster --region=us-east-1 --name cluster-lab4
