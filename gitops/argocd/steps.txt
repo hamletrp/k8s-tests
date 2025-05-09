@@ -46,7 +46,7 @@ Manual install
             kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
         
         log int argo cli 
-            argocd login localhost:9090 --username admin --password OjfXhoKeesarML7H --insecure
+            argocd login localhost:9090 --username admin --password YSokDJxvBHd4gf8L --insecure
             argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
 
 

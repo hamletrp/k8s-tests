@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-logs-gen
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api123
+  template:
+    metadata:
+      labels:
+        app: api123
+    spec:
+      containers:
+      - name: api123
+        image: kodekloud/loki-demo
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

@@ -1,8 +1,10 @@
 
 TODO:
     - Questions
+        how to set code terminal on the righthand side 
         screen in linux
         Argo App Umbrella pattern ?    
+        https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
         how to install a package from a binary   
         prod grade secrets for e.g argocd and loki
 
@@ -16,9 +18,15 @@ TODO:
 
     - FluxCD
     - grafana stack
-        Logs (Loki)
+        Logs (Loki) here 
             https://www.youtube.com/watch?v=UM8NiQLZ4K0
             promtail vs fluent-bit
+                to check promtail secret to see config
+            what can be configured on promtail and fluent-bit on a k8s deployment 
+            prod grade setup Loki/promtail setup
+            prod grade setup Loki/fluent-bit setup
+            logs best practices on a k8s cluster 
+
 
         Metrics & Alert Manager (Prometheus)
             https://www.youtube.com/watch?v=9TJx7QTrTyo

@@ -9,12 +9,19 @@ to expose it
      k apply -f ./gitops/loki-stack/loki-ingress.yaml
 
 to edit service/loki-stack-grafana and add https port entry
+    k edit service/loki-stack-grafana -n loki
     - name: https
-    port: 443
-    protocol: TCP
-    targetPort: 3000
+        port: 443
+        protocol: TCP
+        targetPort: 3000
 
 kubectl -n loki get secret loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d; echo
 
-argocd app delete --cascade loki-stack -y 
+check promptail config 
+    k -n loki get secret loki-stack-promtail -o jsonpath="{.data.promtail\.yaml}" | base64 -d
+
+
+
+DELETE 
+    argocd app delete --cascade loki-stack -y 
 
