@@ -25,3 +25,34 @@ check promptail config
 DELETE 
     argocd app delete --cascade loki-stack -y 
 
+
+ARCHITECTURE 
+    [ EKS Nodes ] --(Logs via Promtail)--> [ Loki StatefulSet on EBS or S3 ]
+                                \
+                                 --> [ Grafana Dashboards ]
+
+TODO:
+    logs best practices on a k8s cluster
+
+BEST PRACTICES 
+    Security
+        Run Loki & Promtail as non-root
+        Enable TLS if using Ingress
+        Restrict access via NetworkPolicy
+        Use readOnlyRootFilesystem in container security contexts
+    Scaling Strategy
+        loki StatefulSet, horizontal scaling via sharding
+        For long-term retention: enable S3 object store (and compactor)
+    Monitoring and Alerts
+        Add alerts on Loki ingestion rate, query errors, and disk usage
+        Enable serviceMonitor in Helm for Prometheus monitoring
+        Deploy Grafana dashboards for Loki performance
+    Access Control
+        Use Ingress (Nginx or ALB) + cert-manager to expose Loki and Grafana
+        Add basic auth or OIDC via Grafana Helm values
+        password rotation
+    Persistent Storage (EBS or S3)
+        Use gp3 EBS volumes for boltdb-shipper mode
+        For long-term retention: enable S3 object store (and compactor)
+
+

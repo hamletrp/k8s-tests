@@ -1,9 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: loki
-
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -11,46 +5,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 2.10.2
-    chart: loki-stack
-    helm:
-      values: |
-        loki:
-          enabled: true
-          persistence:
-            enabled: true
-            size: 1Gi
-        promtail:
-          enabled: true
-        grafana:
-          enabled: true 
-          sidecar:
-            datasources:
-              enabled: true
-        monitoring: 
-        selfMonitoring:
-          podLogs:
-            # -- Additional PodLogs labels
-            # labels: { http_resp_code, http_method}
-            # -- Additional pipeline stages to process logs after scraping
-            # https://grafana.com/docs/agent/latest/operator/api/#pipelinestagespec-a-namemonitoringgrafanacomv1alpha1pipelinestagespeca
-            additionalPipelineStages:
-              - match: 
-                selector: '{app="api123"}'
-                stages: 
-                  - json:
-                      expressions:
-                        log:
-                  - json: 
-                      source: log
-                      expressions:
-                        http_resp_code: code 
-                        http_method: method
-                  - labels:
-                      http_resp_code:
-                      http_method:
+  sources:
+    - chart: loki-stack
+      repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 2.10.2
+      helm:
+        valueFiles:
+          - $values/gitops/loki-stack/values.yaml
+    - repoURL: https://github.com/hamletrp/k8s-tests.git
+      targetRevision: HEAD
+      ref: values  
   destination:
     server: https://kubernetes.default.svc
     namespace: loki
@@ -58,3 +22,30 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+## set via the values file instead
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: loki-ingress
+#   namespace: loki
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Since TLS ends at NLB
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: loki.doordress.us
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: loki-stack-grafana
+#             port:
+#               number: 443

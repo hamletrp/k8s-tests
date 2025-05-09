@@ -1,0 +1,51 @@
+loki:
+  enabled: true
+  persistence:
+    enabled: true
+    # storageClassName: gp3
+    # storageClassName: ""  # disables dynamic provisioning
+    size: 1Gi
+    # existingClaim: loki-pvc  # 👈 your pre-provisioned PVC name
+promtail:
+  enabled: true
+  # serviceAccount:
+  #   annotations:
+  #     eks.amazonaws.com/role-arn: arn:aws:iam::<acct>:role/eks-promtail-role
+  ## To use a shared volume manually
+  # extraVolumeMounts:
+  #   - name: log-volume
+  #     mountPath: /var/custom-logs
+  # extraVolumes:
+  #   - name: log-volume
+  #     persistentVolumeClaim:
+  #       claimName: shared-log-pvc
+  # tolerations:
+  #   - key: node-role.kubernetes.io/control-plane
+  #     operator: Exists
+  #     effect: NoSchedule
+  # extraScrapeConfigs:
+  #   - job_name: system
+  #     static_configs:
+  #       - targets: ["localhost"]
+  #         labels:
+  #           job: varlogs
+  #           __path__: /var/log/*.log
+grafana:
+  enabled: true 
+  sidecar:
+    datasources:
+      enabled: true
+  adminPassword: prom-strong-password
+  # ingress:
+  #   enabled: false
+  #   ingressClassName: nginx
+  #   hosts:
+  #     - grafana.example.com
+  #   path: /
+  #   annotations:
+  #     kubernetes.io/ingress.class: nginx
+  #     cert-manager.io/cluster-issuer: letsencrypt-prod
+  #   tls:
+  #     - hosts:
+  #         - grafana.example.com
+  #     secretName: grafana-tlsz

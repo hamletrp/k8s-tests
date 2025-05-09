@@ -1,3 +1,5 @@
+
+## set via the values file instead
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

@@ -17,18 +17,8 @@ TODO:
         eksanywhere  
 
     - FluxCD
-    - grafana stack
-        Logs (Loki) here 
-            https://www.youtube.com/watch?v=UM8NiQLZ4K0
-            promtail vs fluent-bit
-                to check promtail secret to see config
-            what can be configured on promtail and fluent-bit on a k8s deployment 
-            prod grade setup Loki/promtail setup
-            prod grade setup Loki/fluent-bit setup
-            logs best practices on a k8s cluster 
-
-
-        Metrics & Alert Manager (Prometheus)
+    - grafana stack 
+        Metrics & Alert Manager (Prometheus) here 
             https://www.youtube.com/watch?v=9TJx7QTrTyo
         Traces (Tempo)
             https://grafana.com/docs/tempo/latest/
