@@ -29,6 +29,28 @@ spec:
           sidecar:
             datasources:
               enabled: true
+        monitoring: 
+        selfMonitoring:
+          podLogs:
+            # -- Additional PodLogs labels
+            # labels: { http_resp_code, http_method}
+            # -- Additional pipeline stages to process logs after scraping
+            # https://grafana.com/docs/agent/latest/operator/api/#pipelinestagespec-a-namemonitoringgrafanacomv1alpha1pipelinestagespeca
+            additionalPipelineStages:
+              - match: 
+                selector: '{app="api123"}'
+                stages: 
+                  - json:
+                      expressions:
+                        log:
+                  - json: 
+                      source: log
+                      expressions:
+                        http_resp_code: code 
+                        http_method: method
+                  - labels:
+                      http_resp_code:
+                      http_method:
   destination:
     server: https://kubernetes.default.svc
     namespace: loki
