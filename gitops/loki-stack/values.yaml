@@ -4,7 +4,7 @@ loki:
     enabled: true
     # storageClassName: gp3
     # storageClassName: ""  # disables dynamic provisioning
-    size: 1Gi
+    size: 2Gi
     # existingClaim: loki-pvc  # 👈 your pre-provisioned PVC name
 promtail:
   enabled: true
