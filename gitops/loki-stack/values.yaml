@@ -36,6 +36,12 @@ grafana:
     datasources:
       enabled: true
   adminPassword: prom-strong-password
+  additionalDataSources:
+    - name: Prometheus
+      type: prometheus
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      access: proxy
+      isDefault: false
   # ingress:
   #   enabled: false
   #   ingressClassName: nginx
