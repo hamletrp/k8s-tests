@@ -1,5 +1,5 @@
 autoDiscovery:
-  clusterName: cluster-lab4 # cluster.local
+  clusterName: cluster-lab-1 # cluster.local
   namespace: kube-system  # default
   tags:
     - k8s.io/cluster-autoscaler/enabled
@@ -11,7 +11,7 @@ cloudProvider: aws
 rbac:
   serviceAccount:
     annotations: 
-      eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role
+      eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role-{{ .Values.autoDiscovery.clusterName }}
     create: true
 
 replicaCount: 2

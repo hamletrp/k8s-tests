@@ -1,9 +1,9 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: httpbingo
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: httpbingo
 
----
+# ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -28,3 +28,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
