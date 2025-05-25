@@ -30,18 +30,33 @@ promtail:
   #         labels:
   #           job: varlogs
   #           __path__: /var/log/*.log
+
+# prometheus:
+#   prometheusSpec:
+#     serviceMonitorSelectorNilUsesHelmValues: false
+#     podMonitorSelectorNilUsesHelmValues: false
+#     retention: 15d
+#     storageSpec:
+#       volumeClaimTemplate:
+#         spec:
+#           storageClassName: gp3
+#           accessModes: [ "ReadWriteOnce" ]
+#           resources:
+#             requests:
+#               storage: 5Gi
+              
 grafana:
   enabled: true 
   sidecar:
     datasources:
       enabled: true
   adminPassword: prom-strong-password
-  additionalDataSources:
-    - name: Prometheus
-      type: prometheus
-      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-      access: proxy
-      isDefault: false
+  # additionalDataSources:
+  #   - name: Prometheus
+  #     type: prometheus
+  #     url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+  #     access: proxy
+  #     isDefault: false
   # ingress:
   #   enabled: false
   #   ingressClassName: nginx
