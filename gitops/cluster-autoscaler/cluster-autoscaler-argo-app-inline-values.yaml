@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-autoscaler
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://kubernetes.github.io/autoscaler
+    chart: cluster-autoscaler
+    targetRevision: 9.46.6
+    helm:
+      values: |
+        autoDiscovery:
+          clusterName: cluster-lab-2 # cluster.local
+          namespace: kube-system  # default
+          tags:
+            - k8s.io/cluster-autoscaler/enabled
+            - k8s.io/cluster-autoscaler/{{ .Values.autoDiscovery.clusterName }}
+
+        awsRegion: "us-east-1"
+        cloudProvider: aws
+
+        rbac:
+          serviceAccount:
+            annotations: 
+              eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role-{{ .Values.autoDiscovery.clusterName }}
+            create: true
+
+        replicaCount: 2
+
+        extraArgs:
+          scale-down-enabled: true
+          scale-down-unneeded-time: 3m
+          scale-down-delay-after-add: 5m
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

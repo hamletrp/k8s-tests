@@ -1,6 +1,23 @@
 
+k apply -f ./gitops/httpbingo/httpbingo-argo-app.yaml
 
 kubectl port-forward service/httpbingo -n httpbingo 4000:80
+or 
+    nginx ingress 
+        k apply -f ./gitops/httpbingo/httpbingo-ingress.yaml
+
+via ingress - requires to edit the service
+    - name: https
+        port: 443
+        protocol: TCP
+        targetPort: 80
 
 argocd app delete --cascade httpbingo -y 
+
+
+if not valid certificate 
+    k -n httpbingo patch deployment httpbingo \
+    --type='json' \
+    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}]'
+
 

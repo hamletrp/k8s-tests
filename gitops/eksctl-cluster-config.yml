@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: cluster-lab4
+  name: cluster-lab-2
   region: us-east-1
   version: "1.32"
   tags:
@@ -93,7 +93,8 @@ managedNodeGroups:
     volumeSize: 40
     maxPodsPerNode: 110
     iam:
-      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab4-nodegroup-linu-NodeInstanceRole
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole
+      # instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab4-nodegroup-linu-NodeInstanceRole
     # ssh:
     #   allow: true
     #   publicKeyName: my-keypair
@@ -102,7 +103,8 @@ managedNodeGroups:
       cluster-autoscaler-enabled: "true"
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/cluster-lab4: owned
+      k8s.io/cluster-autoscaler/cluster-lab-2: owned
+      # k8s.io/cluster-autoscaler/cluster-lab4: owned
     # iam:
     #   withAddonPolicies:
     #     autoScaler: true

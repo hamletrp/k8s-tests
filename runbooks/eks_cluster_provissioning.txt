@@ -4,6 +4,7 @@ Pre-requisites
         ~/.aws/credentials 
         or a sts token 
         or a role setup
+    To provisioned terraform resources
 
 Create cluster 
     node group tags 
@@ -18,10 +19,10 @@ Set storage classes
     k apply -f ./gitops/ebs-storageclass.yml
 
 associate-iam-oidc-provider
-    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab4 --approve
+    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-2 --approve
 
 get oicd provider 
-    aws eks describe-cluster --region us-east-1 --name cluster-lab4 --query "cluster.identity.oidc.issuer" --output text
+    aws eks describe-cluster --region us-east-1 --name cluster-lab-2 --query "cluster.identity.oidc.issuer" --output text
 
 copy oidc provider to tfvars
 
@@ -31,5 +32,11 @@ deploy terraform project
 patch serviceaccount/ebs-csi-controller-sa
     . ./gitops/annotate-serv-acc-ebs-csi.sh
 
+to run 
+    argocd steps 
+
+to run 
+    nginx steps.txt
+
 OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab4
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-2

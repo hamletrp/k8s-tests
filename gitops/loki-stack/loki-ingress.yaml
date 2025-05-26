@@ -1,5 +1,3 @@
-
-## set via the values file instead
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -12,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: loki.doordress.us
+  - host: loki.ezparking.us
     http:
       paths:
       - path: /
