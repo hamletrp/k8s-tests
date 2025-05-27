@@ -2,12 +2,21 @@
 TODO:
     - Questions
         Rancher tutorial 
-        VPC, subnets, routes, internet gateway, nat, etc shit
-        karpenter
-        what tool to use and for what working with k8s ?
         Argo App Umbrella pattern ?    
         to build a multi cluster argo applicationset 
-            3 cluster setup on EKS
+        3 cluster setup on EKS
+        what tool to use and for what working with k8s ?
+        https://www.devopsschool.com/interview/
+        resposibilities of a k8s engineer 
+        terraform best practices 
+
+        what are the required addons to have a prod grade cluster setup
+        VPC, subnets, routes, internet gateway, nat, etc shit
+        karpenter
+        to review nginx setup 
+        to review cluster lab deployment required permissions every step of the way
+
+        how to secure k8s clusters and resources from being mistakenly deleted
         to document lifecyle and personal conclusions
         to read interview questions 
         mock-up exams videos and hands on
@@ -251,13 +260,13 @@ Questions: TODO:
 https://eksctl.io/usage/creating-and-managing-clusters/
 pass a config file and set the ssh
 
-eksctl delete cluster --region=us-east-1 --name cluster-lab-2
+eksctl delete cluster --region=us-east-1 --name cluster-lab-3
 
 # set node group to include ssh
 # https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
 # or https://github.com/eksctl-io/eksctl/issues/227
 
-eksctl delete cluster --name cluster-lab-2 --region=us-east-1
+eksctl delete cluster --name cluster-lab-3 --region=us-east-1
 
 eksctl create cluster -f ./eksctl-cluster-config.yml
 k apply -f ebs-storageclass.yml
@@ -278,7 +287,7 @@ eksctl create cluster \
 --tags "k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/cluster-lab2 = owned"
 
 
-eksctl delete cluster --name cluster-lab-2
+eksctl delete cluster --name cluster-lab-3
 
 
 

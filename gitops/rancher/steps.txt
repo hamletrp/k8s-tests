@@ -1,0 +1,34 @@
+
+
+steps 
+    https://gist.github.com/vfarcic/a701b929d1416b095bd58daa24f8b013
+
+
+NAME: rancher
+LAST DEPLOYED: Tue May 27 17:08:42 2025
+NAMESPACE: cattle-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Rancher Server has been installed.
+
+NOTE: Rancher may take several minutes to fully initialize. Please standby while Certificates are being issued, Containers are started and the Ingress rule comes up.
+
+Check out our docs at https://rancher.com/docs/
+
+If you provided your own bootstrap password during installation, browse to https://rancher.54.159.148.217.nip.io to get started.
+
+If this is the first time you installed Rancher, get started by running this command and clicking the URL it generates:
+
+```
+echo https://rancher.54.159.148.217.nip.io/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
+```
+
+To get just the bootstrap password on its own, run:
+
+```
+kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
+```
+
+

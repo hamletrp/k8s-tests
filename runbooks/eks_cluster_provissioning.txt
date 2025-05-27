@@ -19,10 +19,10 @@ Set storage classes
     k apply -f ./gitops/ebs-storageclass.yml
 
 associate-iam-oidc-provider
-    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-2 --approve
+    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-3 --approve
 
 get oicd provider 
-    aws eks describe-cluster --region us-east-1 --name cluster-lab-2 --query "cluster.identity.oidc.issuer" --output text
+    aws eks describe-cluster --region us-east-1 --name cluster-lab-3 --query "cluster.identity.oidc.issuer" --output text
 
 copy oidc provider to tfvars
 
@@ -39,4 +39,4 @@ to run
     nginx steps.txt
 
 OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-2
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-3

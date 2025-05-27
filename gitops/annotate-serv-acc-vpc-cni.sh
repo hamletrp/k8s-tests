@@ -1,15 +1,13 @@
 #!/bin/bash
 
 # =============================
-# Patch ebs-csi-controller-sa with IRSA role
+# Patch aws-node with IRSA role
 # =============================
 
 # === Update these variables ===
-# ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole"
-# ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-2"
-ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-3"
+ROLE_ARN="arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole"
 NAMESPACE="kube-system"
-SA_NAME="ebs-csi-controller-sa"
+SA_NAME="aws-node"
 
 # === Confirm intent ===
 echo "Patching service account '$SA_NAME' in namespace '$NAMESPACE' with IAM role:"

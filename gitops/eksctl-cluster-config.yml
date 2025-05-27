@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: cluster-lab-2
+  name: cluster-lab-3
   region: us-east-1
   version: "1.32"
   tags:
@@ -35,6 +35,17 @@ addons:
     version: latest
   - name: aws-ebs-csi-driver
     version: latest
+  - name: vpc-cni
+    version: latest  # or pin a version like "v1.14.1-eksbuild.1"
+    # attachPolicyARNs:
+    #   - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+    ## this setup failed the cni addon
+    # serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_CNI_Role-cluster-lab-3
+    # configurationValues: |
+    #   env:
+    #     ENABLE_PREFIX_DELEGATION: "true"
+    #     WARM_ENI_TARGET: "1"
+    #     WARM_IP_TARGET: "3"
 
 # iam:
 #   withOIDC: true
@@ -93,7 +104,7 @@ managedNodeGroups:
     volumeSize: 40
     maxPodsPerNode: 110
     iam:
-      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole
       # instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab4-nodegroup-linu-NodeInstanceRole
     # ssh:
     #   allow: true
@@ -103,7 +114,7 @@ managedNodeGroups:
       cluster-autoscaler-enabled: "true"
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/cluster-lab-2: owned
+      k8s.io/cluster-autoscaler/cluster-lab-3: owned
       # k8s.io/cluster-autoscaler/cluster-lab4: owned
     # iam:
     #   withAddonPolicies:

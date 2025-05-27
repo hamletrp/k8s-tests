@@ -7,7 +7,8 @@
 # === Update these variables ===
 NAMESPACE="ingress-nginx"
 SVC_NAME="nginx-ingress-ingress-nginx-controller"
-CERT_ARN="arn:aws:acm:us-east-1:722249351142:certificate/248ba54a-5df7-44d8-ad76-050b9252da41"
+CERT_ARN="arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404"
+# CERT_ARN="arn:aws:acm:us-east-1:722249351142:certificate/248ba54a-5df7-44d8-ad76-050b9252da41"
 # CERT_ARN="arn:aws:acm:us-east-1:722249351142:certificate/3887c32b-9317-44ff-b2e0-10de121e1062"
 
 # === Confirm intent ===

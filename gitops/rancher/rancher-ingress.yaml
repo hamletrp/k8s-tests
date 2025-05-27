@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: httpbingo-ingress
-  namespace: httpbingo
+  name: rancher-ingress
+  namespace: cattle-system
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -10,13 +10,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: httpbingo.itsnotrocketscience.tech
+  - host: rancher.itsnotrocketscience.tech
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: httpbingo
+            name: argocd-server
             port:
-              number: 80
+              number: 443
