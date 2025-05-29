@@ -1,3 +1,16 @@
+
+Install 
+  skip if enabling crds on hel values 
+    k apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
+
+  k apply -f ./gitops/cert-manager/cert-manager-argo-app.yaml
+
+  k apply -f ./gitops/cert-manager/cluster-issuer.yaml
+  check: 
+    k describe ClusterIssuer letsencrypt-prod -n cert-manager
+    k describe ClusterIssuer letsencrypt-prod -n cert-manager | grep Message
+
+
 fixing mis-install of cert-manager 
 
     kubectl delete -n cert-manager validatingwebhookconfigurations.admissionregistration.k8s.io cert-manager-webhook
@@ -11,46 +24,36 @@ fixing mis-install of cert-manager
             kubectl get namespace cert-manager -o json > ns.json
             kubectl replace --raw "/api/v1/namespaces/cert-manager/finalize" -f ns.json
 
-Install 
+---
 
-  required to update vpc-cni addon - success test without this
+  required to update vpc-cni addon - though success test without this
       eksctl update addon \
       --name vpc-cni \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-2 \
       --region us-east-1 \
-      --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole \
+      --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole \
       --force
 
       eksctl update addon \
       --name vpc-cni \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-2 \
       --region us-east-1 \
       --force
 
 
       kubectl rollout restart daemonset aws-node -n kube-system
 
-  skip if enabling crds on hel values 
-    k apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
-
-  k apply -f ./gitops/cert-manager/cert-manager-argo-app.yaml
-
-  k apply -f ./gitops/cert-manager/cluster-issuer.yaml
-  check: 
-    k describe ClusterIssuer letsencrypt-prod -n cert-manager
-    k describe ClusterIssuer letsencrypt-prod -n cert-manager | grep Message
-
 ---
 
-eksctl get addons --cluster cluster-lab-3 --region us-east-1
+eksctl get addons --cluster cluster-lab-2 --region us-east-1
 
 
 eksctl create addon \
   --name vpc-cni \
-  --cluster cluster-lab-3 \
+  --cluster cluster-lab-2 \
   --region us-east-1 \
   --version latest \
-  --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole \
+  --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole \
   --force
 
 

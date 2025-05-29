@@ -3,6 +3,11 @@ to provission AmazonEKSLoadBalancerControllerRole-cluster_name role
     terraform apply --auto-approve
 
 to update helm values and sa role arn 
+    clusterName
+    region
+    vpcId
+    serviceAccount and role-arn
+
 
 to apply manifest  
     k apply -f ./gitops/aws-alb-ctrlr/argocd-app.yaml

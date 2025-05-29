@@ -7,21 +7,14 @@ spec:
   project: default
 
   source:
-    repoURL: https://releases.rancher.com/server-charts/latest
+    repoURL: https://releases.rancher.com/server-charts/stable
     chart: rancher
-    targetRevision: 2.8.2  # Use latest version from Rancher
+    targetRevision: 2.11.2
     helm:
       values: |
         hostname: rancher.itsnotrocketscience.tech
-        ingress:
-          enabled: true
-          ingressClassName: nginx
-          tls: true
-          extraAnnotations:
-            kubernetes.io/ingress.class: nginx
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-        replicas: 3
-        bootstrapPassword: admin123  # Set a secure password
+        replicas: 2
+        bootstrapPassword: fuckingRancheeer 
 
   destination:
     server: https://kubernetes.default.svc

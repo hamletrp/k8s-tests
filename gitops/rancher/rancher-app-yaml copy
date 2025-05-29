@@ -1,31 +1,30 @@
-# Argo CD Application to install Rancher via Helm and expose it using nginx ingress
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rancher
+  name: rancher2
   namespace: argocd
 spec:
   project: default
 
   source:
-    repoURL: https://releases.rancher.com/server-charts/latest
+    repoURL: https://releases.rancher.com/server-charts/stable
     chart: rancher
-    targetRevision: 2.8.2   # Update to the latest version as needed
+    targetRevision: 2.11.2
     helm:
       values: |
-        hostname: rancher.example.com
-
+        hostname: rancher.itsnotrocketscience.tech
         ingress:
           enabled: true
-          ingressClassName: nginx
-          tls: true
-          extraAnnotations:
-            kubernetes.io/ingress.class: nginx
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-
-        replicas: 3
-        bootstrapPassword: "rancheradmin123"
+          ingressClassName: alb
+        replicas: 2
+        bootstrapPassword: fuckingRancheeer 
+        extraAnnotations:
+          alb.ingress.kubernetes.io/scheme: internet-facing
+          alb.ingress.kubernetes.io/target-type: ip
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+          alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404
+          alb.ingress.kubernetes.io/group.name: rancher-group
+          alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-2016-08
 
   destination:
     server: https://kubernetes.default.svc
@@ -33,7 +32,7 @@ spec:
 
   syncPolicy:
     automated:
-      prune: true
       selfHeal: true
+      prune: true
     syncOptions:
       - CreateNamespace=true

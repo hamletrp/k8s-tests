@@ -19,10 +19,10 @@ Set storage classes
     k apply -f ./gitops/ebs-storageclass.yml
 
 associate-iam-oidc-provider
-    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-3 --approve
+    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-2 --approve
 
 get oicd provider 
-    aws eks describe-cluster --region us-east-1 --name cluster-lab-3 --query "cluster.identity.oidc.issuer" --output text
+    aws eks describe-cluster --region us-east-1 --name cluster-lab-2 --query "cluster.identity.oidc.issuer" --output text
 
 copy oidc provider to tfvars
 
@@ -33,7 +33,7 @@ deploy terraform project
 to update vpc-cni addon 
     eksctl update addon \
       --name vpc-cni \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-2 \
       --region us-east-1 \
       --force
 
@@ -45,7 +45,16 @@ to run
     argocd steps 
 
 to run 
+    aws alb ctrlr steps.txt
+
+to run 
     nginx steps.txt
 
+to run 
+    cert-manager steps.txt
+
+to run 
+    rancher steps.txt
+
 OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-1
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-2

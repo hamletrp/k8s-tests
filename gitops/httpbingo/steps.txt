@@ -5,8 +5,10 @@ kubectl port-forward service/httpbingo -n httpbingo 4000:80
 or 
     nginx ingress 
         k apply -f ./gitops/httpbingo/httpbingo-ingress.yaml
+        k apply -f ./gitops/httpbingo/httpbingo-ingress-alb.yaml
 
 via ingress - requires to edit the service
+k edit service/httpbingo -n httpbingo
     - name: https
         port: 443
         protocol: TCP

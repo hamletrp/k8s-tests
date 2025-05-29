@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: cluster-lab-3
+  name: cluster-lab-2
   region: us-east-1
   version: "1.32"
   tags:
@@ -35,12 +35,38 @@ addons:
     version: latest
   - name: aws-ebs-csi-driver
     version: latest
+    # attachPolicyARNs:
+      # - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+    # Optional if IRSA already set up
+    # serviceAccountRoleARN: arn:aws:iam::123456789012:role/AmazonEKS_EBS_CSI_DriverRole
+    # wellKnownPolicies:
+    #   ebsCSIController: true
+    # if not setting serviceAccountRoleARN
+    # podIdentityAssociations:
+    #   - namespace: kube-system
+    #     serviceAccountName: ebs-csi-controller-sa
+    #     roleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-2
+    # Optional, use to pass custom env vars
+    # configurationValues: |                
+    #   controller:
+    #     replicaCount: 2
+    #     env:
+    #       - name: ENABLE_VOLUME_SCHEDULING
+    #         value: "true"
+    #       - name: ENABLE_LEADER_ELECTION
+    #         value: "true"
+    #       - name: LOG_LEVEL
+    #         value: "debug"
   - name: vpc-cni
     version: latest  # or pin a version like "v1.14.1-eksbuild.1"
     # attachPolicyARNs:
     #   - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-    ## this setup failed the cni addon
-    # serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_CNI_Role-cluster-lab-3
+    # Optional if IRSA already set up
+    # serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_CNI_Role-cluster-lab-2
+    # podIdentityAssociations:
+    #   - namespace: kube-system
+    #     serviceAccountName: aws-node
+    #     roleARN: arn:aws:iam::722249351142:role/AmazonEKS_CNI_Role-cluster-lab-2
     # configurationValues: |
     #   env:
     #     ENABLE_PREFIX_DELEGATION: "true"
@@ -96,7 +122,7 @@ addons:
     #   maxUnavailable: 1
 
 managedNodeGroups:
-  - name: linux-nodes3
+  - name: linux-nodes-2
     instanceType: t3.medium
     desiredCapacity: 2
     minSize: 2
@@ -104,7 +130,7 @@ managedNodeGroups:
     volumeSize: 40
     maxPodsPerNode: 110
     iam:
-      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole
       # instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab4-nodegroup-linu-NodeInstanceRole
     # ssh:
     #   allow: true
@@ -114,7 +140,7 @@ managedNodeGroups:
       cluster-autoscaler-enabled: "true"
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/cluster-lab-3: owned
+      k8s.io/cluster-autoscaler/cluster-lab-2: owned
       # k8s.io/cluster-autoscaler/cluster-lab4: owned
     # iam:
     #   withAddonPolicies:

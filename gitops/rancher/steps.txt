@@ -1,66 +1,50 @@
 
+to run 
+    cert-manager steps.txt
 
-steps 
-    https://gist.github.com/vfarcic/a701b929d1416b095bd58daa24f8b013
+    helm repo add rancher \
+        https://releases.rancher.com/server-charts/stable
+
+    helm repo update
+
+    dig +short $INGRESS_HOSTNAME
+    RANCHER_ADDR=rancher.3.213.252.154.nip.io
+
+    helm upgrade --install \
+        rancher rancher/rancher \
+        --namespace cattle-system \
+        --create-namespace \
+        --set hostname=rancher.3.213.252.154.nip.io \
+        --set ingress.tls.source=letsEncrypt \
+        --set letsEncrypt.email=hamletrp@gmail.com \
+        --wait
+    
+    pwd 
+        fuckingRancheeer
+
+manual ingress setup
+    export EMAIL=hamletrp@gmail.com 
+    export INGRESS_HOSTNAME=aa79c0786690d4d059d7fa1a418f8fa4-1936181851.us-east-1.elb.amazonaws.com
+
+    dig +short aa79c0786690d4d059d7fa1a418f8fa4-1936181851.us-east-1.elb.amazonaws.com
+    export INGRESS_HOST=107.21.51.31
+
+    export RANCHER_ADDR=rancher.$INGRESS_HOST.nip.io
 
 
-export EMAIL=hamletrp@gmail.com 
-export INGRESS_HOSTNAME=aa79c0786690d4d059d7fa1a418f8fa4-1936181851.us-east-1.elb.amazonaws.com
-
-dig +short aa79c0786690d4d059d7fa1a418f8fa4-1936181851.us-east-1.elb.amazonaws.com
-export INGRESS_HOST=107.21.51.31
-
-export RANCHER_ADDR=rancher.$INGRESS_HOST.nip.io
-
-post deploying 
-    edit svc and set the 
-        k edit ingress/rancher -n cattle-system
-            ingressClassName: nginx
-
-current pwd 
-    fuckingRancheeer lmao
-
+expose 
+    nginx
+        post deploying 
+            edit svc and set the 
+                k edit ingress/rancher -n cattle-system
+                    ingressClassName: nginx
+    aws alb 
+        k apply -f ./gitops/rancher/rancher-ingress-alb.yaml
+        
 --- 
 
 pre-req 
     in case of required force delete 
         k patch ingress rancher-alb -n cattle-system -p '{"metadata":{"finalizers":[]}}' --type=merge
 
-aws elb 
-    to provission ingress 
-        k apply -f ./gitops/rancher/rancher-ingress.yaml
-
-
-
 ---
-
-
-NAME: rancher
-LAST DEPLOYED: Wed May 28 09:25:04 2025
-NAMESPACE: cattle-system
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NOTES:
-Rancher Server has been installed.
-
-NOTE: Rancher may take several minutes to fully initialize. Please standby while Certificates are being issued, Containers are started and the Ingress rule comes up.
-
-Check out our docs at https://rancher.com/docs/
-
-If you provided your own bootstrap password during installation, browse to https://rancher.107.21.51.31.nip.io to get started.
-
-If this is the first time you installed Rancher, get started by running this command and clicking the URL it generates:
-
-```
-echo https://rancher.107.21.51.31.nip.io/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
-```
-
-To get just the bootstrap password on its own, run:
-
-```
-kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
-```
-
-
-Happy Containering!

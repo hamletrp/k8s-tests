@@ -3,6 +3,8 @@ Manual install
     https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
         k create namespace argocd
         k apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+        clear && k get pods -n argocd
     
         check the service 
             k get service/argocd-server -n argocd
@@ -16,6 +18,8 @@ Manual install
                     nginx must be properly setup
                     to register ingress object 
                         k apply -f ./gitops/argocd/argocd-ingress.yaml
+                        k apply -f ./gitops/argocd/argocd-ingress-alb.yaml
+                        
 
                     if not valid certificate 
                         k -n argocd patch deployment argocd-server \
@@ -46,7 +50,7 @@ Manual install
             k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
         
         log int argo cli 
-            argocd login localhost:9000 --username admin --password fO2GCjLz8pVAs-p9 --insecure
+            argocd login localhost:9000 --username admin --password Pbj6II0JiVDDLr6F --insecure
             argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
 
 

@@ -2,59 +2,55 @@
     "apiVersion": "v1",
     "kind": "Namespace",
     "metadata": {
-        "annotations": {
-            "cattle.io/status": "{\"Conditions\":[{\"Type\":\"ResourceQuotaInit\",\"Status\":\"True\",\"Message\":\"\",\"LastUpdateTime\":\"2025-05-26T17:05:37Z\"},{\"Type\":\"InitialRolesPopulated\",\"Status\":\"True\",\"Message\":\"\",\"LastUpdateTime\":\"2025-05-26T17:05:42Z\"}]}",
-            "field.cattle.io/projectId": "local:p-8p84l",
-            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"creationTimestamp\":null,\"name\":\"cert-manager\"},\"spec\":{},\"status\":{}}\n",
-            "lifecycle.cattle.io/create.namespace-auth": "true",
-            "management.cattle.io/no-default-sa-token": "true"
-        },
-        "creationTimestamp": "2025-05-26T17:05:36Z",
-        "deletionTimestamp": "2025-05-26T17:22:18Z",
+        "creationTimestamp": "2025-05-29T12:50:07Z",
+        "deletionTimestamp": "2025-05-29T16:51:37Z",
         "labels": {
-            "field.cattle.io/projectId": "p-8p84l",
-            "kubernetes.io/metadata.name": "cert-manager"
+            "kubernetes.io/metadata.name": "argocd"
         },
-        "name": "cert-manager",
-        "resourceVersion": "280972",
-        "uid": "923b3264-7960-4fed-b9cb-e61c4bdcad3f"
+        "name": "argocd",
+        "resourceVersion": "75280",
+        "uid": "eead7b82-f687-461a-9ec1-0ae269e39a4c"
     },
-    "spec": {},
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
     "status": {
         "conditions": [
             {
-                "lastTransitionTime": "2025-05-26T17:22:23Z",
-                "message": "Discovery failed for some groups, 1 failing: unable to retrieve the complete list of server APIs: ext.cattle.io/v1: stale GroupVersion discovery: ext.cattle.io/v1",
-                "reason": "DiscoveryFailed",
-                "status": "True",
+                "lastTransitionTime": "2025-05-29T16:51:44Z",
+                "message": "All resources successfully discovered",
+                "reason": "ResourcesDiscovered",
+                "status": "False",
                 "type": "NamespaceDeletionDiscoveryFailure"
             },
             {
-                "lastTransitionTime": "2025-05-26T17:22:26Z",
+                "lastTransitionTime": "2025-05-29T16:51:44Z",
                 "message": "All legacy kube types successfully parsed",
                 "reason": "ParsedGroupVersions",
                 "status": "False",
                 "type": "NamespaceDeletionGroupVersionParsingFailure"
             },
             {
-                "lastTransitionTime": "2025-05-26T17:22:26Z",
+                "lastTransitionTime": "2025-05-29T16:51:44Z",
                 "message": "All content successfully deleted, may be waiting on finalization",
                 "reason": "ContentDeleted",
                 "status": "False",
                 "type": "NamespaceDeletionContentFailure"
             },
             {
-                "lastTransitionTime": "2025-05-26T17:22:28Z",
-                "message": "All content successfully removed",
-                "reason": "ContentRemoved",
-                "status": "False",
+                "lastTransitionTime": "2025-05-29T16:51:44Z",
+                "message": "Some resources are remaining: applications.argoproj.io has 3 resource instances",
+                "reason": "SomeResourcesRemain",
+                "status": "True",
                 "type": "NamespaceContentRemaining"
             },
             {
-                "lastTransitionTime": "2025-05-26T17:22:26Z",
-                "message": "All content-preserving finalizers finished",
-                "reason": "ContentHasNoFinalizers",
-                "status": "False",
+                "lastTransitionTime": "2025-05-29T16:51:44Z",
+                "message": "Some content in the namespace has finalizers remaining: post-delete-finalizer.argocd.argoproj.io in 3 resource instances, post-delete-finalizer.argocd.argoproj.io/cleanup in 3 resource instances",
+                "reason": "SomeFinalizersRemain",
+                "status": "True",
                 "type": "NamespaceFinalizersRemaining"
             }
         ],
