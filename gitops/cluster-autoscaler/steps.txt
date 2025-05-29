@@ -6,6 +6,8 @@ Deploy Cluster Autoscaler
     https://github.com/hamletrp/k8s-tests.git
         update gitops/cluster-autoscaler/values.yaml
         k apply -f ./gitops/cluster-autoscaler/cluster-autoscaler-argo-app.yaml
+        or inline values 
+        k apply -f ./gitops/cluster-autoscaler/cluster-autoscaler-argo-app-inline-values.yaml
 
         stress test 
             k create deploy stress --image=busybox --replicas=600 -- sleep 3600

@@ -1,0 +1,39 @@
+# Argo CD Application to install AWS Load Balancer Controller
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-load-balancer-controller
+  namespace: argocd
+spec:
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://aws.github.io/eks-charts
+    chart: aws-load-balancer-controller
+    targetRevision: 1.13.2
+    helm:
+      values: |
+        clusterName: cluster-lab-3
+        region: us-east-1
+        vpcId: vpc-0edebf71e08084b65
+        serviceAccount:
+          create: false
+          name: aws-load-balancer-controller-sa
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# Service Account with IAM Role annotation for AWS Load Balancer Controller
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-load-balancer-controller-sa
+  namespace: kube-system
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-3

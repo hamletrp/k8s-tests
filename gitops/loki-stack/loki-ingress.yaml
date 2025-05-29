@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: loki.itsnotrocketscience.tech
+  - host: loki.doordress.us
     http:
       paths:
       - path: /

@@ -2,10 +2,15 @@
 TODO:
     - Questions
         Rancher tutorial 
-        Argo App Umbrella pattern ?    
-        to build a multi cluster argo applicationset 
+            + via argocd app
+        terminal font setup: screenshot/20250527224155.png
         3 cluster setup on EKS
+            Argo App Umbrella pattern ?    
+            to build a multi cluster argo applicationset 
+        what are the basic/required building blocks of any k8s cluster
+            set it as runbook 
         what tool to use and for what working with k8s ?
+        eks pod identity associations..?
         https://www.devopsschool.com/interview/
         resposibilities of a k8s engineer 
         terraform best practices 

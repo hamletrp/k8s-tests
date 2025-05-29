@@ -13,7 +13,7 @@ fixing mis-install of cert-manager
 
 Install 
 
-  required to update vpc-cni addon 
+  required to update vpc-cni addon - success test without this
       eksctl update addon \
       --name vpc-cni \
       --cluster cluster-lab-3 \
@@ -30,12 +30,15 @@ Install
 
       kubectl rollout restart daemonset aws-node -n kube-system
 
-  k apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
+  skip if enabling crds on hel values 
+    k apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
 
   k apply -f ./gitops/cert-manager/cert-manager-argo-app.yaml
 
-  optional 
-    k apply -f cluster-issuer.yaml
+  k apply -f ./gitops/cert-manager/cluster-issuer.yaml
+  check: 
+    k describe ClusterIssuer letsencrypt-prod -n cert-manager
+    k describe ClusterIssuer letsencrypt-prod -n cert-manager | grep Message
 
 ---
 

@@ -3,12 +3,16 @@
 Install nginx ingress controller 
   k apply -f ./gitops/nginx/nginx-argocd-app.yaml
 
+  a25a6086f879649bfaf76fd69d0b7f0b-51766042.us-east-1.elb.amazonaws.com
+
 HTTPS 
   to provission role eks_alb_controller_irsa_role
   to annotate serviceaccount nginx-ingress-ingress-nginx and set eks.amazonaws.com/role-arn
     . ./gitops/annotate-serv-acc-nginx-ingress.sh
-  tp annotate service nginx-ingress-ingress-nginx-controller  
-    . ./gitops/annotate-service-nginx-ingress.sh
+    
+  to skip if using cert-manager 
+    tp annotate service nginx-ingress-ingress-nginx-controller  
+      . ./gitops/annotate-service-nginx-ingress.sh
 
 Update route53 records 
     set nginx-ingress-ingress-nginx-controller loadbalancer

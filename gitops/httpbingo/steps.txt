@@ -15,9 +15,3 @@ via ingress - requires to edit the service
 argocd app delete --cascade httpbingo -y 
 
 
-if not valid certificate 
-    k -n httpbingo patch deployment httpbingo \
-    --type='json' \
-    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}]'
-
-

@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: rancher-alb2
-  namespace: cattle-system
+  name: httpbingo-ingress-alb
+  namespace: httpbingo
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
@@ -13,16 +13,16 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: rancher.itsnotrocketscience.tech
+    - host: httpbingo.itsnotrocketscience.tech
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: rancher
+                name: httpbingo
                 port:
                   number: 80
   tls:
     - hosts:
-        - rancher.itsnotrocketscience.tech
+        - httpbingo.itsnotrocketscience.tech

@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: httpbingo.itsnotrocketscience.tech
+  - host: httpbingo.doordress.us
     http:
       paths:
       - path: /

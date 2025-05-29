@@ -29,6 +29,15 @@ copy oidc provider to tfvars
 deploy terraform project 
     terraform apply --auto-approve
 
+
+to update vpc-cni addon 
+    eksctl update addon \
+      --name vpc-cni \
+      --cluster cluster-lab-3 \
+      --region us-east-1 \
+      --force
+
+
 patch serviceaccount/ebs-csi-controller-sa
     . ./gitops/annotate-serv-acc-ebs-csi.sh
 
@@ -39,4 +48,4 @@ to run
     nginx steps.txt
 
 OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-3
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-1

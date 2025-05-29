@@ -8,7 +8,7 @@ Manual install
             k get service/argocd-server -n argocd
 
         port forwarding
-            k port-forward service/argocd-server -n argocd 6000:443
+            k port-forward service/argocd-server -n argocd 9000:443
 
         Ingress setup 
             nginx 
@@ -46,7 +46,7 @@ Manual install
             k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
         
         log int argo cli 
-            argocd login localhost:9000 --username admin --password Pbi0p0DzjFwJmTuK --insecure
+            argocd login localhost:9000 --username admin --password fO2GCjLz8pVAs-p9 --insecure
             argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
 
 
