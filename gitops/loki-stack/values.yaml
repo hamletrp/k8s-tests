@@ -50,7 +50,7 @@ grafana:
   sidecar:
     datasources:
       enabled: true
-  adminPassword: {{ .ValuesFromSecret "lokipwd" "password" | b64dec }}
+  adminPassword: loki-password
   # admin:
   #   existingSecret: lokipwd
   #   existingSecretPasswordKey: lokipwd
