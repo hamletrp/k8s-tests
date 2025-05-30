@@ -1,0 +1,14 @@
+
+k apply -f ./gitops/external-secrets/external-secrets.io-argocdapp.yaml
+
+ k apply -f ./gitops/external-secrets/external-secrets-mngr-aws.yaml
+
+
+ 
+
+
+kubectl -n loki get secret lokipwd -o jsonpath="{.data}" | base64 -d
+
+
+
+

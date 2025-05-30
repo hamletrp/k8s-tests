@@ -7,17 +7,20 @@ to run
 
     helm repo update
 
-    dig +short $INGRESS_HOSTNAME
-    RANCHER_ADDR=rancher.3.213.252.154.nip.io
+    dig +short k8s-ranchergroup-05489da14a-597563294.us-east-1.elb.amazonaws.com
+    export RANCHER_ADDR=rancher.44.207.221.159.nip.io
 
     helm upgrade --install \
         rancher rancher/rancher \
         --namespace cattle-system \
         --create-namespace \
-        --set hostname=rancher.3.213.252.154.nip.io \
+        --set hostname=$RANCHER_ADDR \
         --set ingress.tls.source=letsEncrypt \
         --set letsEncrypt.email=hamletrp@gmail.com \
         --wait
+
+    to replace ingress for an aws alb
+    
     
     pwd 
         fuckingRancheeer

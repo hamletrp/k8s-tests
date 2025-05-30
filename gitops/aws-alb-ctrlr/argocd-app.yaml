@@ -15,9 +15,9 @@ spec:
     targetRevision: 1.13.2
     helm:
       values: |
-        clusterName: cluster-lab-2
+        clusterName: cluster-lab-3
         region: us-east-1
-        vpcId: vpc-07c6adff050b977ad
+        vpcId: vpc-0f34100e26dccb375
         serviceAccount:
           create: false
           name: aws-load-balancer-controller-sa
@@ -36,4 +36,4 @@ metadata:
   name: aws-load-balancer-controller-sa
   namespace: kube-system
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-2
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-3

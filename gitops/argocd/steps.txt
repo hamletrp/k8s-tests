@@ -12,6 +12,9 @@ Manual install
         port forwarding
             k port-forward service/argocd-server -n argocd 9000:443
 
+        get admin pwd 
+            k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
         Ingress setup 
             nginx 
                 HTTPS 
@@ -45,9 +48,6 @@ Manual install
                         k -n argocd patch deployment argocd-server \
                         --type='json' \
                         -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "/usr/local/bin/argocd-server"}]'
-
-        get admin pwd 
-            k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
         
         log int argo cli 
             argocd login localhost:9000 --username admin --password Pbj6II0JiVDDLr6F --insecure
