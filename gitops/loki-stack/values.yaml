@@ -50,7 +50,10 @@ grafana:
   sidecar:
     datasources:
       enabled: true
-  adminPassword: prom-strong-password
+  adminPassword: {{ .ValuesFromSecret "lokipwd" "password" | b64dec }}
+  # admin:
+  #   existingSecret: lokipwd
+  #   existingSecretPasswordKey: lokipwd
   # additionalDataSources:
   #   - name: Prometheus
   #     type: prometheus
