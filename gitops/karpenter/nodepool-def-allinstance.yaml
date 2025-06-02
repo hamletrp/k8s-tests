@@ -1,0 +1,23 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+    metadata:
+      # Labels are arbitrary key-values that are applied to all nodes
+      labels:
+        billing-team: hamletlab-team
+
+      # Annotations are arbitrary key-values that are applied to all nodes
+      annotations:
+        project.com/owner: "hamletlab-team"
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws  # Updated since only a single version will be served
+        kind: EC2NodeClass
+        name: default
+      requirements: []
+        # - key: karpenter.sh/capacity-type
+        #   operator: In
+        #   values: ["spot"]

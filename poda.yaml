@@ -1,0 +1,248 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/restartedAt: "2025-05-31T10:42:12-04:00"
+  creationTimestamp: "2025-05-31T14:43:22Z"
+  generateName: karpenter-74cdcffcd5-
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: karpenter
+    app.kubernetes.io/name: karpenter
+    pod-template-hash: 74cdcffcd5
+  name: karpenter-74cdcffcd5-gqvkf
+  namespace: kube-system
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: karpenter-74cdcffcd5
+    uid: 5d00937a-c7dd-441b-8dde-0dd777a6572c
+  resourceVersion: "39171"
+  uid: 8327174c-2f08-4255-a637-b8c79690d64f
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: karpenter.sh/nodepool
+            operator: DoesNotExist
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: karpenter
+            app.kubernetes.io/name: karpenter
+        topologyKey: kubernetes.io/hostname
+  containers:
+  - env:
+    - name: KUBERNETES_MIN_VERSION
+      value: 1.19.0-0
+    - name: KARPENTER_SERVICE
+      value: karpenter
+    - name: WEBHOOK_PORT
+      value: "8443"
+    - name: WEBHOOK_METRICS_PORT
+      value: "8001"
+    - name: DISABLE_WEBHOOK
+      value: "false"
+    - name: LOG_LEVEL
+      value: info
+    - name: LOG_OUTPUT_PATHS
+      value: stdout
+    - name: LOG_ERROR_OUTPUT_PATHS
+      value: stderr
+    - name: METRICS_PORT
+      value: "8080"
+    - name: HEALTH_PROBE_PORT
+      value: "8081"
+    - name: SYSTEM_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    - name: MEMORY_LIMIT
+      valueFrom:
+        resourceFieldRef:
+          containerName: controller
+          divisor: "0"
+          resource: limits.memory
+    - name: FEATURE_GATES
+      value: SpotToSpotConsolidation=false
+    - name: BATCH_MAX_DURATION
+      value: 10s
+    - name: BATCH_IDLE_DURATION
+      value: 1s
+    - name: VM_MEMORY_OVERHEAD_PERCENT
+      value: "0.075"
+    - name: RESERVED_ENIS
+      value: "0"
+    image: public.ecr.aws/karpenter/controller:1.0.10@sha256:b1e3a8da44c2925f19d7ba88aabcfc23a752c4efe8357831af1a378bd6d53785
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: http
+        scheme: HTTP
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 30
+    name: controller
+    ports:
+    - containerPort: 8080
+      name: http-metrics
+      protocol: TCP
+    - containerPort: 8001
+      name: webhook-metrics
+      protocol: TCP
+    - containerPort: 8443
+      name: https-webhook
+      protocol: TCP
+    - containerPort: 8081
+      name: http
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /readyz
+        port: http
+        scheme: HTTP
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 30
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsGroup: 65532
+      runAsNonRoot: true
+      runAsUser: 65532
+      seccompProfile:
+        type: RuntimeDefault
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-f7mxz
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: ip-192-168-1-112.ec2.internal
+  nodeSelector:
+    kubernetes.io/os: linux
+  preemptionPolicy: PreemptLowerPriority
+  priority: 2000000000
+  priorityClassName: system-cluster-critical
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 65532
+  serviceAccount: karpenter
+  serviceAccountName: karpenter
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: karpenter
+        app.kubernetes.io/name: karpenter
+    maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+  volumes:
+  - name: kube-api-access-f7mxz
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2025-05-31T14:43:36Z"
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2025-05-31T14:43:35Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2025-05-31T14:43:35Z"
+    message: 'containers with unready status: [controller]'
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2025-05-31T14:43:35Z"
+    message: 'containers with unready status: [controller]'
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2025-05-31T14:43:35Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://9750665b7ab50cda2c2f9e77e7eb8b7fb7a39fd3d80331d92da2330e8eb9f6e0
+    image: sha256:bdb78b59aec4c494043ca39d8f757499b79c9dcde5e956efc0e49d7bf778395c
+    imageID: public.ecr.aws/karpenter/controller@sha256:b1e3a8da44c2925f19d7ba88aabcfc23a752c4efe8357831af1a378bd6d53785
+    lastState:
+      terminated:
+        containerID: containerd://9750665b7ab50cda2c2f9e77e7eb8b7fb7a39fd3d80331d92da2330e8eb9f6e0
+        exitCode: 2
+        finishedAt: "2025-05-31T14:46:39Z"
+        reason: Error
+        startedAt: "2025-05-31T14:46:39Z"
+    name: controller
+    ready: false
+    resources: {}
+    restartCount: 5
+    started: false
+    state:
+      waiting:
+        message: back-off 2m40s restarting failed container=controller pod=karpenter-74cdcffcd5-gqvkf_kube-system(8327174c-2f08-4255-a637-b8c79690d64f)
+        reason: CrashLoopBackOff
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-f7mxz
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.1.112
+  hostIPs:
+  - ip: 192.168.1.112
+  phase: Running
+  podIP: 192.168.21.122
+  podIPs:
+  - ip: 192.168.21.122
+  qosClass: BestEffort
+  startTime: "2025-05-31T14:43:35Z"

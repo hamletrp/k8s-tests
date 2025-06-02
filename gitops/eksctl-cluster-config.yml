@@ -4,25 +4,30 @@ kind: ClusterConfig
 metadata:
   name: cluster-lab-3
   region: us-east-1
-  version: "1.32"
+  version: "1.33"
   tags:
     environment: staging
     team: platform
+    karpenter.sh/discovery: cluster-lab-3
+    karpenter.sh/managed-by: "team-h"
 
-# vpc:
-#   id: vpc-xxxxxxxx     # (Optional) use an existing VPC
-#   cidr: "192.168.0.0/16" # (Optional) for eksctl-created VPC
-#   subnets:
-#     private:
-#       us-east-1a:
-#         id: subnet-aaaaaaa
-#       us-east-1b:
-#         id: subnet-bbbbbbb
-#     public:
-#       us-east-1a:
-#         id: subnet-ccccccc
-#       us-east-1b:
-#         id: subnet-ddddddd
+vpc:
+  id: vpc-08d59942de32e32a6
+  subnets:
+    private:
+      us-east-1a:
+        id: subnet-0602c74417b9e1c4b
+      us-east-1b:
+        id: subnet-0eb1aa4efce9d70a4
+      us-east-1c:
+        id: subnet-045b08296aa32827a
+    public:
+      us-east-1a:
+        id: subnet-0fed505ea42c5e44c
+      us-east-1b:
+        id: subnet-0e891d499bac1e1a4
+      us-east-1c:
+        id: subnet-0123fe63b42b1f6f7
 #   clusterEndpoints:
 #     publicAccess: true
 #     privateAccess: true
@@ -33,6 +38,10 @@ addons:
     version: latest
   - name: kube-proxy
     version: latest
+  - name: eks-pod-identity-agent
+    version: latest 
+    # attachPolicyARNs:
+    #   - arn:aws:iam::aws:policy/AmazonEKS_PodIdentityAgent_Policy
   - name: aws-ebs-csi-driver
     version: latest
     # attachPolicyARNs:
@@ -123,10 +132,10 @@ addons:
 
 managedNodeGroups:
   - name: linux-nodes-3
-    instanceType: t3.medium
+    instanceType: m5.large
     desiredCapacity: 2
     minSize: 2
-    maxSize: 5
+    maxSize: 4
     volumeSize: 40
     maxPodsPerNode: 110
     iam:

@@ -1,5 +1,9 @@
 
 
+Install the crds 
+  k apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/cloud/crds.yaml
+
+
 Install nginx ingress controller 
   k apply -f ./gitops/nginx/nginx-argocd-app.yaml
 
@@ -36,5 +40,8 @@ TOOLS
   aws acm describe-certificate --certificate-arn arn:aws:acm:...
 
   dig +short argocd.doordress.us
+
+---
+kubectl get namespace ingress-nginx -o json > ns.json
 
 

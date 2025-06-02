@@ -3,10 +3,20 @@ k apply -f ./gitops/loki-stack/loki-stack-app.yaml
 
 k get services -n loki
 
+secrets manager secret sample 
+    k apply -f ./gitops/loki-stack/loki-pwd-secretmngr.yaml
+    k -n loki get secret lokipwd -o jsonpath="{.data}"
+
+parameter store secret sample 
+    k apply -f ./gitops/loki-stack/loki-pwd-paramstore-secret.yaml
+    k -n loki get secret lokipwdps -o jsonpath="{.data}"
+
 to expose it 
     kubectl port-forward service/loki-stack-grafana -n loki 3000:80
     or 
      k apply -f ./gitops/loki-stack/loki-ingress.yaml
+    or
+     k apply -f ./gitops/loki-stack/loki-ingress-alb.yaml
 
 to edit service/loki-stack-grafana and add https port entry
     k edit service/loki-stack-grafana -n loki

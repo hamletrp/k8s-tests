@@ -1,12 +1,23 @@
 
 TODO:
     - Questions
-        Rancher tutorial - #nighttime
+        karpenter
+            #here 
         terminal font setup: screenshot/20250527224155.png
         3 cluster setup on EKS
             Argo App Umbrella pattern ?    
             to build a multi cluster argo applicationset 
-        nginx vs aws alb
+        screen in linux
+        fargate
+        google secrets 
+        hashicorp secrets
+        ingresses setup and tests
+            aws alb
+                done
+            nginx
+                done
+            traefix
+            HAProxy
         what are the basic/required building blocks of any k8s cluster
             set it as runbook 
         what tool to use and for what working with k8s ?
@@ -18,8 +29,6 @@ TODO:
         eksanywhere
 
         what are the required addons to have a prod grade cluster setup
-        VPC, subnets, routes, internet gateway, nat, etc shit
-        karpenter
         to review nginx setup 
         to review cluster lab deployment required permissions every step of the way
 
@@ -28,7 +37,6 @@ TODO:
         to read interview questions 
         mock-up exams videos and hands on
         exam         
-        screen in linux
         how to setup external auth on k8s
         https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
         how to install a package from a binary   

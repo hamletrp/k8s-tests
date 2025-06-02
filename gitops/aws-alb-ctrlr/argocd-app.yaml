@@ -17,7 +17,7 @@ spec:
       values: |
         clusterName: cluster-lab-3
         region: us-east-1
-        vpcId: vpc-0f34100e26dccb375
+        vpcId: vpc-08d59942de32e32a6
         serviceAccount:
           create: false
           name: aws-load-balancer-controller-sa

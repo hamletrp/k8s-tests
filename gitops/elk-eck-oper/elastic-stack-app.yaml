@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elastic-stack
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://helm.elastic.co
+    chart: elastic-stack
+    targetRevision: 7.17.3
+    helm:
+      values: |
+        # --- ELASTICSEARCH ---
+        elasticsearch:
+          enabled: true
+          replicas: 3
+          minimumMasterNodes: 2
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          persistence:
+            enabled: true
+            size: 20Gi
+            storageClass: gp3
+
+        # --- KIBANA ---
+        kibana:
+          enabled: true
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: nginx
+            hosts:
+              - host: kibana.example.com
+                paths: ["/"]
+            tls:
+              - hosts:
+                  - kibana.example.com
+                secretName: kibana-tls
+
+        # --- FILEBEAT (Optional) ---
+        filebeat:
+          enabled: true
+
+        # --- LOGSTASH (Optional) ---
+        logstash:
+          enabled: false
+
+        # --- APM SERVER (Optional) ---
+        apm-server:
+          enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: elastic-system
+
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

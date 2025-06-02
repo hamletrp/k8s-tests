@@ -1,0 +1,32 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiFamily: AL2
+  # Required, discovers subnets to attach to instances
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: cluster-lab-3
+    # - id: subnet-09fa4a0a8f233a921
+
+  # Required, discovers security groups to attach to instances
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: cluster-lab-3
+    # - name: my-security-group
+    # - id: sg-063d7acfb4b06c82c
+
+  instanceProfile: KarpenterInstanceProfile-cluster-lab-3
+
+  # Required
+  amiSelectorTerms:
+    - id: ami-014f71cc7221992de
+    # - tags:
+    #     karpenter.sh/discovery: "${CLUSTER_NAME}"
+    #     environment: test
+
+  # Optional, propagates tags to underlying EC2 resources
+  tags:
+    team: hamletlab-team
+    app: test-app

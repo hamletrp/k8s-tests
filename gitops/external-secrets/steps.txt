@@ -1,7 +1,9 @@
 
 k apply -f ./gitops/external-secrets/external-secrets.io-argocdapp.yaml
 
- k apply -f ./gitops/external-secrets/external-secrets-mngr-aws.yaml
+k apply -f ./gitops/external-secrets/external-secrets-mngr-aws.yaml
+
+k apply -f ./gitops/external-secrets/external-paramstore-aws.yaml
 
 
  
