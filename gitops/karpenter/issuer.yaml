@@ -1,0 +1,8 @@
+# issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: karpenter-selfsigned-issuer
+  namespace: karpenter
+spec:
+  selfSigned: {}

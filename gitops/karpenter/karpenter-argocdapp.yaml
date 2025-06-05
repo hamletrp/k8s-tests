@@ -11,12 +11,14 @@ spec:
     chart: karpenter
     helm:
       values: |
-        settings:
-          clusterName: "cluster-lab-1"
-          clusterEndpoint: "https://ECCA9348483C83E16F35FD85BDFA2716.gr7.us-east-1.eks.amazonaws.com"
-          interruptionQueueName: karpenter-interruption-queue
+        clusterName: "cluster-lab-1"
+        clusterEndpoint: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"
+        replicas: 2
+        # webhookCertManager:
+        #   enabled: true
         serviceAccount:
           create: true
+          name: karpenter
           annotations:
             eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-1
         controller:
@@ -24,8 +26,7 @@ spec:
             - name: CLUSTER_NAME
               value: "cluster-lab-1"
             - name: CLUSTER_ENDPOINT
-              value: "https://ECCA9348483C83E16F35FD85BDFA2716.gr7.us-east-1.eks.amazonaws.com"
-
+              value: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"
   destination:
     server: https://kubernetes.default.svc
     namespace: karpenter

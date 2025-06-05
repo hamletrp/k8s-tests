@@ -1,0 +1,16 @@
+karpenter:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: "none"
+  settings:
+    clusterName: "none"
+    interruptionQueue: "none"
+  controller: 
+    replicas: "none"
+    resources:
+      requests:
+        cpu: "none"
+        memory: "none"
+      limits:
+        cpu: "none"
+        memory: "none"

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: karpenter-root
+description: Karpenter parent chart
+type: application
+
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: karpenter
+    version: "1.5.0"
+    # version: "v0.34.0"
+    # TAKE THAT, KARPENTER TEAM! NO TOKENS FOR YOU!!
+    repository: "oci://public.ecr.aws/karpenter"

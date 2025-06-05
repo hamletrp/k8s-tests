@@ -8,6 +8,7 @@ Install
   k get all -n cert-manager
 
   k apply -f ./gitops/cert-manager/cluster-issuer.yaml
+
   check: 
     k describe ClusterIssuer letsencrypt-prod -n cert-manager
     k describe ClusterIssuer letsencrypt-prod -n cert-manager | grep Message

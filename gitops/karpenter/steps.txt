@@ -20,19 +20,40 @@ dependent resources stack
 
 set env vars
   export CLUSTER_NAME="cluster-lab-1" && \
-  export KARPENTER_NAMESPACE="kube-system" && \
+  export KARPENTER_NAMESPACE="karpenter" && \
   export KARPENTER_VERSION=1.5.0 && \
   export KARPENTER_IAM_ROLE_ARN="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-1" \
   export INTERRUPTION_QUEUE_NAME="karpenter-interruption-queue-cluster-lab-1"
 
 
---
+---
   --set controller.autoscaling.enabled=true \
   --set controller.autoscaling.minReplicas=2 \
   --set controller.autoscaling.maxReplicas=5 \
   --set serviceAccount.name=karpenter \
---
+---
 
+
+self-signed cert setup 
+  run cert-manager steps.txt
+  k delete -f ./gitops/karpenter/issuer.yaml
+  k apply -f ./gitops/karpenter/issuer.yaml
+
+  k delete -f ./gitops/karpenter/certificate.yaml
+  k apply -f ./gitops/karpenter/certificate.yaml
+ k -n karpenter get secret karpenter-cert -o jsonpath="{.data}"
+
+  k delete -f ./gitops/karpenter/karpenter-webhook-tls.yaml
+  k apply -f ./gitops/karpenter/karpenter-webhook-tls.yaml
+  k -n karpenter get secret karpenter-webhook-tls -o jsonpath="{.data}"
+
+
+    k apply -f ./gitops/karpenter/karpenter-argocdapp.yaml
+
+
+
+
+---
 helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version ${KARPENTER_VERSION} --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
   --set "settings.clusterName=${CLUSTER_NAME}" \
   --set "settings.interruptionQueue=${INTERRUPTION_QUEUE_NAME}" \
@@ -43,12 +64,11 @@ helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --vers
   --set controller.replicas=2 \
   --set "serviceAccount.annotations.eks\.amazonaws\.com/role-arn=${KARPENTER_IAM_ROLE_ARN}" 
   
-
   apply node class 
     k apply -f ./gitops/karpenter/ec2-nodeclass-default.yaml
 
   force delete nodeclass 
-    kubectl patch ec2nodeclass default -n kube-system -p '{"metadata":{"finalizers":[]}}' --type=merge
+    kubectl patch ec2nodeclass default -n karpenter -p '{"metadata":{"finalizers":[]}}' --type=merge
 
   apply node pool 
     k apply -f ./gitops/karpenter/nodepool-def-allinstance.yaml
@@ -68,29 +88,29 @@ k scale deploy stress --replicas 600
 k delete deploy stress
 ---
 
-k get all -n kube-system -l app.kubernetes.io/name=karpenter
+k get all -n karpenter -l app.kubernetes.io/name=karpenter
 
-k get pods -n kube-system -l app.kubernetes.io/name=karpenter
+k get pods -n karpenter -l app.kubernetes.io/name=karpenter
 
-k -n kube-system logs pod/karpenter-5f4bf97fb5-ddlbl
-k -n kube-system logs pod/karpenter-5f4bf97fb5-fbg8x
+k -n karpenter logs pod/karpenter-5f4bf97fb5-ddlbl
+k -n karpenter logs pod/karpenter-5f4bf97fb5-fbg8x
 
-k rollout restart deployment.apps/karpenter -n kube-system
+k rollout restart deployment.apps/karpenter -n karpenter
 or specific pods 
 kubectl get pods -n default --field-selector=status.phase!=Running -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' \
   | xargs -n1 -I{} kubectl delete pod {} -n default
 
-k -n kube-system get pod karpenter-74cdcffcd5-gqvkf -o yaml > ./poda.yaml
+k -n karpenter get pod karpenter-74cdcffcd5-gqvkf -o yaml > ./poda.yaml
 
-k -n kube-system delete pod/karpenter-75bfbf8cfc-68s9r
+k -n karpenter delete pod/karpenter-75bfbf8cfc-68s9r
 
-k logs -n kube-system -l app.kubernetes.io/name=karpenter -c controller
+k logs -n karpenter -l app.kubernetes.io/name=karpenter -c controller
 
 curl http://169.254.169.254/latest/meta-data/iam/info
 
 
 ---
- helm uninstall karpenter -n kube-system  
+ helm uninstall karpenter -n karpenter  
 ---
 
 cat <<EOF | envsubst | k apply -f -
