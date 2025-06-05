@@ -1,0 +1,128 @@
+{
+    "apiVersion": "karpenter.k8s.aws/v1",
+    "kind": "EC2NodeClass",
+    "metadata": {
+        "annotations": {
+            "karpenter.k8s.aws/ec2nodeclass-hash": "766848199859799787",
+            "karpenter.k8s.aws/ec2nodeclass-hash-version": "v3",
+            "karpenter.sh/stored-version-migrated": "true",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"karpenter.k8s.aws/v1\",\"kind\":\"EC2NodeClass\",\"metadata\":{\"annotations\":{},\"name\":\"default\"},\"spec\":{\"amiFamily\":\"AL2\",\"amiSelectorTerms\":[{\"id\":\"ami-014f71cc7221992de\"}],\"role\":\"arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole\",\"securityGroupSelectorTerms\":[{\"id\":\"sg-090e61475ebf8d0cf\"},{\"id\":\"sg-090e61475ebf8d0cf\"}],\"subnetSelectorTerms\":[{\"id\":\"subnet-0576533dbc5476b60\"},{\"id\":\"subnet-0ea87159e2ee2b8bc\"}],\"tags\":{\"app\":\"test-app\",\"karpenter.sh/discovery\":\"cluster-lab-1\",\"team\":\"hamletlab-team\"}}}\n"
+        },
+        "creationTimestamp": "2025-06-02T22:25:34Z",
+        "deletionGracePeriodSeconds": 0,
+        "deletionTimestamp": "2025-06-02T22:31:49Z",
+        "finalizers": [],
+        "generation": 2,
+        "name": "default",
+        "resourceVersion": "133996",
+        "uid": "af7d336c-bb6e-41c6-ada0-82678d5b2b5f"
+    },
+    "spec": {
+        "amiFamily": "AL2",
+        "amiSelectorTerms": [
+            {
+                "id": "ami-014f71cc7221992de"
+            }
+        ],
+        "metadataOptions": {
+            "httpEndpoint": "enabled",
+            "httpProtocolIPv6": "disabled",
+            "httpPutResponseHopLimit": 1,
+            "httpTokens": "required"
+        },
+        "role": "arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole",
+        "securityGroupSelectorTerms": [
+            {
+                "id": "sg-090e61475ebf8d0cf"
+            },
+            {
+                "id": "sg-090e61475ebf8d0cf"
+            }
+        ],
+        "subnetSelectorTerms": [
+            {
+                "id": "subnet-0576533dbc5476b60"
+            },
+            {
+                "id": "subnet-0ea87159e2ee2b8bc"
+            }
+        ],
+        "tags": {
+            "app": "test-app",
+            "karpenter.sh/discovery": "cluster-lab-1",
+            "team": "hamletlab-team"
+        }
+    },
+    "status": {
+        "amis": [
+            {
+                "id": "ami-014f71cc7221992de",
+                "name": "amazon-eks-node-al2023-x86_64-standard-1.33-v20250519",
+                "requirements": [
+                    {
+                        "key": "kubernetes.io/arch",
+                        "operator": "In",
+                        "values": [
+                            "amd64"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "conditions": [
+            {
+                "lastTransitionTime": "2025-06-02T22:25:34Z",
+                "message": "",
+                "reason": "AMIsReady",
+                "status": "True",
+                "type": "AMIsReady"
+            },
+            {
+                "lastTransitionTime": "2025-06-02T22:25:34Z",
+                "message": "object is awaiting reconciliation",
+                "reason": "AwaitingReconciliation",
+                "status": "Unknown",
+                "type": "InstanceProfileReady"
+            },
+            {
+                "lastTransitionTime": "2025-06-02T22:25:34Z",
+                "message": "InstanceProfileReady=Unknown",
+                "reason": "UnhealthyDependents",
+                "status": "Unknown",
+                "type": "Ready"
+            },
+            {
+                "lastTransitionTime": "2025-06-02T22:25:34Z",
+                "message": "",
+                "reason": "SecurityGroupsReady",
+                "status": "True",
+                "type": "SecurityGroupsReady"
+            },
+            {
+                "lastTransitionTime": "2025-06-02T22:25:34Z",
+                "message": "",
+                "reason": "SubnetsReady",
+                "status": "True",
+                "type": "SubnetsReady"
+            }
+        ],
+        "securityGroups": [
+            {
+                "id": "sg-090e61475ebf8d0cf",
+                "name": "eks-cluster-sg-cluster-lab-1-1365883488"
+            }
+        ],
+        "subnets": [
+            {
+                "id": "subnet-0576533dbc5476b60",
+                "zone": "us-east-1c",
+                "zoneID": "use1-az6"
+            },
+            {
+                "id": "subnet-0ea87159e2ee2b8bc",
+                "zone": "us-east-1b",
+                "zoneID": "use1-az4"
+            }
+        ]
+    }
+}

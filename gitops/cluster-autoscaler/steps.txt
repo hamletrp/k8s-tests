@@ -10,8 +10,8 @@ Deploy Cluster Autoscaler
         k apply -f ./gitops/cluster-autoscaler/cluster-autoscaler-argo-app-inline-values.yaml
 
         stress test 
-            k create deploy stress --image=busybox --replicas=600 -- sleep 3600
-            k scale deploy stress --replicas 20
+            k create deploy stress --image=busybox --replicas=350 -- sleep 3600
+            k scale deploy stress --replicas 600
             k delete deploy stress
         
         nodes should scale up and down

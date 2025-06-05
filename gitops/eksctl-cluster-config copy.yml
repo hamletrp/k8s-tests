@@ -1,0 +1,191 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cluster-lab-1
+  region: us-east-1
+  version: "1.33"
+  tags:
+    environment: staging
+    team: platform
+    karpenter.sh/discovery: cluster-lab-1
+    karpenter.sh/managed-by: "team-h"
+
+vpc:
+  id: vpc-0540ec38388927cab
+  subnets:
+    private:
+      us-east-1a:
+        id: subnet-08f3b9914ed5e164b
+      us-east-1b:
+        id: subnet-0046bd36b7abcad72
+      us-east-1c:
+        id: subnet-018905a76f719a525
+    public:
+      us-east-1a:
+        id: subnet-04c8c67a76649b350
+      us-east-1b:
+        id: subnet-0ea87159e2ee2b8bc
+      us-east-1c:
+        id: subnet-0576533dbc5476b60
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+  clusterSecurityGroup: "sg-07613d6ff6da2941d"
+  securityGroup: "sg-039848cd50c4c3049" 
+  manageSharedNodeSecurityGroupRules: false
+
+addons:
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: eks-pod-identity-agent
+    version: latest 
+    # attachPolicyARNs:
+    #   - arn:aws:iam::aws:policy/AmazonEKS_PodIdentityAgent_Policy
+  - name: aws-ebs-csi-driver
+    version: latest
+    # attachPolicyARNs:
+      # - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+    # Optional if IRSA already set up
+    # serviceAccountRoleARN: arn:aws:iam::123456789012:role/AmazonEKS_EBS_CSI_DriverRole
+    # wellKnownPolicies:
+    #   ebsCSIController: true
+    # if not setting serviceAccountRoleARN
+    # podIdentityAssociations:
+    #   - namespace: kube-system
+    #     serviceAccountName: ebs-csi-controller-sa
+    #     roleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-1
+    # Optional, use to pass custom env vars
+    # configurationValues: |                
+    #   controller:
+    #     replicaCount: 2
+    #     env:
+    #       - name: ENABLE_VOLUME_SCHEDULING
+    #         value: "true"
+    #       - name: ENABLE_LEADER_ELECTION
+    #         value: "true"
+    #       - name: LOG_LEVEL
+    #         value: "debug"
+  - name: vpc-cni
+    version: latest  # or pin a version like "v1.14.1-eksbuild.1"
+    # attachPolicyARNs:
+    #   - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+    # Optional if IRSA already set up
+    # serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_CNI_Role-cluster-lab-1
+    # podIdentityAssociations:
+    #   - namespace: kube-system
+    #     serviceAccountName: aws-node
+    #     roleARN: arn:aws:iam::722249351142:role/AmazonEKS_CNI_Role-cluster-lab-1
+    # configurationValues: |
+    #   env:
+    #     ENABLE_PREFIX_DELEGATION: "true"
+    #     WARM_ENI_TARGET: "1"
+    #     WARM_IP_TARGET: "3"
+
+# iam:
+#   withOIDC: true
+#   serviceAccounts:
+#     - metadata:
+#         name: external-dns
+#         namespace: kube-system
+#       attachPolicyARNs:
+#         - arn:aws:iam::aws:policy/AmazonRoute53FullAccess
+#     - metadata:
+#         name: alb-ingress-controller
+#         namespace: kube-system
+#       attachPolicyARNs:
+#         - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+
+# nodeGroups:
+#   - name: linux-nodes3
+#     instanceType: t3.medium
+#     desiredCapacity: 2
+#     minSize: 2
+#     maxSize: 5
+#     spot: false
+#     volumeSize: 40
+#     volumeType: gp3
+    # volumeEncrypted: true
+    # volumeKmsKeyID: arn:aws:kms:us-east-1:123456789012:key/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    # privateNetworking: true
+    # ssh:
+    #   allow: true
+    #   publicKeyName: my-keypair
+    # labels:
+    #   cluster-autoscaler-enabled: "true"
+    #   environment: dev
+    # taints:
+    #   - key: dedicated
+    #     value: apps
+    #     effect: NoSchedule
+    # maxPodsPerNode: 110
+    # disableIMDSv1: true
+    # iam:
+    #   withAddonPolicies:
+    #     autoScaler: true
+    #     albIngress: true
+    #     cloudWatch: true
+    #     ebs: true
+    #     appMesh: true
+    # updateConfig:
+    #   maxUnavailable: 1
+
+## povissioned by default
+# iamIdentityMappings:
+#   - arn: "arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole"
+#     username: system:node:{{EC2PrivateDNSName}}
+#     groups:
+#     - system:bootstrappers
+#     - system:nodes
+    ## If you intend to run Windows workloads, the kube-proxy group should be specified.
+    # For more information, see https://github.com/aws/karpenter/issues/5099.
+    # - eks:kube-proxy-windows
+
+managedNodeGroups:
+  - name: linux-nodes-1
+    instanceTypes: ["m5.large", "t3.medium"]
+    spot: true
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 4
+    volumeSize: 40
+    maxPodsPerNode: 110
+    iam:
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole
+      # instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab4-nodegroup-linu-NodeInstanceRole
+    # ssh:
+    #   allow: true
+    #   publicKeyName: my-keypair
+    # privateNetworking: true
+    labels:
+      cluster-autoscaler-enabled: "true"
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/cluster-lab-1: owned
+      # k8s.io/cluster-autoscaler/cluster-lab4: owned
+    # iam:
+    #   withAddonPolicies:
+    #     autoScaler: true
+    #     cloudWatch: true
+    # updateConfig:
+    #   maxUnavailablePercentage: 50
+
+# fargateProfiles:
+#   - name: fargate-default
+#     selectors:
+#       - namespace: fargate-apps
+
+# cloudWatch:
+#   clusterLogging:
+#     enableTypes:
+#       - api
+#       - audit
+#       - authenticator
+#       - controllerManager
+#       - scheduler
+
+# karpenter:
+#   version: 'v0.34.0'
+#   createServiceAccount: true

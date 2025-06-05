@@ -12,17 +12,17 @@ spec:
     helm:
       values: |
         settings:
-          clusterName: "cluster-lab-3"
+          clusterName: "cluster-lab-1"
           clusterEndpoint: "https://ECCA9348483C83E16F35FD85BDFA2716.gr7.us-east-1.eks.amazonaws.com"
           interruptionQueueName: karpenter-interruption-queue
         serviceAccount:
           create: true
           annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-3
+            eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-1
         controller:
           env:
             - name: CLUSTER_NAME
-              value: "cluster-lab-3"
+              value: "cluster-lab-1"
             - name: CLUSTER_ENDPOINT
               value: "https://ECCA9348483C83E16F35FD85BDFA2716.gr7.us-east-1.eks.amazonaws.com"
 

@@ -1,0 +1,50 @@
+🔧 Cluster Lifecycle Management
+    - Install and configure clusters (e.g., using kubeadm, eksctl, GKE, AKS)
+    - Upgrade clusters to newer Kubernetes versions
+    - Scale clusters horizontally (nodes) and vertically (resources)
+    - Backup and restore cluster state and etcd
+
+🔐 Access & Security
+    - Configure RBAC (Role-Based Access Control) and IAM integrations (e.g., AWS IAM, GCP IAM)
+    - Manage kubeconfig files and access credentials
+    - Set up network policies and PodSecurityStandards (PSS)
+    - Integrate OIDC, SSO, and external secrets providers
+
+📦 Application Management
+    - Use Helm, Kustomize, or GitOps (e.g., Argo CD) to deploy apps
+    - Create and manage Namespaces, Deployments, Services, Ingress, etc.
+    - Debug pods using tools like kubectl logs, describe, and exec
+    - Configure and manage Horizontal Pod Autoscalers (HPA) and Cluster Autoscalers
+
+💾 Storage & Volumes
+    - Set up Persistent Volumes (PV) and Persistent Volume Claims (PVC)
+    - Configure storage classes and dynamic provisioning (e.g., AWS EBS, Longhorn, Rook)
+    - Monitor storage utilization and cleanup orphaned volumes
+
+📡 Networking
+    - Configure and manage ingress controllers (e.g., NGINX, AWS ALB)
+    - Debug service discovery and DNS issues
+    - Understand CNI plugins (e.g., Calico, AWS VPC CNI)
+    - Handle load balancers, external IPs, and network policies
+
+📈 Monitoring, Logging & Observability
+    - Install and configure Prometheus, Grafana, Loki, Fluent Bit, Elastic Stack, etc.
+    - Set up alerts and dashboards
+    - Monitor resource utilization, pod health, and node metrics
+
+
+🔁 CI/CD and Automation
+    - Integrate clusters with CI/CD tools (e.g., GitLab CI, GitHub Actions, Jenkins)
+    - Implement GitOps workflows using Argo CD or Flux
+    - Automate cluster maintenance with cronjobs and custom controllers
+
+📜 Compliance & Governance
+    - Implement audit logging and security benchmarks (e.g., CIS)
+    - Enforce image scanning and admission controllers (e.g., OPA Gatekeeper)
+    - Manage cluster policies (e.g., Kyverno, PodSecurityPolicies/PSS)
+
+☁️ Cloud-Native Integrations
+    - Manage managed Kubernetes services like EKS, GKE, AKS
+    - Provision and manage cloud resources using Terraform or CloudFormation
+    - Set up addons (e.g., ExternalDNS, Cluster Autoscaler, Karpenter)
+

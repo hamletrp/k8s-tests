@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-load-balancer-controller
+  name: awsalb-load-balancer-controller
   namespace: argocd
 spec:
   destination:
@@ -15,12 +15,21 @@ spec:
     targetRevision: 1.13.2
     helm:
       values: |
-        clusterName: cluster-lab-3
+        clusterName: cluster-lab-1
         region: us-east-1
-        vpcId: vpc-08d59942de32e32a6
+        vpcId: vpc-01a8f912ff8bc5e31
+        ingressGroup:
+          name: devops-group
+        nameOverride: awsalb-load-balancer-controller
+        replicaCount: 2
+        autoscaling:
+          enabled: false
+          minReplicas: 2
+          maxReplicas: 4
+          targetCPUUtilizationPercentage: 80
         serviceAccount:
           create: false
-          name: aws-load-balancer-controller-sa
+          name: awsalb-load-balancer-controller-sa
   syncPolicy:
     automated:
       prune: true
@@ -33,7 +42,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: aws-load-balancer-controller-sa
+  name: awsalb-load-balancer-controller-sa
   namespace: kube-system
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-3
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-1

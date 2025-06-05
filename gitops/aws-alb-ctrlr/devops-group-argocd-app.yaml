@@ -1,0 +1,65 @@
+
+# apiVersion: networking.k8s.io/v1
+# kind: IngressClass
+# metadata:
+#   name: awsalb-devops-group
+#   annotations:
+#     ingressclass.kubernetes.io/is-default-class: "false"
+# spec:
+#   controller: ingress.k8s.aws/alb
+
+# --- 
+# Argo CD Application to install AWS Load Balancer Controller
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # name: awsalb-devops-load-balancer-controller
+  name: awsalb-devops-load-balancer-controller
+  namespace: argocd
+spec:
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://aws.github.io/eks-charts
+    chart: aws-load-balancer-controller
+    targetRevision: 1.13.2
+    helm:
+      values: |
+        clusterName: cluster-lab-1
+        region: us-east-1
+        vpcId: vpc-0540ec38388927cab
+        controller:
+          ingressClass:
+            create: false
+            name: awsalb-devops-group
+            watchOnly: true
+        ingressGroup:
+          name: devops-group
+        nameOverride: awsalb-devops-group-controller
+        replicaCount: 1
+        autoscaling:
+          enabled: false
+          minReplicas: 2
+          maxReplicas: 4
+          targetCPUUtilizationPercentage: 80
+        serviceAccount:
+          create: false
+          name: awsalb-devops-group-load-balancer-controller-sa
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# Service Account with IAM Role annotation for AWS Load Balancer Controller
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: awsalb-devops-group-load-balancer-controller-sa
+  namespace: kube-system
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-1

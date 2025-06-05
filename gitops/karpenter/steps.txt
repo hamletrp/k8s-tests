@@ -1,45 +1,84 @@
 
 pre-requisites 
+  AMIS 
+    aws ssm get-parameters-by-path \
+    --path /aws/service/eks/optimized-ami/1.28/amazon-linux-2/recommended \
+    --region us-west-2
+
   aws iam create-service-linked-role --aws-service-name spot.amazonaws.com || true
   # AWSServiceRoleForAmazonEKS
+  or 
+  set the EC2NodeClass
+    role: eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole
+
+
+dependent resources stack 
+  deployed via terraform
+    karpenter-dependencies.yaml 
+    https://raw.githubusercontent.com/aws/karpenter-provider-aws/v1.0.10/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml
+
 
 set env vars
-  export CLUSTER_NAME="cluster-lab-3" && \
+  export CLUSTER_NAME="cluster-lab-1" && \
   export KARPENTER_NAMESPACE="kube-system" && \
-  export KARPENTER_VERSION="1.0.10" && \
-  export KARPENTER_IAM_ROLE_ARN="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-3"
-  export INTERRUPTION_QUEUE_NAME="karpenter-interruption-queue-cluster-lab-3"
+  export KARPENTER_VERSION=1.5.0 && \
+  export KARPENTER_IAM_ROLE_ARN="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-1" \
+  export INTERRUPTION_QUEUE_NAME="karpenter-interruption-queue-cluster-lab-1"
 
 
-helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version "${KARPENTER_VERSION}" --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
+--
+  --set controller.autoscaling.enabled=true \
+  --set controller.autoscaling.minReplicas=2 \
+  --set controller.autoscaling.maxReplicas=5 \
+  --set serviceAccount.name=karpenter \
+--
+
+helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version ${KARPENTER_VERSION} --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
   --set "settings.clusterName=${CLUSTER_NAME}" \
   --set "settings.interruptionQueue=${INTERRUPTION_QUEUE_NAME}" \
   --set controller.resources.requests.cpu=1 \
   --set controller.resources.requests.memory=1Gi \
   --set controller.resources.limits.cpu=1 \
   --set controller.resources.limits.memory=1Gi \
+  --set controller.replicas=2 \
   --set "serviceAccount.annotations.eks\.amazonaws\.com/role-arn=${KARPENTER_IAM_ROLE_ARN}" 
   
-  
-  --set controller.interruptionQueue=https://sqs.us-east-1.amazonaws.com/722249351142/karpenter-interruption-queue-cluster-lab-3
-  --wait
 
-  interruptionQueue update 
+  apply node class 
+    k apply -f ./gitops/karpenter/ec2-nodeclass-default.yaml
+
+  force delete nodeclass 
+    kubectl patch ec2nodeclass default -n kube-system -p '{"metadata":{"finalizers":[]}}' --type=merge
+
+  apply node pool 
+    k apply -f ./gitops/karpenter/nodepool-def-allinstance.yaml
+
+
+---
+
+  interruptionQueue update sample
     helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter \
       --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
       --version "${KARPENTER_VERSION}" \
-      --set controller.interruptionQueue=https://sqs.us-east-1.amazonaws.com/722249351142/karpenter-interruption-queue-cluster-lab-3
+      --set controller.interruptionQueue=https://sqs.us-east-1.amazonaws.com/722249351142/karpenter-interruption-queue-cluster-lab-1
 
+---
+k create deploy stress --image=busybox --replicas=350 -- sleep 3600
+k scale deploy stress --replicas 600
+k delete deploy stress
 ---
 
 k get all -n kube-system -l app.kubernetes.io/name=karpenter
 
 k get pods -n kube-system -l app.kubernetes.io/name=karpenter
 
-k -n kube-system logs pod/karpenter-866b97c754-rxkwl
-k -n kube-system logs pod/karpenter-866b97c754-wb9dm
+k -n kube-system logs pod/karpenter-5f4bf97fb5-ddlbl
+k -n kube-system logs pod/karpenter-5f4bf97fb5-fbg8x
 
 k rollout restart deployment.apps/karpenter -n kube-system
+or specific pods 
+kubectl get pods -n default --field-selector=status.phase!=Running -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' \
+  | xargs -n1 -I{} kubectl delete pod {} -n default
 
 k -n kube-system get pod karpenter-74cdcffcd5-gqvkf -o yaml > ./poda.yaml
 
@@ -47,6 +86,12 @@ k -n kube-system delete pod/karpenter-75bfbf8cfc-68s9r
 
 k logs -n kube-system -l app.kubernetes.io/name=karpenter -c controller
 
+curl http://169.254.169.254/latest/meta-data/iam/info
+
+
+---
+ helm uninstall karpenter -n kube-system  
+---
 
 cat <<EOF | envsubst | k apply -f -
 apiVersion: karpenter.sh/v1
@@ -106,7 +151,42 @@ EOF
 
 
 aws eks describe-cluster \
-  --name cluster-lab-3 \
+  --name cluster-lab-1 \
   --region us-east-1 \
   --query "cluster.endpoint" \
   --output text
+
+--- 
+
+cat <<EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inflate
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: inflate
+  template:
+    metadata:
+      labels:
+        app: inflate
+    spec:
+      terminationGracePeriodSeconds: 0
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - name: inflate
+        image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
+        resources:
+          requests:
+            cpu: 1
+        securityContext:
+          allowPrivilegeEscalation: false
+EOF
+
+kubectl scale deployment inflate --replicas 370
+

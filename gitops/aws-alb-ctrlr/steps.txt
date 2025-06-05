@@ -10,5 +10,9 @@ to update helm values and sa role arn
 
 
 to apply manifest  
-    k apply -f ./gitops/aws-alb-ctrlr/argocd-app.yaml
+    k delete -f ./gitops/aws-alb-ctrlr/awsalb-argocd-app.yaml
+    k apply -f ./gitops/aws-alb-ctrlr/awsalb-argocd-app.yaml
+    grouped 
+        k apply -f ./gitops/aws-alb-ctrlr/devops-group-argocd-app.yaml
+        k apply -f ./gitops/aws-alb-ctrlr/apps-group-argocd-app.yaml
 

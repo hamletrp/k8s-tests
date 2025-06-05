@@ -3,6 +3,8 @@ Manual install
     https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
         k create namespace argocd
         k apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+        
+        k delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
         clear && k get pods -n argocd
     
@@ -12,8 +14,23 @@ Manual install
         port forwarding
             k port-forward service/argocd-server -n argocd 9000:443
 
+        htpasswd -bnBC 10 "" 'mySuperSecurepwd' | tr -d ':\n'
+            $2y$10$G2uFnx9qn.7HxGOhc51W8.FWVJz.riTIyalc0qymMqtR.xQ8iKY3.
+
+        aws secretsmanager put-secret-value \
+        --secret-id argocd-admin-secret \
+        --region us-east-1 \
+        --secret-string '{
+            "admin.password": "$2y$10$G2uFnx9qn.7HxGOhc51W8.FWVJz.riTIyalc0qymMqtR.xQ8iKY3.",
+            "admin.passwordMtime": "2025-06-04T11:00:00Z"
+        }'
+
+        to register external secrets 
+                k apply -f ./gitops/argocd/argocd-admin-pwd-secretmngr.yaml
+
         get admin pwd 
             k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+            k -n argocd get secret argocd-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
         Ingress setup 
             nginx 

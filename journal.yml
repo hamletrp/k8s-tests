@@ -2,25 +2,36 @@
 TODO:
     - Questions
         karpenter
-            #here 
+            to switch to argo app 
+            https://artifacthub.io/packages/helm/karpenter/karpenter
+            #here
+        responsibilities of a k8s administrator
+        responsibilities of a k8s application management
+        responsibilities of a k8s security
+        what is the production grade security group setup on a k8s cluster
+        to set Argo CD Helm plugin for release tracking 
         terminal font setup: screenshot/20250527224155.png
         3 cluster setup on EKS
             Argo App Umbrella pattern ?    
             to build a multi cluster argo applicationset 
         screen in linux
+        Troubleshoot network visibility
         fargate
         google secrets 
         hashicorp secrets
-        ingresses setup and tests
+        production grade Configurations of Ingress Controllers
+        and tests altogether on a single cluster
             aws alb
-                done
             nginx
-                done
             traefix
             HAProxy
+        prod grade Centralize logs and application traces.
+        how to Implement backup solutions (e.g., Velero) for ETCD and persistent volumes.
+        prod grade Cluster Autoscaler setup
         what are the basic/required building blocks of any k8s cluster
             set it as runbook 
         what tool to use and for what working with k8s ?
+        to set lokipwd from secrets manager
         eks pod identity associations..?
         https://www.devopsschool.com/interview/
         resposibilities of a k8s engineer 
@@ -274,13 +285,13 @@ Questions: TODO:
 https://eksctl.io/usage/creating-and-managing-clusters/
 pass a config file and set the ssh
 
-eksctl delete cluster --region=us-east-1 --name cluster-lab-3
+eksctl delete cluster --region=us-east-1 --name cluster-lab-1
 
 # set node group to include ssh
 # https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
 # or https://github.com/eksctl-io/eksctl/issues/227
 
-eksctl delete cluster --name cluster-lab-3 --region=us-east-1
+eksctl delete cluster --name cluster-lab-1 --region=us-east-1
 
 eksctl create cluster -f ./eksctl-cluster-config.yml
 k apply -f ebs-storageclass.yml
@@ -301,7 +312,7 @@ eksctl create cluster \
 --tags "k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/cluster-lab2 = owned"
 
 
-eksctl delete cluster --name cluster-lab-3
+eksctl delete cluster --name cluster-lab-1
 
 
 
