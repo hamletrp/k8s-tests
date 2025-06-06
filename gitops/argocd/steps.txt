@@ -32,6 +32,11 @@ Manual install
             k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
             k -n argocd get secret argocd-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
+        log int argo cli 
+            argocd login localhost:9000 --username admin --password hHNklf7ypyCFay8x --insecure
+            argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
+
+
         Ingress setup 
             nginx 
                 HTTPS 
@@ -66,10 +71,6 @@ Manual install
                         --type='json' \
                         -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "/usr/local/bin/argocd-server"}]'
         
-        log int argo cli 
-            argocd login localhost:9000 --username admin --password JiAn80tIlbnPm69K --insecure
-            argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
-
 
 pending to test thru the app
     run aws-certs-provisioning.txt

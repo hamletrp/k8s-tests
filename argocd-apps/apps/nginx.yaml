@@ -4,7 +4,7 @@ metadata:
   name: nginx-ingress
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
 
@@ -34,7 +34,7 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
 
 ---
 # Service Account with IAM Role annotation for AWS Load Balancer Controller

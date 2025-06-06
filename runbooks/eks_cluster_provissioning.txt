@@ -38,9 +38,9 @@ to update vpc-cni addon
       --region us-east-1 \
       --force
 
-
-patch serviceaccount/ebs-csi-controller-sa
-    . ./gitops/annotate-serv-acc-ebs-csi.sh
+skip if addon serviceAccountRoleARN not set on cluster config 
+    patch serviceaccount/ebs-csi-controller-sa
+        . ./gitops/annotate-serv-acc-ebs-csi.sh
 
 to run 
     argocd steps.txt 

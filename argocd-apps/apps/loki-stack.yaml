@@ -1,3 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: logging
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -26,7 +32,8 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
+
 
 ## ot set via the values file instead
 ---

@@ -1,3 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: networking
+
+---
 # Argo CD Application to install AWS Load Balancer Controller
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -38,7 +44,7 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
 
 ---
 # Service Account with IAM Role annotation for AWS Load Balancer Controller
