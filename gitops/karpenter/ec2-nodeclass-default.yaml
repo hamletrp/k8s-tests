@@ -14,15 +14,15 @@ spec:
   subnetSelectorTerms:
     # - tags:
         # karpenter.sh/discovery: cluster-lab-1
-    - id: subnet-03dbdfe0f8a4bee42
-    - id: subnet-02386159d22bd1245
+    - id: subnet-0db1365a2014b47ad
+    - id: subnet-0848f828ada8a28eb
 
   # Required, discovers security groups to attach to instances
   securityGroupSelectorTerms:
     # - tags:
     #     karpenter.sh/discovery: cluster-lab-1
     # - name: my-security-group
-    - id: sg-0cc47264a610df043
+    - id: sg-0a87ac4e762758675
 
   # Required
   amiSelectorTerms:

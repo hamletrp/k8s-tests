@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: nginx-ingress
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
 
@@ -11,16 +13,21 @@ spec:
     chart: ingress-nginx
     targetRevision: 4.12.2
     helm:
-      releaseName: my-nginx
+      releaseName: ingress-nginx
       values: |
         controller:
-          replicaCount: 1
+          replicaCount: 2
           service:
             type: LoadBalancer
           admissionWebhooks:
             enabled: true
             patch:
               enabled: true
+          serviceAccount:
+            create: true
+            name: nginx-ingress-sa
+            annotations:
+              eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-1
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx

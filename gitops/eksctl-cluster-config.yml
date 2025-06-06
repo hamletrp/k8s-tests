@@ -52,7 +52,8 @@ iam:
 
 managedNodeGroups:
   - name: linux-nodes-1
-    instanceTypes: ["m5.large", "t3.medium"]
+    instanceTypes: ["m5.large"]
+    # instanceTypes: ["m5.large", "t3.medium"]
     spot: true
     desiredCapacity: 2
     minSize: 2

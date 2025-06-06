@@ -1,0 +1,61 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki-stack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  sources:
+    - chart: loki-stack
+      repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 2.10.2
+      helm:
+        releaseName: loki-stack
+        valueFiles:
+          - $values/gitops/loki-stack/values.yaml
+    - repoURL: https://github.com/hamletrp/k8s-tests.git
+      targetRevision: HEAD
+      ref: values  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: loki
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+## ot set via the values file instead
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: loki-ingress-alb
+#   namespace: loki
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404
+#     alb.ingress.kubernetes.io/group.name: devops-group
+#     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-2016-08
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - host: loki.itsnotrocketscience.tech
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: loki-stack-grafana
+#                 port:
+#                   number: 443
+#   tls:
+#     - hosts:
+#         - loki.itsnotrocketscience.tech
+

@@ -49,9 +49,7 @@ self-signed cert setup
 
 
     k apply -f ./gitops/karpenter/karpenter-argocdapp.yaml
-
-
-
+    k apply -f ./gitops/karpenter-root/karpenter-root-app.yaml
 
 ---
 helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version ${KARPENTER_VERSION} --namespace "${KARPENTER_NAMESPACE}" --create-namespace \

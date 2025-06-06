@@ -1,0 +1,59 @@
+google secrets 
+    projid: smart-valet-mobile
+    projnumber: 140314846917
+
+to create sa 
+    k apply -f ./gcloud-secrets/gcloud-secret-sa.yaml
+
+to create google identity pool 
+    gcloud iam workload-identity-pools create smart-valet-mobile.svc.id.goog \
+    --project=smart-valet-mobile \
+    --location="global" \
+    --display-name="Smart Valet Mobile Pool"
+
+to create permission association for k8s sa 
+    gcloud projects add-iam-policy-binding smart-valet-mobile \
+    --role="roles/secretmanager.secretAccessor" \
+    --member="principal://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${PROJECT_ID}.svc.id.goog/subject/ns/${K8S_NAMESPACE}/sa/${K8S_SA}"
+
+to Create a Provider (AWS/EKS OIDC)
+    gcloud iam workload-identity-pools providers create-aws eks-provider \
+    --workload-identity-pool=smart-valet-mobile \
+    --project=smart-valet-mobile \
+    --location=global \
+    --account-id=722249351142
+
+to provision the role annotated on the sa
+
+to bind the role on gcloud 
+    gcloud iam service-accounts add-iam-policy-binding gcloud-secrete-sa@smart-valet-mobile.iam.gserviceaccount.com \
+    --project=smart-valet-mobile \
+    --role=roles/iam.workloadIdentityUser \
+    --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/eks-provider/attribute.aws_role/arn:aws:iam::722249351142:role/gcloud-secret-irsa-role-cluster-lab-1"
+
+---
+aws eks describe-cluster --name cluster-lab-1 --query "cluster.identity.oidc.issuer" --output text
+
+list identity pools 
+    gcloud iam workload-identity-pools list \
+    --project=smart-valet-mobile \
+    --location=global
+
+    displayName: Smart Valet Mobile Pool
+    name: projects/140314846917/locations/global/workloadIdentityPools/smart-valet-mobile
+    state: ACTIVE
+
+create oidc pool 
+    gcloud iam workload-identity-pools providers create-oidc gcloud-eks-oidc \
+    --location="global" \
+    --workload-identity-pool="smart-valet-mobile" \
+    --issuer-uri="https://oidc.eks.us-east-1.amazonaws.com/id/BA16A3C4AFEF1CBB3319D0FE4D14C2DF" \
+    --attribute-mapping="MAPPINGS" \
+    --attribute-condition="CONDITIONS"
+
+
+
+
+
+
+

@@ -6,9 +6,6 @@ TODO:
         taints tolerations 
 
     - Todos 
-        loki password from aws sm
-        google secrets 
-        hashicorp secrets
         3 cluster setup on EKS
             Argo App Umbrella pattern ?    
             to build a multi cluster argo applicationset 
@@ -30,6 +27,7 @@ TODO:
         https://www.devopsschool.com/interview/
         terraform best practices 
         get a job 
+        hashicorp secrets
         eksanywhere
         Troubleshoot network visibility
         fargate
