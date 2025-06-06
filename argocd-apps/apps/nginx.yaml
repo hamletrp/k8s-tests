@@ -24,10 +24,8 @@ spec:
             patch:
               enabled: true
         serviceAccount:
-          create: true
+          create: false
           name: nginx-ingress-sa
-          annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-2
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx
@@ -37,3 +35,13 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+---
+# Service Account with IAM Role annotation for AWS Load Balancer Controller
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ingress-nginx-sa
+  namespace: ingress-nginx
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-2
