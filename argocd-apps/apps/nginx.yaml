@@ -7,7 +7,6 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
-
   source:
     repoURL: https://kubernetes.github.io/ingress-nginx
     chart: ingress-nginx
@@ -34,14 +33,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false
-
----
-# Service Account with IAM Role annotation for AWS Load Balancer Controller
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: nginx-ingress-sa
-  namespace: networking
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-2
+      - CreateNamespace=true

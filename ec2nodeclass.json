@@ -6,7 +6,7 @@
             "karpenter.k8s.aws/ec2nodeclass-hash": "766848199859799787",
             "karpenter.k8s.aws/ec2nodeclass-hash-version": "v3",
             "karpenter.sh/stored-version-migrated": "true",
-            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"karpenter.k8s.aws/v1\",\"kind\":\"EC2NodeClass\",\"metadata\":{\"annotations\":{},\"name\":\"default\"},\"spec\":{\"amiFamily\":\"AL2\",\"amiSelectorTerms\":[{\"id\":\"ami-014f71cc7221992de\"}],\"role\":\"arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole\",\"securityGroupSelectorTerms\":[{\"id\":\"sg-090e61475ebf8d0cf\"},{\"id\":\"sg-090e61475ebf8d0cf\"}],\"subnetSelectorTerms\":[{\"id\":\"subnet-0576533dbc5476b60\"},{\"id\":\"subnet-0ea87159e2ee2b8bc\"}],\"tags\":{\"app\":\"test-app\",\"karpenter.sh/discovery\":\"cluster-lab-2\",\"team\":\"hamletlab-team\"}}}\n"
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"karpenter.k8s.aws/v1\",\"kind\":\"EC2NodeClass\",\"metadata\":{\"annotations\":{},\"name\":\"default\"},\"spec\":{\"amiFamily\":\"AL2\",\"amiSelectorTerms\":[{\"id\":\"ami-014f71cc7221992de\"}],\"role\":\"arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole\",\"securityGroupSelectorTerms\":[{\"id\":\"sg-090e61475ebf8d0cf\"},{\"id\":\"sg-090e61475ebf8d0cf\"}],\"subnetSelectorTerms\":[{\"id\":\"subnet-0576533dbc5476b60\"},{\"id\":\"subnet-0ea87159e2ee2b8bc\"}],\"tags\":{\"app\":\"test-app\",\"karpenter.sh/discovery\":\"cluster-lab-1\",\"team\":\"hamletlab-team\"}}}\n"
         },
         "creationTimestamp": "2025-06-02T22:25:34Z",
         "deletionGracePeriodSeconds": 0,
@@ -30,7 +30,7 @@
             "httpPutResponseHopLimit": 1,
             "httpTokens": "required"
         },
-        "role": "arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole",
+        "role": "arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole",
         "securityGroupSelectorTerms": [
             {
                 "id": "sg-090e61475ebf8d0cf"
@@ -49,7 +49,7 @@
         ],
         "tags": {
             "app": "test-app",
-            "karpenter.sh/discovery": "cluster-lab-2",
+            "karpenter.sh/discovery": "cluster-lab-1",
             "team": "hamletlab-team"
         }
     },
@@ -109,7 +109,7 @@
         "securityGroups": [
             {
                 "id": "sg-090e61475ebf8d0cf",
-                "name": "eks-cluster-sg-cluster-lab-2-1365883488"
+                "name": "eks-cluster-sg-cluster-lab-1-1365883488"
             }
         ],
         "subnets": [

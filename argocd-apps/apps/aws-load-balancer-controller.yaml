@@ -1,9 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: networking
-
----
 # Argo CD Application to install AWS Load Balancer Controller
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -24,9 +18,9 @@ spec:
     helm:
       releaseName: aws-load-balancer-controller
       values: |
-        clusterName: cluster-lab-2
+        clusterName: cluster-lab-1
         region: us-east-1
-        vpcId: vpc-0f61694ea6a6059d2
+        vpcId: vpc-0e407013e78533687
         ingressGroup:
           name: devops-group
         nameOverride: awsalb-load-balancer-controller
@@ -44,14 +38,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false
-
----
-# Service Account with IAM Role annotation for AWS Load Balancer Controller
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: awsalb-load-balancer-controller-sa
-  namespace: networking
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-2
+      - CreateNamespace=true

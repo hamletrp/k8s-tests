@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-umbrella1
+  name: apps-umbrella
   namespace: argocd
 spec:
   project: default

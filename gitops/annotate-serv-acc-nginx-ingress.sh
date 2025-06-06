@@ -6,8 +6,8 @@
 
 # === Update these variables ===
 # ROLE_ARN="arn:aws:iam::722249351142:role/eks-alb-controller-role"
-# ROLE_ARN="arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-2"
-ROLE_ARN="arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-2"
+# ROLE_ARN="arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-1"
+ROLE_ARN="arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-1"
 NAMESPACE="ingress-nginx"
 SA_NAME="ingress-nginx"
 

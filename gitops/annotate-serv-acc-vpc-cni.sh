@@ -5,7 +5,7 @@
 # =============================
 
 # === Update these variables ===
-ROLE_ARN="arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole"
+ROLE_ARN="arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole"
 NAMESPACE="kube-system"
 SA_NAME="aws-node"
 

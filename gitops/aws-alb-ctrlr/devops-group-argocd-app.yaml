@@ -27,7 +27,7 @@ spec:
     targetRevision: 1.13.2
     helm:
       values: |
-        clusterName: cluster-lab-2
+        clusterName: cluster-lab-1
         region: us-east-1
         vpcId: vpc-0540ec38388927cab
         controller:
@@ -62,4 +62,4 @@ metadata:
   name: awsalb-devops-group-load-balancer-controller-sa
   namespace: kube-system
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-2
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-1
