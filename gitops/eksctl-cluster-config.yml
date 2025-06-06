@@ -2,15 +2,15 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: cluster-lab-1
+  name: cluster-lab-2
   region: us-east-1
   version: "1.33"
   tags:
     environment: staging
     team: platform
-    karpenter.sh/discovery: cluster-lab-1
+    karpenter.sh/discovery: cluster-lab-2
     karpenter.sh/managed-by: "team-h"
-    k8s.io/cluster-autoscaler/cluster-lab-1: owned
+    k8s.io/cluster-autoscaler/cluster-lab-2: owned
 
 vpc:
 #   id: vpc-02fbb8bc18a79fb95
@@ -43,6 +43,7 @@ addons:
   - name: eks-pod-identity-agent
     version: latest 
   - name: aws-ebs-csi-driver
+    serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-2
     version: latest
   - name: vpc-cni
     version: latest 
@@ -51,7 +52,7 @@ iam:
   withOIDC: true
 
 managedNodeGroups:
-  - name: linux-nodes-1
+  - name: linux-nodes-2
     instanceTypes: ["m5.large"]
     # instanceTypes: ["m5.large", "t3.medium"]
     spot: true
@@ -61,9 +62,9 @@ managedNodeGroups:
     volumeSize: 40
     maxPodsPerNode: 110
     iam:
-      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-1-nodegroup-linu-NodeInstanceRole
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-2-nodegroup-linu-NodeInstanceRole
     labels:
       cluster-autoscaler-enabled: "true"
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/cluster-lab-1: owned
+      k8s.io/cluster-autoscaler/cluster-lab-2: owned

@@ -67,7 +67,7 @@ Manual install
                         -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "/usr/local/bin/argocd-server"}]'
         
         log int argo cli 
-            argocd login localhost:9000 --username admin --password mySuperSecurepwd --insecure
+            argocd login localhost:9000 --username admin --password JiAn80tIlbnPm69K --insecure
             argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
 
 

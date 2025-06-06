@@ -16,19 +16,19 @@ spec:
       releaseName: ingress-nginx
       values: |
         controller:
-          replicaCount: 2
+          replicaCount: 1
           service:
             type: LoadBalancer
           admissionWebhooks:
             enabled: true
             patch:
               enabled: true
-        serviceAccount:
-          create: false
-          name: nginx-ingress-sa
+          serviceAccount:
+            create: false
+            name: nginx-ingress-sa
   destination:
     server: https://kubernetes.default.svc
-    namespace: ingress-nginx
+    namespace: networking
   syncPolicy:
     automated:
       prune: true
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: ingress-nginx-sa
-  namespace: ingress-nginx
+  name: nginx-ingress-sa
+  namespace: networking
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-alb-controller-role-cluster-lab-2
