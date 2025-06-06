@@ -50,10 +50,11 @@ grafana:
   sidecar:
     datasources:
       enabled: true
-  adminPassword: loki-password
-  # admin:
-  #   existingSecret: lokipwd
-  #   existingSecretPasswordKey: lokipwd
+  # adminPassword: loki-password
+  admin:
+    existingSecret: loki-adm-pwd
+    userKey: admin-user
+    passwordKey: admin-password
   # additionalDataSources:
   #   - name: Prometheus
   #     type: prometheus

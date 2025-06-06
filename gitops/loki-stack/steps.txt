@@ -5,7 +5,8 @@ k get services -n loki
 
 secrets manager secret sample 
     k apply -f ./gitops/loki-stack/loki-pwd-secretmngr.yaml
-    k -n loki get secret lokipwd -o jsonpath="{.data}"
+    k -n loki get ExternalSecret loki-adm-pwd-ext -o jsonpath="{.data}"
+    k -n loki get secret loki-adm-pwd -o jsonpath="{.data}"
 
 parameter store secret sample 
     k apply -f ./gitops/loki-stack/loki-pwd-paramstore-secret.yaml
