@@ -6,6 +6,8 @@ TODO:
         taints tolerations 
 
     - Todos 
+        karpenter-cert fix 
+        nginx ingress using cert-manager and letsecrypt 
         3 cluster setup on EKS
             Argo App Umbrella pattern ?    
             to build a multi cluster argo applicationset 

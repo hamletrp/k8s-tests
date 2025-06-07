@@ -7,15 +7,21 @@ spec:
   project: default
   source:
     repoURL: https://charts.karpenter.sh
-    targetRevision: "0.16.3"
+    # repoURL: oci://public.ecr.aws/karpenter/karpenter
+    targetRevision: 1.5.0
     chart: karpenter
     helm:
+      releaseName: karpenter
       values: |
+        installCRDs: true
         clusterName: "cluster-lab-3"
-        clusterEndpoint: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"
+        clusterEndpoint: "https://1720E41D5BABDD46FFDD4424A29D2E6C.gr7.us-east-1.eks.amazonaws.com"
         replicas: 2
-        # webhookCertManager:
-        #   enabled: true
+        webhookCertManager:
+          enabled: true
+          issuerRef:
+            kind: ClusterIssuer
+            name: letsencrypt-prod
         serviceAccount:
           create: true
           name: karpenter
@@ -26,7 +32,7 @@ spec:
             - name: CLUSTER_NAME
               value: "cluster-lab-3"
             - name: CLUSTER_ENDPOINT
-              value: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"
+              value: "https://1720E41D5BABDD46FFDD4424A29D2E6C.gr7.us-east-1.eks.amazonaws.com"
   destination:
     server: https://kubernetes.default.svc
     namespace: karpenter
