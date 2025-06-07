@@ -20,7 +20,7 @@ spec:
       values: |
         clusterName: cluster-lab-10
         region: us-east-1
-        vpcId: vpc-0e407013e78533687
+        vpcId: vpc-0b25dec1868e88e91
         ingressGroup:
           name: devops-group
         nameOverride: awsalb-load-balancer-controller

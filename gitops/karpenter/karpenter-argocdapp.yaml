@@ -14,7 +14,7 @@ spec:
       releaseName: karpenter
       values: |
         installCRDs: true
-        clusterName: "cluster-lab-3"
+        clusterName: "cluster-lab-10"
         clusterEndpoint: "https://1720E41D5BABDD46FFDD4424A29D2E6C.gr7.us-east-1.eks.amazonaws.com"
         replicas: 2
         webhookCertManager:
@@ -26,11 +26,11 @@ spec:
           create: true
           name: karpenter
           annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-3
+            eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-10
         controller:
           env:
             - name: CLUSTER_NAME
-              value: "cluster-lab-3"
+              value: "cluster-lab-10"
             - name: CLUSTER_ENDPOINT
               value: "https://1720E41D5BABDD46FFDD4424A29D2E6C.gr7.us-east-1.eks.amazonaws.com"
   destination:

@@ -11,7 +11,7 @@ Install
 
   check: 
     k describe ClusterIssuer letsencrypt-prod -n cert-manager
-    k describe ClusterIssuer letsencrypt-prod -n cert-manager | grep Message
+    k describe ClusterIssuer letsencrypt-prod -n cert-managerl | grep Message
 
 
 fixing mis-install of cert-manager 
@@ -32,32 +32,32 @@ fixing mis-install of cert-manager
   required to update vpc-cni addon - though success test without this
       eksctl update addon \
       --name vpc-cni \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-10 \
       --region us-east-1 \
-      --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole \
+      --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-10-nodegroup-linu-NodeInstanceRole \
       --force
 
       eksctl update addon \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-10 \
       --region us-east-1 \
       --force
 
       eksctl update addon \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-10 \
       --name kube-proxy \
       --version v1.33.0-eksbuild.2 \
       --force
 
       eksctl update addon \
       --name kube-proxy \
-      --cluster cluster-lab-3 \
+      --cluster cluster-lab-10 \
       --version v1.33.0-eksbuild.2 \
       --force
 
-      eksctl describe addon --name kube-proxy --cluster cluster-lab-3
+      eksctl describe addon --name kube-proxy --cluster cluster-lab-10
 
       aws eks update-addon \
-        --cluster-name cluster-lab-3  \
+        --cluster-name cluster-lab-10  \
         --addon-name kube-proxy \
         --addon-version v1.33.0-eksbuild.2 \
         --resolve-conflicts OVERWRITE
@@ -66,15 +66,15 @@ fixing mis-install of cert-manager
 
 ---
 
-eksctl get addons --cluster cluster-lab-3 --region us-east-1
+eksctl get addons --cluster cluster-lab-10 --region us-east-1
 
 
 eksctl create addon \
   --name vpc-cni \
-  --cluster cluster-lab-3 \
+  --cluster cluster-lab-10 \
   --region us-east-1 \
   --version latest \
-  --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-3-nodegroup-linu-NodeInstanceRole \
+  --service-account-role-arn arn:aws:iam::722249351142:role/eksctl-cluster-lab-10-nodegroup-linu-NodeInstanceRole \
   --force
 
 

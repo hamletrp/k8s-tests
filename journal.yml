@@ -6,17 +6,20 @@ TODO:
         taints tolerations 
 
     - Todos 
-        karpenter-cert fix 
         nginx ingress using cert-manager and letsecrypt 
-        3 cluster setup on EKS
-            Argo App Umbrella pattern ?    
-            to build a multi cluster argo applicationset 
+        ca 
+            add a new nodegroup for scaling 
+        karpenter 
+            add 2 taint and tollerations match
+        to build a multi cluster [ 3 ] argo applicationset 
         production grade Configurations of Ingress Controllers
         and tests altogether on a single cluster
             aws alb
             nginx
             traefix
             HAProxy
+        calico 
+        cepth
         prod grade Centralize logs and application traces.
         how to Implement backup solutions (e.g., Velero) for ETCD and persistent volumes.
         what are the basic/required building blocks of any k8s cluster
@@ -277,13 +280,13 @@ Questions: TODO:
 https://eksctl.io/usage/creating-and-managing-clusters/
 pass a config file and set the ssh
 
-eksctl delete cluster --region=us-east-1 --name cluster-lab-3
+eksctl delete cluster --region=us-east-1 --name cluster-lab-10
 
 # set node group to include ssh
 # https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
 # or https://github.com/eksctl-io/eksctl/issues/227
 
-eksctl delete cluster --name cluster-lab-3 --region=us-east-1
+eksctl delete cluster --name cluster-lab-10 --region=us-east-1
 
 eksctl create cluster -f ./eksctl-cluster-config.yml
 k apply -f ebs-storageclass.yml
@@ -304,7 +307,7 @@ eksctl create cluster \
 --tags "k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/cluster-lab2 = owned"
 
 
-eksctl delete cluster --name cluster-lab-3
+eksctl delete cluster --name cluster-lab-10
 
 
 
