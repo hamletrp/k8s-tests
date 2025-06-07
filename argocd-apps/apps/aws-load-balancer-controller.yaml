@@ -18,7 +18,7 @@ spec:
     helm:
       releaseName: aws-load-balancer-controller
       values: |
-        clusterName: cluster-lab-1
+        clusterName: cluster-lab-3
         region: us-east-1
         vpcId: vpc-0e407013e78533687
         ingressGroup:
