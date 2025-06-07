@@ -14,7 +14,7 @@ rbac:
       eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/eks-cluster-autoscaler-role-{{ .Values.autoDiscovery.clusterName }}
     create: true
 
-replicaCount: 2
+replicaCount: 3
 
 extraArgs:
   scale-down-enabled: true
