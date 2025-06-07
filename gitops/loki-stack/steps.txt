@@ -1,35 +1,35 @@
 
 k apply -f ./gitops/loki-stack/loki-stack-app.yaml
 
-k get services -n loki
+k get services -n logging
 
 secrets manager secret sample 
     k apply -f ./gitops/loki-stack/loki-pwd-secretmngr.yaml
-    k -n loki get ExternalSecret loki-adm-pwd-ext -o jsonpath="{.data}"
-    k -n loki get secret loki-adm-pwd -o jsonpath="{.data}"
+    k -n logging get ExternalSecret loki-adm-pwd-ext -o jsonpath="{.data}"
+    k -n logging get secret loki-adm-pwd -o jsonpath="{.data}"
 
 parameter store secret sample 
     k apply -f ./gitops/loki-stack/loki-pwd-paramstore-secret.yaml
-    k -n loki get secret lokipwdps -o jsonpath="{.data}"
+    k -n logging get secret lokipwdps -o jsonpath="{.data}"
 
 to expose it 
-    kubectl port-forward service/loki-stack-grafana -n loki 3000:80
+    kubectl port-forward service/loki-stack-grafana -n logging 3000:80
     or 
      k apply -f ./gitops/loki-stack/loki-ingress.yaml
     or
      k apply -f ./gitops/loki-stack/loki-ingress-alb.yaml
 
 to edit service/loki-stack-grafana and add https port entry
-    k edit service/loki-stack-grafana -n loki
+    k edit service/loki-stack-grafana -n logging
     - name: https
         port: 443
         protocol: TCP
         targetPort: 3000
 
-kubectl -n loki get secret loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d; echo
+kubectl -n logging get secret loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d; echo
 
 check promptail config 
-    k -n loki get secret loki-stack-promtail -o jsonpath="{.data.promtail\.yaml}" | base64 -d
+    k -n logging get secret loki-stack-promtail -o jsonpath="{.data.promtail\.yaml}" | base64 -d
 
 
 

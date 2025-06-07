@@ -14,7 +14,7 @@ spec:
       values: |
         autoDiscovery:
           clusterName: cluster-lab-1 # cluster.local
-          namespace: kube-system  # default
+          namespace: performance  # default
           tags:
             - k8s.io/cluster-autoscaler/enabled
             - k8s.io/cluster-autoscaler/{{ .Values.autoDiscovery.clusterName }}
@@ -36,8 +36,10 @@ spec:
           scale-down-delay-after-add: 5m
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: performance
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
