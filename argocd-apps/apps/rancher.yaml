@@ -26,8 +26,8 @@ spec:
             enabled: true
             ingressClassName: nginx
             tls:
-              source: letsencrypt-prod
-          letsencrypt-prod:
+              source: letsencrypt
+          letsencrypt:
             email: hamletrp@gmail.com
 
     - repoURL: https://github.com/hamletrp/k8s-tests.git
