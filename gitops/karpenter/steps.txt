@@ -81,10 +81,24 @@ helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --vers
       --set controller.interruptionQueue=https://sqs.us-east-1.amazonaws.com/722249351142/karpenter-interruption-queue-cluster-lab-10
 
 ---
+
 k create deploy stress --image=busybox --replicas=350 -- sleep 3600
 k scale deploy stress --replicas 600
 k delete deploy stress
+
 ---
+
+kubectl get nodes -o json | jq '.items[].spec.taints'
+
+
+kubectl get pods -n default --field-selector=status.phase!=Running -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'
+
+kubectl patch pod stress-no-tolerations-89f44dd88-ztn9g -n default --type='json' -p='[{"op": "add", "path": "/spec/tolerations/-", "value": {"key": "karpenter.sh/capacity-type", "operator": "Equal", "value": "spot", "effect": "NoSchedule"}}]'
+
+
+---
+
+
 
 k get all -n karpenter -l app.kubernetes.io/name=karpenter
 

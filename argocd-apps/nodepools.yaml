@@ -12,11 +12,17 @@ spec:
       # Annotations are arbitrary key-values that are applied to all nodes
       annotations:
         project.com/owner: "hamletlab-team"
+
     spec:
       nodeClassRef:
         group: karpenter.k8s.aws  # Updated since only a single version will be served
         kind: EC2NodeClass
         name: default
+      taints:
+        - key: karpenter.sh/capacity-type
+          value: spot
+          effect: NoSchedule
+
       requirements:
         - key: "karpenter.k8s.aws/instance-category"
           operator: In

@@ -68,3 +68,7 @@ managedNodeGroups:
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/cluster-lab-10: owned
+    taints:
+      - key: "team"
+        value: "hamletlab-team"
+        effect: "NoSchedule"
