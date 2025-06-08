@@ -6,30 +6,29 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: https://releases.rancher.com/server-charts/stable
-    chart: rancher
-    targetRevision: 2.11.2
-    # helm:
-    #   values: |
-    #     hostname: rancher.itsnotrocketscience.tech
+  sources:
+    - chart: rancher
+      repoURL: https://releases.rancher.com/server-charts/stable
+      targetRevision: 2.11.2
+      helm:
+        releaseName: rancher
+        valueFiles:
+          - $values/gitops/rancher/rancher-values.yaml
+        valuesObject:
+          hostname: rancher.itsnotrocketscience.tech  
+          replicas: 3
+          bootstrapPassword: "fuckingRancheeerrrr"
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            tls:
+              source: letsEncrypt-prod
+          letsEncrypt-prod:
+            email: hamletrp@gmail.com
 
-    #     ingress:
-    #       enabled: true
-    #       ingressClassName: alb
-    #       tls:
-    #         source: secret
-    #       extraAnnotations:
-    #         kubernetes.io/ingress.class: alb
-    #         alb.ingress.kubernetes.io/scheme: internet-facing
-    #         alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    #         alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404
-    #         alb.ingress.kubernetes.io/target-type: ip
-    #         alb.ingress.kubernetes.io/healthcheck-path: /healthz
-    #         alb.ingress.kubernetes.io/ssl-redirect: '443'
-    #     replicas: 1
-    #     bootstrapPassword: fuckingRancheeer
-
+    - repoURL: https://github.com/hamletrp/k8s-tests.git
+      targetRevision: HEAD
+      ref: values 
   destination:
     server: https://kubernetes.default.svc
     namespace: cattle-system

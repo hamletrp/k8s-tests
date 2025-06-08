@@ -1,0 +1,61 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  role: eksctl-cluster-lab-10-nodegroup-linu-NodeInstanceRole
+  # instanceProfile: KarpenterInstanceProfile-cluster-lab-10
+
+  # Required, discovers subnets to attach to instances
+  subnetSelectorTerms:
+    # - tags:
+        # karpenter.sh/discovery: cluster-lab-10
+    - id: subnet-0f30cde5b0e7941cf
+    - id: subnet-00f0cc6b413b0b12e
+
+  # Required, discovers security groups to attach to instances
+  securityGroupSelectorTerms:
+    # - tags:
+    #     karpenter.sh/discovery: cluster-lab-10
+    # - name: my-security-group
+    - id: sg-031f38fd06dffcb05
+
+  # amiFamily: AL2023
+  amiFamily: Bottlerocket
+
+  # Required
+  amiSelectorTerms:
+    - alias: bottlerocket@latest
+    # - alias: al2023@latest
+    # - alias: al2@latest # <- GPU Optimized AMD AMI 
+    # - tags:
+    #     karpenter.sh/discovery: "${CLUSTER_NAME}"
+    #     environment: test
+
+  # amiFamily: Bottlerocket
+  # amiFamily: AL2
+  # amiFamily: AL2023
+  # amiFamily: Ubuntu
+  # amiSelectorTerms:
+  # - matchExpressions:
+  #     - key: karpenter.k8s.aws/owner-id
+  #       operator: In
+  #       values: ["amazon"]
+      # - key: karpenter.k8s.aws/ami-id
+      #   operator: In
+      #   values: ["ami-0123456789abcdef0"]  # Optional, to pin exact AMI
+
+  # amiFamily: Ubuntu
+    # - matchExpressions:
+    #   - key: karpenter.k8s.aws/owner-id
+    #     operator: In
+    #     values: ["099720109477"]  # Canonical's AWS account
+
+
+
+  # Optional, propagates tags to underlying EC2 resources
+  tags:
+    team: hamletlab-team
+    app: test-app
+    # used by karpenter_controller_role conditional terminate instance
+    karpenter.sh/discovery: "cluster-lab-10"

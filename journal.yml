@@ -6,6 +6,11 @@ TODO:
         taints tolerations 
 
     - Todos 
+        meaning of 
+            nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Since TLS ends at NLB
+
+
+        to add rancher to umbrella app
         nginx ingress using cert-manager and letsecrypt 
         ca 
             add a new nodegroup for scaling 

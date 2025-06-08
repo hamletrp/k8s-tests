@@ -5,10 +5,15 @@ metadata:
   namespace: argocd
   annotations:
     kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # if using cert-manager
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Since TLS ends at NLB
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - argocd.doordress.us
+      secretName: argocd-tls  # Secret that stores TLS cert
   rules:
   - host: argocd.doordress.us
     http:

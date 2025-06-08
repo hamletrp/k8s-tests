@@ -1,15 +1,11 @@
 bootstrapPassword: "fuckingRancheeer" # initial admin password
 
-hostname: rancher.itsnotrocketscience.tech  
+hostname: rancher.doordress.us  
 replicas: 2 # Production-grade HA deployment
 
-# ingress:
-#   enabled: true
-#   ingressClassName: alb                 # Or alb if you're using AWS ALB Ingress Controller
-  # tls:
-  #   source: secret                        # Options: secret, letsEncrypt, rancher
-  #   secretName: tls-rancher-ingress       # Pre-created Kubernetes TLS secret
-
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: alb                 # Or alb if you're using AWS ALB Ingress Controller
 
 # ingress:
 #   tls:
@@ -18,10 +14,10 @@ replicas: 2 # Production-grade HA deployment
 #       email: your-email@example.com
 #       ingressClass: nginx
 
-resources:
-  requests:
-    cpu: 250m
-    memory: 512Mi
-  limits:
-    cpu: 500m
-    memory: 1Gi
+# resources:
+#   requests:
+#     cpu: 250m
+#     memory: 512Mi
+#   limits:
+#     cpu: 500m
+#     memory: 1Gi

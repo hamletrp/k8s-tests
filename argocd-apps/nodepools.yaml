@@ -1,0 +1,52 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+    metadata:
+      # Labels are arbitrary key-values that are applied to all nodes
+      labels:
+        billing-team: hamletlab-team
+
+      # Annotations are arbitrary key-values that are applied to all nodes
+      annotations:
+        project.com/owner: "hamletlab-team"
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws  # Updated since only a single version will be served
+        kind: EC2NodeClass
+        name: default
+      requirements:
+        - key: "karpenter.k8s.aws/instance-category"
+          operator: In
+          values: ["c", "m", "r"]
+          # minValues here enforces the scheduler to consider at least that number of unique instance-category to schedule the pods.
+          # This field is ALPHA and can be dropped or replaced at any time
+          minValues: 2
+        - key: "karpenter.k8s.aws/instance-family"
+          operator: In
+          values: ["m5","m5d","c5","c5d","c4","r4"]
+          minValues: 5
+        - key: "karpenter.k8s.aws/instance-cpu"
+          operator: In
+          values: ["4", "8"]
+          # values: ["4", "8", "16", "32"]
+        - key: "topology.kubernetes.io/zone"
+          operator: In
+          values: ["us-east-1d", "us-east-1f"]
+        - key: "kubernetes.io/arch"
+          operator: In
+          values: ["arm64", "amd64"]
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          # values: ["on-demand"]
+          values: ["spot", "on-demand"]
+        - key: node.kubernetes.io/instance-type
+          operator: NotIn
+          values:
+            - m6g.16xlarge
+            - m6gd.16xlarge
+            - r6g.16xlarge
+            - r6gd.16xlarge
+            - c6g.16xlarge
