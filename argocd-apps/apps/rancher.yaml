@@ -16,8 +16,8 @@ spec:
       targetRevision: 2.11.2
       helm:
         releaseName: rancher
-        valueFiles:
-          - $values/gitops/rancher/rancher-values.yaml
+        # valueFiles:
+        #   - $values/gitops/rancher/rancher-values.yaml
         valuesObject:
           hostname: rancher.itsnotrocketscience.tech  
           replicas: 3
