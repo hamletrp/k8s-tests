@@ -1,0 +1,13 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: daily-namespaces-backup
+  namespace: velero
+spec:
+  schedule: "0 2 * * *"  # At 02:00 UTC every day
+  template:
+    includedNamespaces:
+      - my-namespace-1
+      - my-namespace-2
+    snapshotVolumes: true
+    ttl: 168h0m0s  # 7 days retention

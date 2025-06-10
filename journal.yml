@@ -1,15 +1,53 @@
 
+some tools 
+    Basic kubectl / CLI tools
+        k9s basics 
+        kubectx / kubens
+        stern / kubetail
+        jq / yq
+    GitOps & Deployment
+        argocd 
+        flux 
+        Helm
+    Cluster Observability (Monitoring & Logging)
+        Prometheus           - Metrics collection (Node metrics, app metrics,
+        Grafana              - Dashboard & visualization of metrics
+        Loki                 - Centralized logging backend (used with Promtail/FluentBit)
+        Fluent Bit / Fluentd - Collect and forward container logs to Loki, Elasticsearch, S3, etc
+    Jaeger / Tempo
+        Distributed tracing
+    Security & Policy
+        Kyverno / OPA Gatekeeper - Policy enforcement in K8s → control which objects are allowed
+        Kube-bench               - Run CIS benchmark tests for Kubernetes security posture
+        Kube-hunter              - Find security issues in your cluster
+        Trivy / Grype            - Container image vulnerability scanning
+    Backup & Disaster Recovery
+        Velero
+        Kasten 
+        Stash 
+        AWS Backup + EBS snapshots
+    Cost Optimization
+        Goldilocks
+        Kubecost
+    Service Mesh
+        App Mesh (AWS)
+        Istio
+        Linkerd
+    Misc Tools
+        lens 
+        Rancher
+
+    
+
+
 TODO:
     * goal 
         responsibilities of a k8s application management
 
     - Todos 
         to build a multi cluster [ 3 ] argo applicationset 
-        velero back-up test 
-        databases deploy and back-ups 
-            mysql 
-            redis         
-        what tool to use and for what working with k8s ?
+        lab    
+            https://istio.io/latest/docs/examples/bookinfo/  
         https://www.devopsschool.com/interview/
         terraform best practices 
         ETCD backup and restore 

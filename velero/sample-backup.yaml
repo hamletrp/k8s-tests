@@ -1,0 +1,13 @@
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: my-namespaces-backup
+  namespace: velero
+spec:
+  includedNamespaces:
+    - argocd
+    - karpenter
+  # includedResources:
+  #   - configmaps
+  snapshotVolumes: true # Enable volume snapshots if supported
+  ttl: 72h0m0s # Optional: how long to retain this backup (3 days)

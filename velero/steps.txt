@@ -1,0 +1,21 @@
+aws setup - https://github.com/vmware-tanzu/velero-plugin-for-aws#setup
+
+    brew install velero
+
+    velero install \
+        --provider aws \
+        --plugins velero/velero-plugin-for-aws:v1.10.0 \
+        --bucket velero-testss \
+        --backup-location-config region=us-east-1 \
+        --snapshot-location-config region=us-east-1 \
+        --secret-file ./velero/credentials
+
+    k patch deployment.apps/velero -n velero --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
+
+    velero backup create full-cluster-backup --include-namespaces "*" --snapshot-volumes
+
+    velero backup describe full-cluster-backup
+
+     velero backup logs full-cluster-backup
+
+     velero backup get
