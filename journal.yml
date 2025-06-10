@@ -4,9 +4,12 @@ TODO:
         responsibilities of a k8s application management
 
     - Todos 
-        what is eks Node auto repair
         AWS App Mesh on eks hands on 
         to build a multi cluster [ 3 ] argo applicationset 
+        velero back-up test 
+        databases deploy and back-ups 
+            mysql 
+            redis         
         what tool to use and for what working with k8s ?
         https://www.devopsschool.com/interview/
         terraform best practices 
