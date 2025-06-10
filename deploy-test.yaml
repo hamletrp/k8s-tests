@@ -14,14 +14,14 @@ spec:
         app: stress
     spec:
       tolerations:
-        - key: "team"
+        - key: "workload-type"
           operator: "Equal"
-          value: "hamletlab-team"
+          value: "regular"
           effect: "NoSchedule"
-        # - key: "karpenter.sh/capacity-type"
-        #   operator: "Equal"
-        #   value: "spot"
-        #   effect: "NoSchedule"
+        - key: "karpenter.sh/capacity-type"
+          operator: "Equal"
+          value: "spot"
+          effect: "NoSchedule"
       containers:
         - name: busybox
           image: busybox

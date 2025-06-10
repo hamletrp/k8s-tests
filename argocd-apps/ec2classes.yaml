@@ -10,15 +10,15 @@ spec:
   subnetSelectorTerms:
     # - tags:
         # karpenter.sh/discovery: cluster-lab-10
-    - id: subnet-06da1044786a6a64d
-    - id: subnet-0a1af484858ea93d4
+    - id: subnet-0e0fe3614e7f1a26b
+    - id: subnet-048fd63a4d7fb28de
 
   # Required, discovers security groups to attach to instances
   securityGroupSelectorTerms:
     # - tags:
     #     karpenter.sh/discovery: cluster-lab-10
     # - name: my-security-group
-    - id: sg-0f4c29b9e66c61ca9
+    - id: sg-0470de07115f73994
 
   # amiFamily: AL2023
   amiFamily: Bottlerocket
