@@ -2,40 +2,25 @@
 TODO:
     * goal 
         responsibilities of a k8s application management
-    - night time videos 
-        taints tolerations 
 
     - Todos 
-        karpenter 
-            add 2 taint and tollerations match
-        ca 
-            add a new nodegroup for scaling 
+        what is eks Node auto repair
+        AWS App Mesh on eks hands on 
         to build a multi cluster [ 3 ] argo applicationset 
-        production grade Configurations of Ingress Controllers
-        and tests altogether on a single cluster
-            aws alb
-            nginx
-            traefix
-            HAProxy
-        calico 
-        cepth
-        prod grade Centralize logs and application traces.
-        how to Implement backup solutions (e.g., Velero) for ETCD and persistent volumes.
-        what are the basic/required building blocks of any k8s cluster
         what tool to use and for what working with k8s ?
         https://www.devopsschool.com/interview/
         terraform best practices 
+        ETCD backup and restore 
         get a job 
-        prod grade Cluster Autoscaler setup
+        to review cluster lab deployment required permissions every step of the way
+        aws certifications renew 
         kustomize and argocd samples 
-        hashicorp secrets
         eksanywhere
+        hashicorp secrets
         Troubleshoot network visibility
         fargate
 
         what are the required addons to have a prod grade cluster setup
-        to review nginx setup 
-        to review cluster lab deployment required permissions every step of the way
 
         how to secure k8s clusters and resources from being mistakenly deleted
         to document lifecyle and personal conclusions

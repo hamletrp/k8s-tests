@@ -69,6 +69,15 @@ OJO TO DELETE
 
 --- 
 
+eksctl update nodegroup --config-file ./gitops/eksctl-cluster-config.yml --approve
+
+k get nodes -o json | jq '.items[].spec.taints'
+k get nodes -o json | jq -r '.items[] | "\(.metadata.name): \(.spec.taints // "[]")"'
+
+
+
+--- 
+
 eksctl create addon \
   --name eks-pod-identity-agent \
   --cluster your-cluster-name \

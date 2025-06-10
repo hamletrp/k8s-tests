@@ -13,26 +13,6 @@ metadata:
     k8s.io/cluster-autoscaler/cluster-lab-10: owned
 
 vpc:
-#   id: vpc-02fbb8bc18a79fb95
-#   subnets:
-#     private:
-#       us-east-1a:
-#         id: subnet-016b1cf2a4a267f5f
-#       us-east-1b:
-#         id: subnet-00f9f5f891b8e9e91
-#       us-east-1c:
-#         id: subnet-051648327001e7199
-#     public:
-#       us-east-1a:
-#         id: subnet-0668029c4271426d8
-#       us-east-1b:
-#         id: subnet-076f08f5fc9f93de5
-#       us-east-1c:
-#         id: subnet-034622651ea9a18f5
-#   clusterEndpoints:
-#     publicAccess: true
-#     privateAccess: true
-  # sharedNodeSecurityGroup: "sg-024c81e8dd5e8d6c0"
   manageSharedNodeSecurityGroupRules: true
 
 addons:
@@ -56,8 +36,8 @@ managedNodeGroups:
     instanceTypes: ["m5.large"]
     # instanceTypes: ["m5.large", "t3.medium"]
     # spot: true
-    desiredCapacity: 2
-    minSize: 2
+    desiredCapacity: 1
+    minSize: 1
     maxSize: 4
     volumeSize: 40
     maxPodsPerNode: 110
@@ -69,6 +49,27 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/cluster-lab-10: owned
     taints:
-      - key: "team"
-        value: "hamletlab-team"
+      - key: "workload-type"
+        value: "core"
+        effect: "NoSchedule"
+      - key: "CriticalAddonsOnly"
+        value: "true"
+        effect: "NoSchedule"
+  - name: linux-nodes-10-2
+    instanceTypes: ["m5.large", "t3.medium"]
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 6
+    volumeSize: 40
+    maxPodsPerNode: 110
+    iam:
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-10-nodegroup-linu-NodeInstanceRole
+    labels:
+      cluster-autoscaler-enabled: "true"
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/cluster-lab-10: owned
+    taints:
+      - key: "workload-type"
+        value: "regular"
         effect: "NoSchedule"

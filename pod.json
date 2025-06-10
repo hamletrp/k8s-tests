@@ -1,0 +1,174 @@
+{
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+        "creationTimestamp": "2025-06-09T15:34:13Z",
+        "deletionGracePeriodSeconds": 0,
+        "deletionTimestamp": "2025-06-09T15:42:51Z",
+        "finalizers": [],
+        "generateName": "argocd-redis-secret-init-",
+        "generation": 2,
+        "labels": {
+            "app.kubernetes.io/component": "redis-secret-init",
+            "app.kubernetes.io/instance": "argocd",
+            "app.kubernetes.io/managed-by": "Helm",
+            "app.kubernetes.io/name": "argocd-redis-secret-init",
+            "app.kubernetes.io/part-of": "argocd",
+            "app.kubernetes.io/version": "v3.0.5",
+            "batch.kubernetes.io/controller-uid": "9ffb8eeb-c595-4fd5-8b8c-c6ec3142ecb2",
+            "batch.kubernetes.io/job-name": "argocd-redis-secret-init",
+            "controller-uid": "9ffb8eeb-c595-4fd5-8b8c-c6ec3142ecb2",
+            "helm.sh/chart": "argo-cd-8.0.16",
+            "job-name": "argocd-redis-secret-init"
+        },
+        "name": "argocd-redis-secret-init-mk9bv",
+        "namespace": "argocd",
+        "ownerReferences": [
+            {
+                "apiVersion": "batch/v1",
+                "blockOwnerDeletion": true,
+                "controller": true,
+                "kind": "Job",
+                "name": "argocd-redis-secret-init",
+                "uid": "9ffb8eeb-c595-4fd5-8b8c-c6ec3142ecb2"
+            }
+        ],
+        "resourceVersion": "9558",
+        "uid": "8b9164b6-95b9-4c18-a8a8-272e8a0ecfd7"
+    },
+    "spec": {
+        "affinity": {
+            "podAntiAffinity": {
+                "preferredDuringSchedulingIgnoredDuringExecution": [
+                    {
+                        "podAffinityTerm": {
+                            "labelSelector": {
+                                "matchLabels": {
+                                    "app.kubernetes.io/name": "argocd-redis-secret-init"
+                                }
+                            },
+                            "topologyKey": "kubernetes.io/hostname"
+                        },
+                        "weight": 100
+                    }
+                ]
+            }
+        },
+        "containers": [
+            {
+                "command": [
+                    "argocd",
+                    "admin",
+                    "redis-initial-password"
+                ],
+                "image": "quay.io/argoproj/argocd:v3.0.5",
+                "imagePullPolicy": "IfNotPresent",
+                "name": "secret-init",
+                "resources": {},
+                "securityContext": {
+                    "allowPrivilegeEscalation": false,
+                    "capabilities": {
+                        "drop": [
+                            "ALL"
+                        ]
+                    },
+                    "readOnlyRootFilesystem": true,
+                    "runAsNonRoot": true,
+                    "seccompProfile": {
+                        "type": "RuntimeDefault"
+                    }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                    {
+                        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                        "name": "kube-api-access-7wkjd",
+                        "readOnly": true
+                    }
+                ]
+            }
+        ],
+        "dnsPolicy": "ClusterFirst",
+        "enableServiceLinks": true,
+        "nodeSelector": {
+            "kubernetes.io/os": "linux"
+        },
+        "preemptionPolicy": "PreemptLowerPriority",
+        "priority": 0,
+        "restartPolicy": "OnFailure",
+        "schedulerName": "default-scheduler",
+        "securityContext": {},
+        "serviceAccount": "argocd-redis-secret-init",
+        "serviceAccountName": "argocd-redis-secret-init",
+        "terminationGracePeriodSeconds": 30,
+        "tolerations": [
+            {
+                "effect": "NoExecute",
+                "key": "node.kubernetes.io/not-ready",
+                "operator": "Exists",
+                "tolerationSeconds": 300
+            },
+            {
+                "effect": "NoExecute",
+                "key": "node.kubernetes.io/unreachable",
+                "operator": "Exists",
+                "tolerationSeconds": 300
+            }
+        ],
+        "volumes": [
+            {
+                "name": "kube-api-access-7wkjd",
+                "projected": {
+                    "defaultMode": 420,
+                    "sources": [
+                        {
+                            "serviceAccountToken": {
+                                "expirationSeconds": 3607,
+                                "path": "token"
+                            }
+                        },
+                        {
+                            "configMap": {
+                                "items": [
+                                    {
+                                        "key": "ca.crt",
+                                        "path": "ca.crt"
+                                    }
+                                ],
+                                "name": "kube-root-ca.crt"
+                            }
+                        },
+                        {
+                            "downwardAPI": {
+                                "items": [
+                                    {
+                                        "fieldRef": {
+                                            "apiVersion": "v1",
+                                            "fieldPath": "metadata.namespace"
+                                        },
+                                        "path": "namespace"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastProbeTime": null,
+                "lastTransitionTime": "2025-06-09T15:34:13Z",
+                "message": "0/3 nodes are available: 1 node(s) had untolerated taint {workload-type: regular}, 2 node(s) had untolerated taint {workload-type: core}. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.",
+                "reason": "Unschedulable",
+                "status": "False",
+                "type": "PodScheduled"
+            }
+        ],
+        "phase": "Pending",
+        "qosClass": "BestEffort"
+    }
+}

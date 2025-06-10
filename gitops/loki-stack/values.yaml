@@ -1,4 +1,9 @@
 loki:
+  tolerations:  
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
   enabled: true
   persistence:
     enabled: true
@@ -7,6 +12,11 @@ loki:
     size: 2Gi
     # existingClaim: loki-pvc  # 👈 your pre-provisioned PVC name
 promtail:
+  tolerations:  
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
   enabled: true
   # serviceAccount:
   #   annotations:
@@ -46,6 +56,11 @@ promtail:
 #               storage: 5Gi
               
 grafana:
+  tolerations:  
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
   enabled: true 
   sidecar:
     datasources:

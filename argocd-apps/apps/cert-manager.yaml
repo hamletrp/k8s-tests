@@ -16,6 +16,29 @@ spec:
       values: |
         crds:
           enabled: true
+        tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
+        startupapicheck: 
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
+        cainjector: 
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
+        webhook: 
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

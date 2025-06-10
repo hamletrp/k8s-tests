@@ -25,7 +25,7 @@ fixing mis-install of cert-manager
         alternative steps y failing to delete the ns
             kubectl patch namespace cert-manager -p '{"metadata":{"finalizers":[]}}' --type=merge
             kubectl get namespace cert-manager -o json > ns.json
-            kubectl replace --raw "/api/v1/namespaces/cert-manager/finalize" -f ns.json
+            kubectl replace --raw "/api/v1/namespaces/argocd/finalize" -f ns.json
 
 ---
 
@@ -40,6 +40,7 @@ fixing mis-install of cert-manager
       eksctl update addon \
       --cluster cluster-lab-10 \
       --region us-east-1 \
+      --name coredns \
       --force
 
       eksctl update addon \

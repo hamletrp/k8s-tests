@@ -1,1 +1,6 @@
 replicaCount: 2
+tolerations:
+  - key: "workload-type"
+    operator: "Equal"
+    value: "regular"
+    effect: "NoSchedule"

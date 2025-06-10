@@ -19,6 +19,17 @@ spec:
     helm:
       valuesObject:
         karpenter:
+          tolerations:  
+            - key: "CriticalAddonsOnly"
+              operator: "Exists"
+            - key: "workload-type"
+              operator: "Equal"
+              value: "core"
+              effect: "NoSchedule"
+            # #   or tolerate all taints that exists
+            - key: ""
+              operator: "Exists"
+              effect: "NoSchedule"
           serviceAccount:
             annotations:
               eks.amazonaws.com/role-arn: "arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-10"

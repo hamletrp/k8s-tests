@@ -1,0 +1,17 @@
+
+helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver \
+helm repo update
+
+
+helm upgrade --install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
+ --namespace kube-system \
+ --values gitops/aws-ebs-csi-driver/values.yml
+
+
+kubectl patch deployment.apps/metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}]}]'
+
+kubectl patch deployment.apps/ebs-csi-controller -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}]}]'
+
+kubectl patch deployment.apps/coredns -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}]}]'
+
+

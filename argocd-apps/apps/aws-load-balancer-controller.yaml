@@ -20,7 +20,7 @@ spec:
       values: |
         clusterName: cluster-lab-10
         region: us-east-1
-        vpcId: vpc-0b25dec1868e88e91
+        vpcId: vpc-0d36c33f5a7cfb4e2
         ingressGroup:
           name: devops-group
         nameOverride: awsalb-load-balancer-controller
@@ -33,6 +33,11 @@ spec:
         serviceAccount:
           create: false
           name: awsalb-load-balancer-controller-sa
+        tolerations: 
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
   syncPolicy:
     automated:
       prune: true

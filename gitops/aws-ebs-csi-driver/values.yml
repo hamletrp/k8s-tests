@@ -1,0 +1,24 @@
+controller:
+  serviceAccount:
+    create: true
+    name: ebs-csi-controller-sa
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-10
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "core"
+      effect: "NoSchedule"
+node:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "core"
+      effect: "NoSchedule"
+  # serviceAccount:
+  #   create: true
+  #   name: ebs-csi-node-sa
+  #   annotations: {}
+  #   ## Enable if EKS IAM for SA is used
+  #   # eks.amazonaws.com/role-arn: arn:<partition>:iam::<account>:role/ebs-csi-role
+  #   automountServiceAccountToken: true

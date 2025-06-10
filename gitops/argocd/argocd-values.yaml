@@ -1,0 +1,35 @@
+controller:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "core"
+      effect: "NoSchedule"
+
+server:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "core"
+      effect: "NoSchedule"
+
+repoServer:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "core"
+      effect: "NoSchedule"
+
+applicationSet:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "core"
+      effect: "NoSchedule"
+
+redis:
+  secret:
+    tolerations:
+      - key: "workload-type"
+        operator: "Equal"
+        value: "core"
+        effect: "NoSchedule"
