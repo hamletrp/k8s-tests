@@ -1,0 +1,22 @@
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualRouter
+metadata:
+  name: vrouter-b
+  namespace: awsappmesh-1
+spec:
+  meshRef:
+    name: awsappmesh-1
+  listeners:
+  - portMapping:
+      port: 8080
+      protocol: http
+  routes:
+  - name: service-b-route
+    httpRoute:
+      match:
+        prefix: "/"
+      action:
+        weightedTargets:
+        - virtualNodeRef:
+            name: service-b-node
+          weight: 1

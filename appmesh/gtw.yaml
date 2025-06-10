@@ -1,0 +1,12 @@
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualGateway
+metadata:
+  name: gtw-1
+  namespace: awsappmesh-1
+spec:
+  meshRef:
+    name: awsappmesh-1
+  listeners:
+  - portMapping:
+      port: 443
+      protocol: http

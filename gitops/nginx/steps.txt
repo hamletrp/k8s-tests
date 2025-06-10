@@ -7,6 +7,12 @@ Install the crds
 Install nginx ingress controller 
   k apply -f ./gitops/nginx/nginx-argocd-app.yaml
 
+---
+k get all -n networking -l app.kubernetes.io/name=nginx
+
+
+---
+
   a25a6086f879649bfaf76fd69d0b7f0b-51766042.us-east-1.elb.amazonaws.com
 
 HTTPS 

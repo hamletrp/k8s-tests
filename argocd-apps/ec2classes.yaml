@@ -8,44 +8,42 @@ spec:
 
   # Required, discovers subnets to attach to instances
   subnetSelectorTerms:
-    # - tags:
-        # karpenter.sh/discovery: cluster-lab-10
-    - id: subnet-0e0fe3614e7f1a26b
-    - id: subnet-048fd63a4d7fb28de
-
+  # - tags:
+  # karpenter.sh/discovery: cluster-lab-10
+  - id: subnet-08aa30c135447dd9d
+  - id: subnet-09fb6961a8451a8b0
   # Required, discovers security groups to attach to instances
   securityGroupSelectorTerms:
-    # - tags:
-    #     karpenter.sh/discovery: cluster-lab-10
-    # - name: my-security-group
-    - id: sg-0470de07115f73994
-
+  # - tags:
+  #     karpenter.sh/discovery: cluster-lab-10
+  # - name: my-security-group
+  - id: sg-079e59b31d813ec82
   # amiFamily: AL2023
   amiFamily: Bottlerocket
 
   # Required
   amiSelectorTerms:
-    - alias: bottlerocket@latest
+  - alias: bottlerocket@latest
     # - alias: al2023@latest
     # - alias: al2@latest # <- GPU Optimized AMD AMI 
     # - tags:
     #     karpenter.sh/discovery: "${CLUSTER_NAME}"
     #     environment: test
 
-  # amiFamily: Bottlerocket
-  # amiFamily: AL2
-  # amiFamily: AL2023
-  # amiFamily: Ubuntu
-  # amiSelectorTerms:
-  # - matchExpressions:
-  #     - key: karpenter.k8s.aws/owner-id
-  #       operator: In
-  #       values: ["amazon"]
-      # - key: karpenter.k8s.aws/ami-id
-      #   operator: In
-      #   values: ["ami-0123456789abcdef0"]  # Optional, to pin exact AMI
+    # amiFamily: Bottlerocket
+    # amiFamily: AL2
+    # amiFamily: AL2023
+    # amiFamily: Ubuntu
+    # amiSelectorTerms:
+    # - matchExpressions:
+    #     - key: karpenter.k8s.aws/owner-id
+    #       operator: In
+    #       values: ["amazon"]
+    # - key: karpenter.k8s.aws/ami-id
+    #   operator: In
+    #   values: ["ami-0123456789abcdef0"]  # Optional, to pin exact AMI
 
-  # amiFamily: Ubuntu
+    # amiFamily: Ubuntu
     # - matchExpressions:
     #   - key: karpenter.k8s.aws/owner-id
     #     operator: In
@@ -53,7 +51,7 @@ spec:
 
 
 
-  # Optional, propagates tags to underlying EC2 resources
+    # Optional, propagates tags to underlying EC2 resources
   tags:
     team: hamletlab-team
     app: test-app

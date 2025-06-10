@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: appmesh-system
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/myorg/gitops-repo
+    targetRevision: HEAD
+    path: gitops/appmesh-system
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: appmesh-system
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  syncOptions:
+  - CreateNamespace=true

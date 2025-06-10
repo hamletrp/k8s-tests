@@ -1,0 +1,17 @@
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: GatewayRoute
+metadata:
+  name: gtwr-1
+  namespace: awsappmesh-1
+spec:
+  gatewayRef:
+    name: gtw-1
+  routeSpec:
+    httpRoute:
+      match:
+        prefix: "/"
+      action:
+        target:
+          virtualService:
+            virtualServiceRef:
+              name: vsvc-b
