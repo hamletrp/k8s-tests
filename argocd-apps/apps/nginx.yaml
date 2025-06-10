@@ -14,7 +14,30 @@ spec:
     helm:
       releaseName: ingress-nginx
       values: |
+        defaultBackend:
+          tolerations:
+            - key: "CriticalAddonsOnly"
+              operator: "Exists"
+            - key: "workload-type"
+              operator: "Equal"
+              value: "core"
+              effect: "NoSchedule"
+            # #   or tolerate all taints that exists
+            - key: ""
+              operator: "Exists"
+              effect: "NoSchedule"
         controller:
+          tolerations:
+            - key: "CriticalAddonsOnly"
+              operator: "Exists"
+            - key: "workload-type"
+              operator: "Equal"
+              value: "core"
+              effect: "NoSchedule"
+            # #   or tolerate all taints that exists
+            - key: ""
+              operator: "Exists"
+              effect: "NoSchedule"
           replicaCount: 1
           service:
             type: LoadBalancer
@@ -22,6 +45,17 @@ spec:
             enabled: true
             patch:
               enabled: true
+              tolerations:
+                - key: "CriticalAddonsOnly"
+                  operator: "Exists"
+                - key: "workload-type"
+                  operator: "Equal"
+                  value: "core"
+                  effect: "NoSchedule"
+                # #   or tolerate all taints that exists
+                - key: ""
+                  operator: "Exists"
+                  effect: "NoSchedule"
           serviceAccount:
             create: false
             name: nginx-ingress-sa
