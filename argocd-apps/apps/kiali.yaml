@@ -34,7 +34,7 @@ spec:
           tracing:
             enabled: true
             provider: jaeger
-            url: http://jaeger-query.istio-system.svc.cluster.local:16686
+            url: http://jaeger-query.jaeger-system.svc.cluster.local:16685
 
         server:
           accessible_namespaces:
