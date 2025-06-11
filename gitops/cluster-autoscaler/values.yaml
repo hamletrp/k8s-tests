@@ -1,5 +1,5 @@
 autoDiscovery:
-  clusterName: cluster-lab-10 # cluster.local
+  clusterName: cluster-lab-11 # cluster.local
   namespace: performance  # default
   tags:
     - k8s.io/cluster-autoscaler/enabled

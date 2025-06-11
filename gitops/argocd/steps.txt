@@ -21,12 +21,9 @@ Manual install
         kubectl patch deployment/argocd-redis -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
         kubectl patch deployment/argocd-repo-server -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
         kubectl patch deployment/argocd-server  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-
         kubectl patch statefulset.apps/argocd-application-controller  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch pod/argocd-application-controller-0  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch pod/argocd-redis-secret-init-889hb  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        
-        
+
+
         k delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
         clear && k get pods -n argocd
@@ -56,7 +53,7 @@ Manual install
             k -n argocd get secret argocd-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
         log int argo cli 
-            argocd login localhost:9000 --username admin --password egwR9LAupX3QbSQn --insecure
+            argocd login localhost:9000 --username admin --password iw0zAnH0BipDHxym --insecure
             argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
 
 

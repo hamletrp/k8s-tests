@@ -9,7 +9,7 @@ pre-requisites
   # AWSServiceRoleForAmazonEKS
   or 
   set the EC2NodeClass
-    role: eksctl-cluster-lab-10-nodegroup-linu-NodeInstanceRole
+    role: eksctl-cluster-lab-11-nodegroup-linu-NodeInstanceRole
 
 
 dependent resources stack 
@@ -19,11 +19,11 @@ dependent resources stack
 
 
 set env vars
-  export CLUSTER_NAME="cluster-lab-10" && \
+  export CLUSTER_NAME="cluster-lab-11" && \
   export KARPENTER_NAMESPACE="karpenter" && \
   export KARPENTER_VERSION=1.5.0 && \
-  export KARPENTER_IAM_ROLE_ARN="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-10" \
-  export INTERRUPTION_QUEUE_NAME="karpenter-interruption-queue-cluster-lab-10"
+  export KARPENTER_IAM_ROLE_ARN="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-11" \
+  export INTERRUPTION_QUEUE_NAME="karpenter-interruption-queue-cluster-lab-11"
 
 
 ---
@@ -78,7 +78,7 @@ helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --vers
     helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter \
       --namespace "${KARPENTER_NAMESPACE}" --create-namespace \
       --version "${KARPENTER_VERSION}" \
-      --set controller.interruptionQueue=https://sqs.us-east-1.amazonaws.com/722249351142/karpenter-interruption-queue-cluster-lab-10
+      --set controller.interruptionQueue=https://sqs.us-east-1.amazonaws.com/722249351142/karpenter-interruption-queue-cluster-lab-11
 
 ---
 
@@ -182,7 +182,7 @@ EOF
 
 
 aws eks describe-cluster \
-  --name cluster-lab-10 \
+  --name cluster-lab-11 \
   --region us-east-1 \
   --query "cluster.endpoint" \
   --output text

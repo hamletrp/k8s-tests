@@ -32,10 +32,10 @@ spec:
               effect: "NoSchedule"
           serviceAccount:
             annotations:
-              eks.amazonaws.com/role-arn: "arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-10"
+              eks.amazonaws.com/role-arn: "arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-11"
           settings:
-            clusterName: "cluster-lab-10"
-            interruptionQueue: "karpenter-interruption-queue-cluster-lab-10"
+            clusterName: "cluster-lab-11"
+            interruptionQueue: "karpenter-interruption-queue-cluster-lab-11"
           controller: 
             replicas: 3
             resources:

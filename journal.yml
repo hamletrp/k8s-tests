@@ -45,9 +45,15 @@ TODO:
         responsibilities of a k8s application management
 
     - Todos 
+        node roles
         to build a multi cluster [ 3 ] argo applicationset 
         lab    
             https://istio.io/latest/docs/examples/bookinfo/  
+                ✅ I can also show you:
+                    How to do blue/green traffic shifting
+                    How to add mTLS to this setup
+                    How to do observability dashboards for this app
+        kiali 
         https://www.devopsschool.com/interview/
         terraform best practices 
         ETCD backup and restore 
@@ -305,13 +311,13 @@ Questions: TODO:
 https://eksctl.io/usage/creating-and-managing-clusters/
 pass a config file and set the ssh
 
-eksctl delete cluster --region=us-east-1 --name cluster-lab-10
+eksctl delete cluster --region=us-east-1 --name cluster-lab-11
 
 # set node group to include ssh
 # https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
 # or https://github.com/eksctl-io/eksctl/issues/227
 
-eksctl delete cluster --name cluster-lab-10 --region=us-east-1
+eksctl delete cluster --name cluster-lab-11 --region=us-east-1
 
 eksctl create cluster -f ./eksctl-cluster-config.yml
 k apply -f ebs-storageclass.yml
@@ -332,7 +338,7 @@ eksctl create cluster \
 --tags "k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/cluster-lab2 = owned"
 
 
-eksctl delete cluster --name cluster-lab-10
+eksctl delete cluster --name cluster-lab-11
 
 
 

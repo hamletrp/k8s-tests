@@ -41,19 +41,24 @@ promtail:
   #           job: varlogs
   #           __path__: /var/log/*.log
 
-# prometheus:
-#   prometheusSpec:
-#     serviceMonitorSelectorNilUsesHelmValues: false
-#     podMonitorSelectorNilUsesHelmValues: false
-#     retention: 15d
-#     storageSpec:
-#       volumeClaimTemplate:
-#         spec:
-#           storageClassName: gp3
-#           accessModes: [ "ReadWriteOnce" ]
-#           resources:
-#             requests:
-#               storage: 5Gi
+prometheus:
+  tolerations:  
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          accessModes: [ "ReadWriteOnce" ]
+          resources:
+            requests:
+              storage: 5Gi
               
 grafana:
   tolerations:  

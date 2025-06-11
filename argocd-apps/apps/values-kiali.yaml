@@ -1,0 +1,31 @@
+deployment:
+  namespace: kiali-system
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+auth:
+  strategy: anonymous  # Use "login" for prod, "anonymous" for test/dev
+
+external_services:
+  # prometheus:
+  #   url: http://prometheus.istio-system.svc.cluster.local:9090
+
+  grafana:
+    enabled: false
+    url: http://grafana.istio-system.svc.cluster.local:3000
+
+  tracing:
+    enabled: false
+    provider: jaeger
+    url: http://jaeger-query.istio-system.svc.cluster.local:16686
+
+server:
+  accessible_namespaces:
+    - "**"  # Allow viewing all namespaces in the cluster
+
+# Optional: enable service monitor if you want to scrape Kiali metrics
+prometheus:
+  createPrometheusResource: true

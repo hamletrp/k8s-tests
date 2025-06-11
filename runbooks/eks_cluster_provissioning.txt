@@ -15,16 +15,16 @@ Create cluster
 
     eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
 
-    eksctl get cluster --name cluster-lab-10 --region us-east-1
+    eksctl get cluster --name cluster-lab-11 --region us-east-1
 
 Set storage classes
     k apply -f ./gitops/ebs-storageclass.yml
 
 associate-iam-oidc-provider
-    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-10 --approve
+    eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-11 --approve
 
 get oicd provider 
-    aws eks describe-cluster --region us-east-1 --name cluster-lab-10 --query "cluster.identity.oidc.issuer" --output text
+    aws eks describe-cluster --region us-east-1 --name cluster-lab-11 --query "cluster.identity.oidc.issuer" --output text
 
 copy oidc provider to tfvars
 
@@ -34,7 +34,7 @@ deploy terraform project
 to update vpc-cni addon 
     eksctl update addon \
       --name vpc-cni \
-      --cluster cluster-lab-10 \
+      --cluster cluster-lab-11 \
       --region us-east-1 \
       --force
 
@@ -52,7 +52,7 @@ patchs due to tainted nodes
 
     eksctl update addon \
       --name aws-ebs-csi-driver \
-      --cluster cluster-lab-10 \
+      --cluster cluster-lab-11 \
       --region us-east-1 \
       --force
 
@@ -67,7 +67,7 @@ to run
     aws alb ctrlr steps.txt
 
     vpcId
-        aws eks describe-cluster --name cluster-lab-10 --region us-east-1
+        aws eks describe-cluster --name cluster-lab-11 --region us-east-1
 
 to run 
     nginx steps.txt
@@ -79,7 +79,7 @@ to run
     rancher steps.txt
 
 OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-10
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-11
     eksctl delete cluster --region=us-east-1 --name cluster-lab-10
 
 --- 

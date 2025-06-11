@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: colorapp-root
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: appmesh-demo
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  sources:
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/mesh
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/virtual-gateway
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/gateway-route
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/virtual-service
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/virtual-router
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/virtual-node-blue
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/virtual-node-green
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/virtual-node-white
+    - repoURL: https://github.com/your-org/gitops-colorapp.git
+      targetRevision: HEAD
+      path: colorapp/deployments
