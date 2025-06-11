@@ -24,6 +24,9 @@ spec:
           strategy: anonymous  # Use "login" for prod, "anonymous" for test/dev
 
         external_services:
+          istio:
+            rootNamespace: istio-system
+
           # prometheus:
           #   url: http://prometheus.istio-system.svc.cluster.local:9090
 
