@@ -10,6 +10,7 @@ spec:
     chart: kiali-server
     targetRevision: 1.84.0 # use the latest stable version or pin as needed
     helm:
+      releaseName: kiali
       values: |
         deployment:
           namespace: kiali-system
@@ -27,11 +28,11 @@ spec:
           #   url: http://prometheus.istio-system.svc.cluster.local:9090
 
           grafana:
-            enabled: false
-            url: http://grafana.istio-system.svc.cluster.local:3000
+            enabled: true
+            url: http://loki-stack-grafana.logging.svc.cluster.local:3000
 
           tracing:
-            enabled: false
+            enabled: true
             provider: jaeger
             url: http://jaeger-query.istio-system.svc.cluster.local:16686
 

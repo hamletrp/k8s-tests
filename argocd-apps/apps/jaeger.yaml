@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jaeger
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://jaegertracing.github.io/helm-charts
+    chart: jaeger
+    targetRevision: 5.1.21
+    helm:
+      releaseName: jaeger
+      values: |
+        allInOne:
+          enabled: true
+          ingress:
+            enabled: false  # You can enable and configure ingress if needed
+          image:
+            tag: "1.55"     # Match Jaeger version
+
+        collector:
+          enabled: true  # disabled because all-in-one is enabled
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
+
+        agent:
+          enabled: false  # disabled because all-in-one is enabled
+
+        query:
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
+          ingress:
+            enabled: false
+
+        # Storage options - use memory for basic setup (for prod: use Elasticsearch or other)
+        storage:
+          type: memory
+
+        # UI basic customization (optional)
+        ui:
+          options:
+            dependencies:
+              menuEnabled: true
+
+        # Service account and RBAC (default is fine)
+        serviceAccount:
+          create: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jaeger-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
