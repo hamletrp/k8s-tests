@@ -45,8 +45,6 @@ TODO:
         responsibilities of a k8s application management
 
     - Todos 
-        node roles
-        to build a multi cluster [ 3 ] argo applicationset 
         lab    
             https://istio.io/latest/docs/examples/bookinfo/  
                 ✅ I can also show you:
@@ -54,11 +52,12 @@ TODO:
                     How to add mTLS to this setup
                     How to do observability dashboards for this app
         kiali 
+        to build a multi cluster [ 3 ] argo applicationset 
         https://www.devopsschool.com/interview/
         terraform best practices 
         ETCD backup and restore 
         get a job 
-        AWS App Mesh on eks hands on 
+        ELK Stack
         to review cluster lab deployment required permissions every step of the way
         aws certifications renew 
         kustomize and argocd samples 

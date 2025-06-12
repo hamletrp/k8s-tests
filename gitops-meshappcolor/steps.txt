@@ -1,17 +1,24 @@
+3️⃣ Install Istio CRDs + Istio control plane
+4️⃣ Deploy Istio ingress gateway
+5️⃣ Enable Gateway API (optional / modern)
 
+6️⃣ Configure workloads to be mesh-enabled
+7️⃣ Observe with Kiali, Jaeger, Prometheus
+
+
+---
 aws appmesh deprecated 
 ---
     helm show values istio/base
-
 ---
+
+install gateways crds  
+    kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
+    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
 install istio 
     k apply -f ./argocd-apps/namespaces.yaml
     k apply -f ./argocd-apps/service-accounts.yaml
     k apply -f ./argocd-apps/apps/istio.yaml
-
-install gateways crds  
-    kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
-    { kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.26.1" | kubectl apply -f -; }
 
 --- 
 test app 
@@ -31,7 +38,7 @@ test app
 
     Create an Istio Gateway 
         gtw 
-            k apply -f ./gitops-meshappcolor/colorapp/gateway/gateway.yaml
+            k apply -f ./gitops-meshappcolor/colorapp/istio-gateway/gateway.yaml
         virtual svc 
             k apply -f ./gitops-meshappcolor/colorapp/istio-virtual-service/virtual-service.yaml
 
@@ -48,4 +55,117 @@ test app
 
 
 
+
+
+--- 
+samples 
+
+Gateway (if using classic Istio networking.istio.io Gateway)
+
+    Gateway
+        apiVersion: networking.istio.io/v1beta1
+        kind: Gateway
+        metadata:
+        name: my-gateway
+        namespace: istio-ingress
+        spec:
+        selector:
+            istio: ingressgateway
+        servers:
+            - port:
+                number: 80
+                name: http
+                protocol: HTTP
+            hosts:
+                - "*"
+
+    VirtualService
+        apiVersion: networking.istio.io/v1beta1
+        kind: VirtualService
+        metadata:
+        name: my-virtualservice
+        namespace: my-app
+        spec:
+        gateways:
+            - istio-ingress/my-gateway
+        hosts:
+            - "*"
+        http:
+            - match:
+                - uri:
+                    prefix: /
+            route:
+                - destination:
+                    host: my-app-service
+                    port:
+                    number: 80
+
+
+modern example using the Gateway API (gateways.networking.k8s.io) 
+→ this is the new preferred model.
+
+    GatewayClass
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: GatewayClass
+        metadata:
+            name: istio
+        spec:
+            controllerName: istio.io/gateway-controller
+
+    Gateway (instantiates an ingress gateway)
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: Gateway
+        metadata:
+            name: my-istio-gateway
+            namespace: istio-ingress
+        spec:
+            gatewayClassName: istio
+            listeners:
+                - name: http
+                  port: 80
+                  protocol: HTTP
+                  hostname: "myapp.example.com"  # Optional, can be "*" for all hosts
+
+
+    HTTPRoute (routes traffic through the Gateway)
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: HTTPRoute
+        metadata:
+            name: myapp-route
+            namespace: my-app-namespace
+        spec:
+            parentRefs:
+                - name: my-istio-gateway
+                  namespace: istio-ingress
+            hostnames:
+                - "myapp.example.com"
+            rules:
+                - matches:
+                    - path:
+                        type: PathPrefix
+                        value: /
+                  backendRefs:
+                    - name: myapp-service
+                      port: 80
+
+
+    Gateway (TLS termination enabled)
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: Gateway
+        metadata:
+            name: my-istio-gateway
+            namespace: istio-ingress
+        spec:
+            gatewayClassName: istio
+            listeners:
+                - name: https
+                port: 443
+                protocol: HTTPS
+                hostname: "myapp.example.com"
+                tls:
+                    mode: Terminate
+                    certificateRefs:
+                    - kind: Secret
+                        name: myapp-tls-secret
+                        namespace: istio-ingress
     

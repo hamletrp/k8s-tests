@@ -26,6 +26,7 @@ spec:
         external_services:
           istio:
             rootNamespace: istio-system
+            configMapName: ""   # disables looking for configmap/istio
 
           # prometheus:
           #   url: http://prometheus.istio-system.svc.cluster.local:9090
