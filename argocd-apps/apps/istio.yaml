@@ -97,6 +97,8 @@ spec:
     helm:
       releaseName: istio-ingressgateway
       valuesObject:
+        nodeSelector:
+          nodegroup: worker-nodes-regular
         service:
           annotations:
             service.beta.kubernetes.io/aws-load-balancer-type: nlb
