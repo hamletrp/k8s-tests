@@ -93,6 +93,10 @@ spec:
     helm:
       releaseName: istio-ingressgateway
       valuesObject:
+        service:
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-type: nlb
+            service.beta.kubernetes.io/aws-load-balancer-internal: "false"
         serviceAccount:
           create: false
           name: istio-ingressgateway-sa
