@@ -59,9 +59,9 @@ spec:
     helm:
       releaseName: istiod
       valuesObject:
-        pilot:
-          managedGateway:
-            enabled: true #  true auto manages it
+        # pilot:
+        #   managedGateway:
+        #     enabled: true #  true auto manages it
 
         serviceAccount:
           create: false
