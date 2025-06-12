@@ -59,16 +59,10 @@ spec:
     helm:
       releaseName: istiod
       valuesObject:
-        global:
-          defaultTolerations:
-            - key: "workload-type"
-              operator: "Equal"
-              value: "core"
-              effect: "NoSchedule"
-            - key: "CriticalAddonsOnly"
-              operator: "Equal"
-              value: "true"
-              effect: "NoSchedule"
+        # pilot:
+        #   managedGateway:
+        #     enabled: false #  true auto manages it
+
         serviceAccount:
           create: false
           name: istiod-appmesh-sa 
