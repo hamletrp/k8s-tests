@@ -59,8 +59,8 @@ spec:
     helm:
       releaseName: istiod
       valuesObject:
-        pilot:
-          tolerations:
+        global:
+          defaultTolerations:
             - key: "workload-type"
               operator: "Equal"
               value: "core"
