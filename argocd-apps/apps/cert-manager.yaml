@@ -16,14 +16,6 @@ spec:
       values: |
         crds:
           enabled: true
-        controller:
-          tolerations:
-            - key: workload-type
-              operator: Equal
-              value: regular
-              effect: NoSchedule
-          nodeSelector:
-            nodegroup: worker-nodes-regular
         serviceAccount:
           create: false 
           name: cert-manager-sa
