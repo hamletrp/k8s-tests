@@ -16,6 +16,9 @@ spec:
       values: |
         crds:
           enabled: true
+        serviceAccount:
+          create: false 
+          name: cert-manager-sa
         tolerations:
           - key: "workload-type"
             operator: "Equal"
