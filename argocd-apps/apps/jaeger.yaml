@@ -13,11 +13,23 @@ spec:
       releaseName: jaeger
       values: |
         allInOne:
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
           enabled: true
           ingress:
             enabled: false  # You can enable and configure ingress if needed
           image:
             tag: "1.55"     # Match Jaeger version
+
+        ingester:
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
 
         collector:
           enabled: true  # disabled because all-in-one is enabled

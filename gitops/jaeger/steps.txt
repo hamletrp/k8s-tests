@@ -1,0 +1,4 @@
+
+patch tolerations 
+    kubectl patch deployment/jaeger -n jaeger-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
+    && kubectl patch statefulset.apps/jaeger-cassandra -n jaeger-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'

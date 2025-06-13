@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-doordress-us
+  namespace: istio-system
+spec:
+  secretName: cert-doordress-us
+  issuerRef:
+    name: letsencrypt-dns01
+    kind: ClusterIssuer
+  commonName: doordress.us
+  dnsNames:
+    - doordress.us
+    - "*.doordress.us"
+
+
+# kind: Certificate
+# spec:
+#   dnsNames:
+#     - yourdomain.com
+#     - *.yourdomain.com
+#   issuerRef:
+#     name: letsencrypt-dns
+
+# serviceAccount:
+#   name: cert-manager
+#   annotations:
+#     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/cert-manager-irsa-role

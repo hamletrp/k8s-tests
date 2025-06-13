@@ -1,0 +1,41 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+    name: istio-httpropute-1
+    namespace: istio-system
+spec:
+    parentRefs:
+        - name: istio-gateway-1
+          namespace: istio-system
+    hostnames:
+        - "www.doordress.us"
+    rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+            - path:
+                type: PathPrefix
+                value: /productpage
+            - path:
+                type: PathPrefix
+                value: /api/v1/products
+          backendRefs:
+            - name: productpage
+              port: 9080
+
+# --- 
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# kind: ReferencePolicy
+# metadata:
+#   name: allow-httproute-to-use-service
+#   namespace: default
+# spec:
+#   from:
+#     - group: gateway.networking.k8s.io
+#       kind: HTTPRoute
+#       namespace: istio-system
+#   to:
+#     - group: ""
+#       kind: Service
+#       name: productpage

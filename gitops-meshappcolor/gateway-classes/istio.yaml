@@ -1,0 +1,7 @@
+# no need to run - istio chart installs it
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+    name: istio
+spec:
+    controllerName: istio.io/gateway-controller

@@ -1,13 +1,14 @@
+---
+aws appmesh deprecated 
+---
+
 3️⃣ Install Istio CRDs + Istio control plane
 4️⃣ Deploy Istio ingress gateway
-5️⃣ Enable Gateway API (optional / modern)
+5️⃣ Enable Gateway API (modern or clasic)
 
 6️⃣ Configure workloads to be mesh-enabled
 7️⃣ Observe with Kiali, Jaeger, Prometheus
 
-
----
-aws appmesh deprecated 
 ---
     helm show values istio/base
 ---
@@ -20,21 +21,43 @@ install istio
     k apply -f ./argocd-apps/service-accounts.yaml
     k apply -f ./argocd-apps/apps/istio.yaml
 
+set gatewayClass, gateway and HTTPRoute
+    # no need to run - istio chart installs it
+        k apply -f ./gitops-meshappcolor/gateway-classes/istio.yaml
+
+    using Gateway API
+        Gateway → HTTPRoute → Backend Service
+    
+    using Istio Gateway + VirtualService
+        Istio Gateway → VirtualService → Backend Service
+
+    register certificate 
+        k delete -f ./gitops-meshappcolor/gateways-and-routes/doordress.us.cert.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/doordress.us.cert.yaml
+
+    apply configmap and gateway
+        k delete -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-1.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-1.yaml
+    
+    apply routes
+        k delete -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-1.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-1.yaml
+    
 --- 
 test app 
     label the namespace for automatic istio injection 
         kubectl label namespace default istio-injection=enabled
 
     deploy the app 
-        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo.yaml
+        kubectl -n istio-system apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo.yaml
 
     patch deploys to tolerate 
-        kubectl patch deployment/details-v1 -n default --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch deployment/productpage-v1 -n default --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch deployment/ratings-v1 -n default --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch deployment/reviews-v1 -n default --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch deployment/reviews-v2 -n default --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-        kubectl patch deployment/reviews-v3 -n default --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
+        kubectl patch deployment/details-v1 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
+        && kubectl patch deployment/productpage-v1 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
+        && kubectl patch deployment/ratings-v1 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
+        && kubectl patch deployment/reviews-v1 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
+        && kubectl patch deployment/reviews-v2 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
+        && kubectl patch deployment/reviews-v3 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
 
     Create an Istio Gateway 
         gtw 

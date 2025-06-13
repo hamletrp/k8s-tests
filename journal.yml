@@ -45,6 +45,10 @@ TODO:
         responsibilities of a k8s application management
 
     - Todos 
+        night time 
+            articles opened right-next to gmail
+
+        ETCD backup and restore 
         lab    
             https://istio.io/latest/docs/examples/bookinfo/  
                 ✅ I can also show you:
@@ -55,8 +59,8 @@ TODO:
         to build a multi cluster [ 3 ] argo applicationset 
         https://www.devopsschool.com/interview/
         terraform best practices 
-        ETCD backup and restore 
         get a job 
+        graphana
         ELK Stack
         to review cluster lab deployment required permissions every step of the way
         aws certifications renew 
