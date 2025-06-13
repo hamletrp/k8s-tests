@@ -28,8 +28,8 @@ spec:
             rootNamespace: istio-system
             configMapName: ""   # disables looking for configmap/istio
 
-          # prometheus:
-          #   url: http://prometheus.istio-system.svc.cluster.local:9090
+          prometheus:
+            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
 
           grafana:
             enabled: true
