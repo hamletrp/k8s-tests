@@ -14,8 +14,6 @@ spec:
     helm:
       values: |
         nameOverride: prometheus
-        crds:
-          enabled: true
         kubeStateMetrics:
           tolerations:
             - key: "workload-type"
