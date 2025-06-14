@@ -29,10 +29,10 @@ to bind the role on gcloud
     gcloud iam service-accounts add-iam-policy-binding gcloud-secrete-sa@smart-valet-mobile.iam.gserviceaccount.com \
     --project=smart-valet-mobile \
     --role=roles/iam.workloadIdentityUser \
-    --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/eks-provider/attribute.aws_role/arn:aws:iam::722249351142:role/gcloud-secret-irsa-role-cluster-lab-11"
+    --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/eks-provider/attribute.aws_role/arn:aws:iam::722249351142:role/gcloud-secret-irsa-role-cluster-lab-13"
 
 ---
-aws eks describe-cluster --name cluster-lab-11 --query "cluster.identity.oidc.issuer" --output text
+aws eks describe-cluster --name cluster-lab-13 --query "cluster.identity.oidc.issuer" --output text
 
 list identity pools 
     gcloud iam workload-identity-pools list \

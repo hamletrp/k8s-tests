@@ -3,7 +3,7 @@ controller:
     create: true
     name: ebs-csi-controller-sa
     annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-11
+      eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
   tolerations:
     - key: "workload-type"
       operator: "Equal"

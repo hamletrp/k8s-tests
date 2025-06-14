@@ -7,20 +7,20 @@ spec:
   # amiFamily: AL2023
   amiFamily: Bottlerocket
   
-  role: eksctl-cluster-lab-11-nodegroup-linu-NodeInstanceRole
-  # instanceProfile: KarpenterInstanceProfile-cluster-lab-11
+  role: eksctl-cluster-lab-13-nodegroup-linu-NodeInstanceRole
+  # instanceProfile: KarpenterInstanceProfile-cluster-lab-13
 
   # Required, discovers subnets to attach to instances
   subnetSelectorTerms:
     # - tags:
-        # karpenter.sh/discovery: cluster-lab-11
+        # karpenter.sh/discovery: cluster-lab-13
     - id: subnet-04cec7cc1c60cbf24
     - id: subnet-0e6f75928b9f903cc
 
   # Required, discovers security groups to attach to instances
   securityGroupSelectorTerms:
     # - tags:
-    #     karpenter.sh/discovery: cluster-lab-11
+    #     karpenter.sh/discovery: cluster-lab-13
     # - name: my-security-group
     - id: sg-0f078ff74fca33bd1
 
@@ -38,4 +38,4 @@ spec:
     team: hamletlab-team
     app: test-app
     # used by karpenter_controller_role conditional terminate instance
-    karpenter.sh/discovery: "cluster-lab-11"
+    karpenter.sh/discovery: "cluster-lab-13"

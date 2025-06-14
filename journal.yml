@@ -47,16 +47,23 @@ TODO:
     * goal 
         responsibilities of a k8s application management
 
-    - Todos 
-        how to install a package from a binary   
-        ELK Stack
+    - Todos
+        some argo cd tutorials 
+            https://github.com/devopshobbies/argocd-tutorial
+                https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
+            https://youtu.be/XNXJtxkUKeY?si=U6pZ3OPBUa-rmBjJ 
+
         to build a multi cluster [ 3 ] argo applicationset 
+                https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
+
         https://www.devopsschool.com/interview/
         terraform best practices 
         to read cluster autoscaler prod grade setup
         ci/cd pipelines on k8s 
         get a job 
-        Argo rollout 
+        ELK Stack
+        argo rollouts 
+            canary vs bluegreen strategies 
         OPA Gatekeeper → enforce policies → e.g. "nobody can delete certain namespaces".
         Kyverno → Kubernetes-native policy engine → excellent for protecting resources.
 
@@ -307,13 +314,13 @@ Questions: TODO:
 https://eksctl.io/usage/creating-and-managing-clusters/
 pass a config file and set the ssh
 
-eksctl delete cluster --region=us-east-1 --name cluster-lab-11
+eksctl delete cluster --region=us-east-1 --name cluster-lab-13
 
 # set node group to include ssh
 # https://medium.com/@muppedaanvesh/setting-up-an-amazon-eks-cluster-and-node-group-using-eksctl-52acc808eb83
 # or https://github.com/eksctl-io/eksctl/issues/227
 
-eksctl delete cluster --name cluster-lab-11 --region=us-east-1
+eksctl delete cluster --name cluster-lab-13 --region=us-east-1
 
 eksctl create cluster -f ./eksctl-cluster-config.yml
 k apply -f ebs-storageclass.yml
@@ -334,7 +341,7 @@ eksctl create cluster \
 --tags "k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/cluster-lab2 = owned"
 
 
-eksctl delete cluster --name cluster-lab-11
+eksctl delete cluster --name cluster-lab-13
 
 
 

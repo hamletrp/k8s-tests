@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset1
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - list:
+      elements:
+      - cluster: cluster-lab-12.us-east-1.eksctl.io
+        url: https://3D8DD2A0363614AF877E4044D17436D6.gr7.us-east-1.eks.amazonaws.com
+      - cluster: cluster-lab-13.us-east-1.eksctl.io
+        url: https://BF8796D376FB189063DC25C18C73445C.yl4.us-east-1.eks.amazonaws.com
+  template:
+    metadata:
+      name: '{{.cluster}}-appset1'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hamletrp/k8s-tests.git
+        targetRevision: main
+        path: argocd-apps
+      destination:
+        server: '{{.url}}'
+        namespace: appset1

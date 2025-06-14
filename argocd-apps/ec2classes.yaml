@@ -3,19 +3,19 @@ kind: EC2NodeClass
 metadata:
   name: default
 spec:
-  role: eksctl-cluster-lab-11-nodegroup-linu-NodeInstanceRole
-  # instanceProfile: KarpenterInstanceProfile-cluster-lab-11
+  role: eksctl-cluster-lab-13-nodegroup-linu-NodeInstanceRole
+  # instanceProfile: KarpenterInstanceProfile-cluster-lab-13
 
   # Required, discovers subnets to attach to instances
   subnetSelectorTerms:
   # - tags:
-  # karpenter.sh/discovery: cluster-lab-11
+  # karpenter.sh/discovery: cluster-lab-13
   - id: subnet-08aa30c135447dd9d
   - id: subnet-09fb6961a8451a8b0
   # Required, discovers security groups to attach to instances
   securityGroupSelectorTerms:
   # - tags:
-  #     karpenter.sh/discovery: cluster-lab-11
+  #     karpenter.sh/discovery: cluster-lab-13
   # - name: my-security-group
   - id: sg-079e59b31d813ec82
   # amiFamily: AL2023
@@ -56,4 +56,4 @@ spec:
     team: hamletlab-team
     app: test-app
     # used by karpenter_controller_role conditional terminate instance
-    karpenter.sh/discovery: "cluster-lab-11"
+    karpenter.sh/discovery: "cluster-lab-13"

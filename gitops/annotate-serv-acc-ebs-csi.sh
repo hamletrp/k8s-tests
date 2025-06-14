@@ -6,8 +6,8 @@
 
 # === Update these variables ===
 # ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole"
-# ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-11"
-ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-11"
+# ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13"
+ROLE_ARN="arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13"
 NAMESPACE="kube-system"
 SA_NAME="ebs-csi-controller-sa"
 
