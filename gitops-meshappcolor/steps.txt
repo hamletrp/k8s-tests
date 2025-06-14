@@ -46,7 +46,7 @@ set gatewayClass, gateway and HTTPRoute
 --- 
 test app 
     label the namespace for automatic istio injection 
-        kubectl label namespace default istio-injection=enabled
+        kubectl label namespace istio-system istio-injection=enabled
 
     deploy the app 
         kubectl -n istio-system apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo.yaml
@@ -59,26 +59,14 @@ test app
         && kubectl patch deployment/reviews-v2 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
         && kubectl patch deployment/reviews-v3 -n istio-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
 
+    register all services versions 
+        k apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo-versions.yaml
+
     Create an Istio Gateway 
         gtw 
             k apply -f ./gitops-meshappcolor/colorapp/istio-gateway/gateway.yaml
         virtual svc 
             k apply -f ./gitops-meshappcolor/colorapp/istio-virtual-service/virtual-service.yaml
-
-    set this env vars
-        export INGRESS_NAME=istio-ingressgateway
-        export INGRESS_NS=istio-system
-        export INGRESS_HOST=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-        export INGRESS_PORT=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-        export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-
-    apply the destination rules 
-        k apply -f ./gitops-meshappcolor/colorapp/istio-desti-rules/destination-rule-all.yaml
-
-
-
-
-
 
 --- 
 samples 

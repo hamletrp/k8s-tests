@@ -12,17 +12,3 @@ spec:
   dnsNames:
     - doordress.us
     - "*.doordress.us"
-
-
-# kind: Certificate
-# spec:
-#   dnsNames:
-#     - yourdomain.com
-#     - *.yourdomain.com
-#   issuerRef:
-#     name: letsencrypt-dns
-
-# serviceAccount:
-#   name: cert-manager
-#   annotations:
-#     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/cert-manager-irsa-role

@@ -76,11 +76,12 @@ appsofapps test
     k apply -f ./argocd-apps/service-accounts.yaml
     kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
         kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+    to update vpcid on aws-load-balancer-controller
     k apply -f ./argocd-apps/apps.yaml
     k apply -f ./argocd-apps/cluster-issuers.yaml
     k apply -f ./argocd-apps/cluster-roles.yaml
     k apply -f ./argocd-apps/secret-stores.yaml
-    k apply -f ./argocd-apps/secrets.yaml
+
 
 
 to run 

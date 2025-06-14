@@ -37,7 +37,10 @@ some tools
         lens 
         Rancher
 
-    
+etcd back-up 
+    ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+    --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
+    snapshot save <backup-file-location>    
 
 
 TODO:
@@ -45,23 +48,18 @@ TODO:
         responsibilities of a k8s application management
 
     - Todos 
-        night time 
-            articles opened right-next to gmail
-
-        ETCD backup and restore 
-        lab    
-            https://istio.io/latest/docs/examples/bookinfo/  
-                ✅ I can also show you:
-                    How to do blue/green traffic shifting
-                    How to add mTLS to this setup
-                    How to do observability dashboards for this app
-        kiali 
+        how to install a package from a binary   
+        ELK Stack
         to build a multi cluster [ 3 ] argo applicationset 
         https://www.devopsschool.com/interview/
         terraform best practices 
+        to read cluster autoscaler prod grade setup
+        ci/cd pipelines on k8s 
         get a job 
-        graphana
-        ELK Stack
+        Argo rollout 
+        OPA Gatekeeper → enforce policies → e.g. "nobody can delete certain namespaces".
+        Kyverno → Kubernetes-native policy engine → excellent for protecting resources.
+
         to review cluster lab deployment required permissions every step of the way
         aws certifications renew 
         kustomize and argocd samples 
@@ -70,18 +68,13 @@ TODO:
         Troubleshoot network visibility
         fargate
 
-        what are the required addons to have a prod grade cluster setup
-
         how to secure k8s clusters and resources from being mistakenly deleted
-        to document lifecyle and personal conclusions
         to read interview questions 
         mock-up exams videos and hands on
         exam         
         how to setup external auth on k8s
         https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
-        how to install a package from a binary   
-        to read cluster autoscaler prod grade setup
-        prod grade secrets for e.g argocd and loki
+        
 
     Building a eksanywhere cluster
         vmware

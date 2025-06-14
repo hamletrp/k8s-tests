@@ -1,0 +1,14 @@
+
+ARCHITECTURE
+    [Kubernetes nodes]
+        |
+    [Prometheus Server] ← scrapes metrics (kubelet, apps, etc.)
+        |
+    [Grafana Dashboards] ← queries Prometheus
+---
+
+    kubectl patch deployment.apps/kube-prometheus-stack-kube-state-metrics -n monitoring --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}, {"key": "CriticalAddonsOnly","operator": "Equal","value": "true","effect": "NoSchedule"}, {"key": "","operator": "Exists","effect": "NoSchedule"}]}]'
+
+
+
+

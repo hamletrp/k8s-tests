@@ -20,6 +20,9 @@ spec:
             strategy: anonymous
           istio_namespace: istio-system
 
+        rbac:
+          create: true
+
         deployment:
           namespace: kiali-system
           tolerations:
