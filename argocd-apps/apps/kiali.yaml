@@ -12,6 +12,14 @@ spec:
     helm:
       releaseName: kiali
       values: |
+        cr:
+          deployment:
+            serviceAccount:
+              create: true
+          auth:
+            strategy: anonymous
+          istio_namespace: istio-system
+
         deployment:
           namespace: kiali-system
           tolerations:
