@@ -1,0 +1,146 @@
+# Argo CD Application manifest for deploying Prometheus + Grafana via kube-prometheus-stack using Helm and GitOps
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 74.0.0
+    helm:
+      values: |
+        nameOverride: prometheus
+        crds:
+          enabled: true
+        kubeStateMetrics:
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "core"
+              effect: "NoSchedule"
+            - key: "CriticalAddonsOnly"
+              operator: "Equal"
+              value: "true"
+              effect: "NoSchedule"
+            - key: ""
+              operator: "Exists"
+              effect: "NoSchedule"
+        grafana:
+          tolerations:
+            - key: ""
+              operator: "Exists"
+              effect: "NoSchedule"
+            - key: "workload-type"
+              operator: "Equal"
+              value: "core"
+              effect: "NoSchedule"
+            - key: "CriticalAddonsOnly"
+              operator: "Equal"
+              value: "true"
+              effect: "NoSchedule"
+        thanosRuler:
+          thanosRulerSpec:
+            tolerations:
+              - key: ""
+                operator: "Exists"
+                effect: "NoSchedule"
+              - key: "workload-type"
+                operator: "Equal"
+                value: "core"
+                effect: "NoSchedule"
+              - key: "CriticalAddonsOnly"
+                operator: "Equal"
+                value: "true"
+                effect: "NoSchedule"
+        prometheusOperator: 
+          tolerations:
+            - key: ""
+              operator: "Exists"
+              effect: "NoSchedule"
+            - key: "workload-type"
+              operator: "Equal"
+              value: "core"
+              effect: "NoSchedule"
+            - key: "CriticalAddonsOnly"
+              operator: "Equal"
+              value: "true"
+              effect: "NoSchedule"
+          admissionWebhooks:
+            patch:  
+              tolerations:
+                - key: ""
+                  operator: "Exists"
+                  effect: "NoSchedule"
+                - key: "workload-type"
+                  operator: "Equal"
+                  value: "core"
+                  effect: "NoSchedule"
+                - key: "CriticalAddonsOnly"
+                  operator: "Equal"
+                  value: "true"
+                  effect: "NoSchedule"
+            deployment:
+              tolerations:
+                - key: ""
+                  operator: "Exists"
+                  effect: "NoSchedule"
+                - key: "workload-type"
+                  operator: "Equal"
+                  value: "core"
+                  effect: "NoSchedule"
+                - key: "CriticalAddonsOnly"
+                  operator: "Equal"
+                  value: "true"
+                  effect: "NoSchedule"
+        alertmanager:
+          alertmanagerSpec:
+            tolerations:
+              - key: ""
+                operator: "Exists"
+                effect: "NoSchedule"
+              - key: "workload-type"
+                operator: "Equal"
+                value: "core"
+                effect: "NoSchedule"
+              - key: "CriticalAddonsOnly"
+                operator: "Equal"
+                value: "true"
+                effect: "NoSchedule"
+        prometheus:
+          prometheusSpec:
+            tolerations:
+              - key: ""
+                operator: "Exists"
+                effect: "NoSchedule"
+              - key: "workload-type"
+                operator: "Equal"
+                value: "core"
+                effect: "NoSchedule"
+              - key: "CriticalAddonsOnly"
+                operator: "Equal"
+                value: "true"
+                effect: "NoSchedule"
+            serviceMonitorSelectorNilUsesHelmValues: true
+            podMonitorSelectorNilUsesHelmValues: true
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: gp3
+                  accessModes: [ "ReadWriteOnce" ]
+                  resources:
+                    requests:
+                      storage: 5Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
