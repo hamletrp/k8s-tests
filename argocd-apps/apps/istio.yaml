@@ -75,6 +75,9 @@ spec:
             operator: "Equal"
             value: "true"
             effect: "NoSchedule"
+          - key: ""
+            operator: "Exists"
+            effect: "NoSchedule"
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
