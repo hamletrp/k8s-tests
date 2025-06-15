@@ -18,9 +18,9 @@ spec:
     helm:
       releaseName: aws-load-balancer-controller
       values: |
-        clusterName: cluster-lab-14
-        region: us-east-1
-        vpcId: vpc-01e0f5ded5f6565a4
+        clusterName: clusterName
+        region: region
+        vpcId: vpcId
         ingressGroup:
           name: devops-group
         nameOverride: awsalb-load-balancer-controller

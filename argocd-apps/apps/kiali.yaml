@@ -40,16 +40,16 @@ spec:
             configMapName: ""   
 
           prometheus:
-            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+            url: prometheus-url
 
           grafana:
             enabled: true
-            url: http://loki-stack-grafana.logging.svc.cluster.local:3000
+            url: grafana-url
 
           tracing:
             enabled: true
             provider: jaeger
-            url: http://jaeger-query.jaeger-system.svc.cluster.local:16685
+            url: jaeger-url
 
         server:
           accessible_namespaces:

@@ -58,14 +58,31 @@ karpenter
           "value": [
             "--cluster-name=<your-cluster-name>",
             "--cluster-endpoint=https://<your-cluster-endpoint>",
-            "--aws-interruption-queue-name=<your-interruption-queue>",
-            "--log-level=info"
+            "--aws-interruption-queue-name=<your-interruption-queue>"
           ]
         }
       ]'
 
     check:
       kubectl -n karpenter get deployment karpenter -o jsonpath='{.spec.template.spec.containers[0].args}'
+
+  kiali
+    kubectl edit configmap kiali -n istio-system
+    Or 
+
+    kubectl get configmaps -n istio-system | grep kiali
+    
+    kubectl -n istio-system patch configmap kiali \
+      --type merge \
+      -p '{
+        "data": {
+          "config.yaml": "---\nserver:\n  port: 20001\nexternal_services:\n  prometheus:\n    url: \"http://prometheus.monitoring.svc.cluster.local:9090\"\n  grafana:\n    url: \"http://grafana.monitoring.svc.cluster.local\"\n  tracing:\n    url: \"http://jaeger.monitoring.svc.cluster.local\""
+        }
+      }'
+
+    kubectl rollout restart deployment kiali -n istio-system
+
+
 
 
 
