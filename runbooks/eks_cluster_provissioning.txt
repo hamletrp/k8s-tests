@@ -76,7 +76,9 @@ appsofapps
     kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
     kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
     k apply -f ./argocd-apps/apps.yaml
-        commands => #appofapps patches
+        update: 
+            awsalb: clusterName, region, vpcId
+
     k apply -f ./argocd-apps/cluster-issuers.yaml
     k apply -f ./argocd-apps/cluster-roles.yaml
     k apply -f ./argocd-apps/secret-stores.yaml
