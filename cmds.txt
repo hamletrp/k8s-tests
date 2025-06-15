@@ -35,7 +35,7 @@ aws-load-balancer-controller
         "op": "replace",
         "path": "/spec/template/spec/containers/0/args",
         "value": [
-          "--cluster-name=cluster-lab-14",
+          "--cluster-name=cluster-lab-13",
           "--region=us-east-1",
           "--vpc-id=vpc-01e0f5ded5f6565a4"
         ]
@@ -48,7 +48,7 @@ karpenter
     kubectl annotate serviceaccount \
       karpenter \
       -n karpenter \
-      eks.amazonaws.com/role-arn="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-14" \
+      eks.amazonaws.com/role-arn="arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-13" \
       --overwrite
 
     kubectl patch serviceaccount karpenter -n karpenter \
