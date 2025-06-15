@@ -70,24 +70,24 @@ skip if addon serviceAccountRoleARN set on cluster config
 to run 
     argocd steps.txt 
 
-appset 
-    kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
-    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
-
-
-
-or
-
 appsofapps 
     k apply -f ./argocd-apps/namespaces.yaml
     k apply -f ./argocd-apps/service-accounts.yaml
     kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
-        kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
-    to update vpcid on aws-load-balancer-controller
+    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
     k apply -f ./argocd-apps/apps.yaml
+        commands => #appofapps patches
     k apply -f ./argocd-apps/cluster-issuers.yaml
     k apply -f ./argocd-apps/cluster-roles.yaml
     k apply -f ./argocd-apps/secret-stores.yaml
+    k apply -f ./argocd-apps/secrets.yaml
+    k apply -f ./argocd-apps/ec2classes.yaml
+        set: subnets & security groups
+    k apply -f ./argocd-apps/nodepools.yaml
+        set: subnets & security groups
+
+
+    to patch controllers and deployments
 
 
 

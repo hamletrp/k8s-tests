@@ -48,16 +48,11 @@ TODO:
         responsibilities of a k8s application management
 
     - Todos
-        some argo cd tutorials 
-            https://github.com/devopshobbies/argocd-tutorial
-                https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
-            https://youtu.be/XNXJtxkUKeY?si=U6pZ3OPBUa-rmBjJ 
-
         to build a multi cluster [ 3 ] argo applicationset 
                 https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
-                practices 
-                    https://github.com/hamletrp/argocd-examples
 
+        argo-workflows chart 
+        istio egres
         https://www.devopsschool.com/interview/
         terraform best practices 
         to read cluster autoscaler prod grade setup
@@ -68,6 +63,15 @@ TODO:
             canary vs bluegreen strategies 
         OPA Gatekeeper → enforce policies → e.g. "nobody can delete certain namespaces".
         Kyverno → Kubernetes-native policy engine → excellent for protecting resources.
+        applicationset 
+            https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
+            practices 
+                https://github.com/hamletrp/argocd-examples
+            other tutorials 
+                https://github.com/devopshobbies/argocd-tutorial
+
+        https://www.youtube.com/watch?v=XNXJtxkUKeY&t=644s
+            How To Combine Argo Events, Workflows & Pipelines, CD, and Rollouts
 
         to review cluster lab deployment required permissions every step of the way
         aws certifications renew 

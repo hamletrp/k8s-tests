@@ -1,0 +1,3 @@
+
+https://gist.github.com/vfarcic/28e2adb5946ca366d7845780608591d7
+https://github.com/vfarcic/argo-workflows-demo/tree/master/workflows
