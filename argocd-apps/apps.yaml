@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/hamletrp/k8s-tests.git
-    targetRevision: main
+    targetRevision: cluster-lab-14
     path: argocd-apps/apps
   destination:
     server: https://kubernetes.default.svc
