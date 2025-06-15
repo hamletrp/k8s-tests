@@ -1,0 +1,31 @@
+
+add cluster 
+    kubectl create serviceaccount argocd-manager -n default
+
+    kubectl create clusterrolebinding argocd-manager-rolebinding \
+    --clusterrole=cluster-admin \
+    --serviceaccount=default:argocd-manager
+
+    kubectl create token argocd-manager -n default
+    
+    argocd cluster add \
+        --name <cluster-name> \
+        --server https://<API-SERVER> \
+        --token <TOKEN> \
+        --in-cluster=false \
+        --name <CLUSTER-NAME>
+--- 
+generators:
+  reference with {{name}} or {{server}}:
+
+  - clusters: {}
+
+  destination:
+    server: '{{server}}'
+
+
+
+
+
+
+

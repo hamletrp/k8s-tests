@@ -55,6 +55,8 @@ TODO:
 
         to build a multi cluster [ 3 ] argo applicationset 
                 https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
+                practices 
+                    https://github.com/hamletrp/argocd-examples
 
         https://www.devopsschool.com/interview/
         terraform best practices 

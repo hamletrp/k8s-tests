@@ -70,8 +70,15 @@ skip if addon serviceAccountRoleARN set on cluster config
 to run 
     argocd steps.txt 
 
+appset 
+    kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
+    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
 
-appsofapps test 
+
+
+or
+
+appsofapps 
     k apply -f ./argocd-apps/namespaces.yaml
     k apply -f ./argocd-apps/service-accounts.yaml
     kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
@@ -103,7 +110,7 @@ to run
     rancher steps.txt
 
 OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-11
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-12
     eksctl delete cluster --region=us-east-1 --name cluster-lab-13
 
 --- 

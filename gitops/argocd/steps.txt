@@ -49,7 +49,7 @@ Manual install
         to register external secrets 
                 k apply -f ./gitops/argocd/argocd-admin-pwd-secretmngr.yaml
 
-        get admin pwd 
+        get admin pwd - MRONjYyLaOlWDcum
             k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
             k -n argocd get secret argocd-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
