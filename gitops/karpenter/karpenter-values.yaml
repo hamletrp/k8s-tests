@@ -1,4 +1,4 @@
-clusterName: "cluster-lab-13"
+clusterName: "cluster-lab-14"
 clusterEndpoint: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"
 replicas: 2
 webhookCertManager:
@@ -7,10 +7,10 @@ serviceAccount:
   create: true
   name: karpenter
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-13
+    eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/KarpenterControllerRole-cluster-lab-14
 controller:
   env:
     - name: CLUSTER_NAME
-      value: "cluster-lab-13"
+      value: "cluster-lab-14"
     - name: CLUSTER_ENDPOINT
       value: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"

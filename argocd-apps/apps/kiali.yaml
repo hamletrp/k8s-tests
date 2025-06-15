@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://kiali.org/helm-charts
     chart: kiali-server
-    targetRevision: 1.84.0 # use the latest stable version or pin as needed
+    targetRevision: 1.84.0 
     helm:
       releaseName: kiali
       values: |
@@ -32,12 +32,12 @@ spec:
               effect: "NoSchedule"
 
         auth:
-          strategy: anonymous  # Use "login" for prod, "anonymous" for test/dev
+          strategy: anonymous  
 
         external_services:
           istio:
             rootNamespace: istio-system
-            configMapName: ""   # disables looking for configmap/istio
+            configMapName: ""   
 
           prometheus:
             url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090

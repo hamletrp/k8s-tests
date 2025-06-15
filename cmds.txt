@@ -1,0 +1,75 @@
+
+add cluster 
+    kubectl create serviceaccount argocd-manager -n default
+
+    kubectl create clusterrolebinding argocd-manager-rolebinding \
+    --clusterrole=cluster-admin \
+    --serviceaccount=default:argocd-manager
+
+    kubectl create token argocd-manager -n default
+    
+    argocd cluster add \
+        --name <cluster-name> \
+        --server https://<API-SERVER> \
+        --token <TOKEN> \
+        --in-cluster=false \
+        --name <CLUSTER-NAME>
+--- 
+generators:
+  reference with {{name}} or {{server}}:
+
+  - clusters: {}
+
+  destination:
+    server: '{{server}}'
+
+---
+
+kubectl logs -n argocd deployment/argocd-applicationset-controller
+
+---
+aws-load-balancer-controller
+  kubectl -n kube-system patch deployment aws-load-balancer-controller \
+    --type='json' \
+    -p='[
+      {
+        "op": "replace",
+        "path": "/spec/template/spec/containers/0/args",
+        "value": [
+          "--cluster-name=<your-cluster-name>",
+          "--region=<your-region>",
+          "--vpc-id=<your-vpc-id>"
+        ]
+      }
+    ]'
+
+karpenter
+  ServiceAccount
+    kubectl patch serviceaccount karpenter -n karpenter \
+    -p '{"metadata": {"annotations": {"eks.amazonaws.com/role-arn": "arn:aws:iam::<your-account-id>:role/<karpenter-role>"}}}'
+
+  Deployment
+    kubectl -n karpenter patch deployment karpenter \
+      --type='json' \
+      -p='[
+        {
+          "op": "replace",
+          "path": "/spec/template/spec/containers/0/args",
+          "value": [
+            "--cluster-name=<your-cluster-name>",
+            "--cluster-endpoint=https://<your-cluster-endpoint>",
+            "--aws-interruption-queue-name=<your-interruption-queue>",
+            "--log-level=info"
+          ]
+        }
+      ]'
+
+    check:
+      kubectl -n karpenter get deployment karpenter -o jsonpath='{.spec.template.spec.containers[0].args}'
+
+
+
+
+
+
+

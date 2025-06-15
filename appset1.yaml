@@ -1,17 +1,46 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: application-directory
+  name: main-set
 spec:
-  destination:
-    namespace: rootapps
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-          #    directory:
-          #      exclude: 'service.yml'
-          #      include: '{serviceaccount.yml,service.yml}'
-          #      recurse: true
-    path: argocd-apps
-    repoURL: https://github.com/hamletrp/k8s-tests.git
-    targetRevision: main
+  generators:
+    # - clusters: {} 
+    - list:
+        elements:
+          - appName: awsalb-load-balancer-controller
+            prj: default
+            namespace: kube-system
+          - appName: ingress-nginx
+            prj: default
+            namespace: ingress-nginx
+          - appName: cluster-autoscaler
+            prj: default
+            namespace: kube-system
+          - appName: kubernetes-dashboard
+            prj: default
+            namespace: kubernetes-dashboard
+  template:
+    metadata:
+      name: "{{appName}}"
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: "{{prj}}"
+      source:
+        repoURL: https://github.com/hamletrp/k8s-tests.git
+        targetRevision: HEAD
+        path: "charts/{{appName}}"
+        helm:
+          releaseName: "{{appName}}"
+          valueFiles:
+          - "values.yaml"
+          - "../../values/{{name}}/{{appName}}/values.yaml"
+      destination:
+        name: in-cluster
+        namespace: "{{namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

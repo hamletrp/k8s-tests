@@ -1,38 +1,38 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: kiali-cluster-role
-rules:
-  - apiGroups: [""]
-    resources: ["namespaces", "pods", "services", "endpoints", "replicationcontrollers", "nodes"]
-    verbs: ["get", "list", "watch"]
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   name: kiali-cluster-role
+# rules:
+#   - apiGroups: [""]
+#     resources: ["namespaces", "pods", "services", "endpoints", "replicationcontrollers", "nodes"]
+#     verbs: ["get", "list", "watch"]
 
-  - apiGroups: ["apps"]
-    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
-    verbs: ["get", "list", "watch"]
+#   - apiGroups: ["apps"]
+#     resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+#     verbs: ["get", "list", "watch"]
 
-  - apiGroups: ["networking.istio.io"]
-    resources: ["virtualservices", "destinationrules", "gateways", "envoyfilters", "serviceentries", "sidecars", "workloadentries"]
-    verbs: ["get", "list", "watch"]
+#   - apiGroups: ["networking.istio.io"]
+#     resources: ["virtualservices", "destinationrules", "gateways", "envoyfilters", "serviceentries", "sidecars", "workloadentries"]
+#     verbs: ["get", "list", "watch"]
 
-  - apiGroups: ["security.istio.io"]
-    resources: ["authorizationpolicies", "peerauthentications"]
-    verbs: ["get", "list", "watch"]
+#   - apiGroups: ["security.istio.io"]
+#     resources: ["authorizationpolicies", "peerauthentications"]
+#     verbs: ["get", "list", "watch"]
 
-  - apiGroups: ["rbac.istio.io"]
-    resources: ["serviceroles", "servicerolebindings"]
-    verbs: ["get", "list", "watch"]
+#   - apiGroups: ["rbac.istio.io"]
+#     resources: ["serviceroles", "servicerolebindings"]
+#     verbs: ["get", "list", "watch"]
 
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: kiali-cluster-role-binding
-subjects:
-  - kind: ServiceAccount
-    name: kiali
-    namespace: kiali-system
-roleRef:
-  kind: ClusterRole
-  name: kiali-cluster-role
-  apiGroup: rbac.authorization.k8s.io
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: kiali-cluster-role-binding
+# subjects:
+#   - kind: ServiceAccount
+#     name: kiali
+#     namespace: kiali-system
+# roleRef:
+#   kind: ClusterRole
+#   name: kiali-cluster-role
+#   apiGroup: rbac.authorization.k8s.io
