@@ -78,7 +78,8 @@ appsofapps
     k apply -f ./argocd-apps/apps.yaml
         update: 
             awsalb: clusterName, region, vpcId
-
+            karpenter: serviceAccount role-arn, clusterName, interruptionQueue
+            EC2NodeClass: role, subnets, securityGroup
     k apply -f ./argocd-apps/cluster-issuers.yaml
     k apply -f ./argocd-apps/cluster-roles.yaml
     k apply -f ./argocd-apps/secret-stores.yaml
