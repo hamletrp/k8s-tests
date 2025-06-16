@@ -13,4 +13,4 @@ controller:
     - name: CLUSTER_NAME
       value: "cluster-lab-14"
     - name: CLUSTER_ENDPOINT
-      value: "https://BA16A3C4AFEF1CBB3319D0FE4D14C2DF.gr7.us-east-1.eks.amazonaws.com"
+      value: "https://E4FCA6C11DAD68BBE2202E4A02354DEF.gr7.us-east-1.eks.amazonaws.com"

@@ -32,7 +32,7 @@ spec:
             - name: CLUSTER_NAME
               value: "cluster-lab-14"
             - name: CLUSTER_ENDPOINT
-              value: "https://1720E41D5BABDD46FFDD4424A29D2E6C.gr7.us-east-1.eks.amazonaws.com"
+              value: "https://E4FCA6C11DAD68BBE2202E4A02354DEF.gr7.us-east-1.eks.amazonaws.com"
   destination:
     server: https://kubernetes.default.svc
     namespace: karpenter
