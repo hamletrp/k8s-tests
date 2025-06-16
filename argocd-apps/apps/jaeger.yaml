@@ -53,7 +53,13 @@ spec:
 
         # Storage options - use memory for basic setup (for prod: use Elasticsearch or other)
         storage:
-          type: memory
+          type: cassandra
+          cassandra:
+            tolerations:
+              - key: "workload-type"
+                operator: "Equal"
+                value: "regular"
+                effect: "NoSchedule"
 
         # UI basic customization (optional)
         ui:
