@@ -34,21 +34,24 @@ set gatewayClass, gateway and HTTPRoute
     register certificate 
         k delete -f ./gitops-meshappcolor/gateways-and-routes/doordress.us.cert.yaml
         k apply -f ./gitops-meshappcolor/gateways-and-routes/doordress.us.cert.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/banphomat.com.cert.yaml
 
     apply configmap and gateway
         k delete -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-1.yaml
         k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-1.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-banphomat.yaml
     
     apply routes
         k delete -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-1.yaml
         k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-1.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-banphomat.yaml
     
 --- 
 test app 
     label the namespace for automatic istio injection 
         kubectl label namespace istio-system istio-injection=enabled
 
-    deploy the app 
+    deploy the bookinfo app 
         kubectl -n istio-system apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo.yaml
 
     patch deploys to tolerate 

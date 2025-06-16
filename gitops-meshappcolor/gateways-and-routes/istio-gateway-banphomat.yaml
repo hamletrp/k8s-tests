@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio-gateway-banphomat-options
+  namespace: istio-system
+data:
+  service: |
+    metadata:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+        service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
+        # or service.beta.kubernetes.io/aws-load-balancer-subnets: subnet-xxxx,subnet-yyyy
+  deployment: |
+    spec:
+      template:
+        spec:
+          tolerations:
+            - key: workload-type
+              operator: Equal
+              value: regular
+              effect: NoSchedule
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+    name: istio-gateway-banphomat
+    namespace: istio-system
+spec:
+  gatewayClassName: istio
+  infrastructure:
+    parametersRef:
+      group: ""
+      kind: ConfigMap
+      name: istio-gateway-banphomat-options
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: "www.banphomat.com"
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: "www.banphomat.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: banphomat-com

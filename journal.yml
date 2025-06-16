@@ -51,7 +51,6 @@ TODO:
         to build a multi cluster [ 3 ] argo applicationset 
                 https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
 
-        argo-workflows chart 
         istio egres
         https://www.devopsschool.com/interview/
         terraform best practices 
@@ -59,6 +58,7 @@ TODO:
         ci/cd pipelines on k8s 
         get a job 
         ELK Stack
+        argo-workflows chart
         argo rollouts 
             canary vs bluegreen strategies 
         OPA Gatekeeper → enforce policies → e.g. "nobody can delete certain namespaces".
