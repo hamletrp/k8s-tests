@@ -47,17 +47,22 @@ TODO:
     * goal 
         responsibilities of a k8s application management
 
+    * randome questions 
+        must have k8s alerts
+
     - Todos
         to build a multi cluster [ 3 ] argo applicationset 
-                https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
+            https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
 
-        argo-workflows chart 
         istio egres
         https://www.devopsschool.com/interview/
         terraform best practices 
         to read cluster autoscaler prod grade setup
-        ci/cd pipelines on k8s 
         get a job 
+        argo-workflows chart 
+        ci/cd pipelines on k8s 
+        certs order 
+            eks #here
         ELK Stack
         argo rollouts 
             canary vs bluegreen strategies 

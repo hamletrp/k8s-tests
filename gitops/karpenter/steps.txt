@@ -82,7 +82,35 @@ helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --vers
 
 ---
 
-k create deploy stress --image=busybox --replicas=350 -- sleep 3600
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stress
+spec:
+  replicas: 350
+  selector:
+    matchLabels:
+      app: stress
+  template:
+    metadata:
+      labels:
+        app: stress
+    spec:
+      tolerations:
+        - key: "workload-type"
+          operator: "Equal"
+          value: "regular"
+          effect: "NoSchedule"
+        - key: karpenter.sh/capacity-type
+          value: spot
+          effect: NoSchedule
+      containers:
+        - name: stress
+          image: busybox
+          command: ["sleep", "3600"]
+EOF
+
 k scale deploy stress --replicas 600
 k delete deploy stress
 
