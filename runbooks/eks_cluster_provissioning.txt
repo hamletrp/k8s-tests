@@ -76,7 +76,9 @@ appsofapps
     kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
     kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
     k apply -f ./argocd-apps/apps.yaml
-        update: 
+        update prior to ^^ : 
+            terraform resources 
+            service accounts 
             awsalb: clusterName, region, vpcId
             karpenter: serviceAccount role-arn, clusterName, interruptionQueue
             EC2NodeClass: role, subnets, securityGroup
@@ -114,7 +116,7 @@ to run
 
 OJO TO DELETE 
     eksctl delete cluster --region=us-east-1 --name cluster-lab-12
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-13
+    eksctl delete cluster --region=us-east-1 --name cluster-lab-14
 
 --- 
 
