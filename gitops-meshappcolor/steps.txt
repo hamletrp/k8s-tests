@@ -38,10 +38,12 @@ set gatewayClass, gateway and HTTPRoute
     apply configmap and gateway
         k delete -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-1.yaml
         k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-1.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-gateway-dashb.yaml
     
     apply routes
         k delete -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-1.yaml
         k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-1.yaml
+        k apply -f ./gitops-meshappcolor/gateways-and-routes/istio-httproute-dashb.yaml
     
 --- 
 test app 

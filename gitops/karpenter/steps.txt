@@ -114,6 +114,10 @@ EOF
 k scale deploy stress --replicas 600
 k delete deploy stress
 
+kubectl drain ip-192-168-102-26.ec2.internal --ignore-daemonsets --delete-emptydir-data
+kubectl drain ip-192-168-109-161.ec2.internal --ignore-daemonsets --delete-emptydir-data
+
+
 ---
 
 kubectl get pods -n default --field-selector=status.phase!=Running -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'

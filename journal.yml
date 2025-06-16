@@ -46,6 +46,21 @@ etcd back-up
 TODO:
     * goal 
         responsibilities of a k8s application management
+            - Kubernetes Administrator (CKA)
+                - Manages, configures, and maintains K8s clusters.
+                - Handles networking, RBAC, upgrades, backups, and logging.
+            - Cloud Engineer / Cloud Infrastructure Engineer
+                - Provisions K8s clusters on cloud platforms (EKS, AKS, GKE).
+                - Works with Terraform, Pulumi, or AWS CloudFormation.
+            - DevOps Engineer / Site Reliability Engineer (SRE)
+                - Automates CI/CD pipelines and cluster operations.
+                - Ensures scalability, reliability, and observability of workloads.
+            - Platform Engineer
+                - Builds internal developer platforms using Kubernetes.
+                - Standardizes tools like Argo CD, Istio, Karpenter, ExternalDNS, etc.
+            - System Reliability Engineer (SRE)
+                - Monitors system health, manages incidents, and tunes performance.
+                - Works on autoscaling, alerting, and failure remediation strategies.
 
     * randome questions 
         must have k8s alerts
@@ -59,6 +74,7 @@ TODO:
         terraform best practices 
         to read cluster autoscaler prod grade setup
         get a job 
+        eks cluster provisioning, management, maintenance and disaster recovery plans ?
         argo-workflows chart 
         ci/cd pipelines on k8s 
         certs order 
