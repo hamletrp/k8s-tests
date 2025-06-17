@@ -5,20 +5,23 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - list:
-      elements:
-        - appName: loki-stack
-          namespace: logging
-          chart: loki-stack
-          repoURL: https://grafana.github.io/helm-charts
-          targetRevision: 2.10.2
-          valuesFile: app-charts/loki-stack/values-prod.yaml
-        - appName: cert-manager
-          namespace: cert-manager
-          chart: cert-manager
-          repoURL: https://charts.jetstack.io
-          targetRevision: v1.17.2
-          valuesFile: app-charts/cert-manager/values-prod.yaml
+    - matrix:
+        generators:
+          - clusters: {}
+          - list:
+              elements:
+                - appName: loki-stack
+                  namespace: logging
+                  chart: loki-stack
+                  repoURL: https://grafana.github.io/helm-charts
+                  targetRevision: 2.10.2
+                  valuesFile: app-charts/loki-stack/values-prod.yaml
+                - appName: cert-manager
+                  namespace: cert-manager
+                  chart: cert-manager
+                  repoURL: https://charts.jetstack.io
+                  targetRevision: v1.17.2
+                  valuesFile: app-charts/cert-manager/values-prod.yaml
   template:
     metadata:
       name: "{{appName}}"
@@ -38,7 +41,8 @@ spec:
           targetRevision: cluster-lab-13
           ref: values 
       destination:
-        name: in-cluster
+        name: "{{name}}"
+        server: "{{server}}"
         namespace: "{{namespace}}"
       syncPolicy:
         automated:

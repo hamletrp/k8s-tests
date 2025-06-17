@@ -8,12 +8,11 @@ add cluster
 
     kubectl create token argocd-manager -n default
     
-    argocd cluster add \
-        --name <cluster-name> \
-        --server https://<API-SERVER> \
-        --token <TOKEN> \
-        --in-cluster=false \
-        --name <CLUSTER-NAME>
+    argocd cluster add hamletrp@cluster-lab-14.us-east-1.eksctl.io \
+        --name "cluster-lab-14.us-east-1.eksctl.io"
+
+    argocd cluster list
+
 --- 
 generators:
   reference with {{name}} or {{server}}:
