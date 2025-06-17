@@ -44,9 +44,9 @@ spec:
         operator: In
         values: [ "4", "8" ]
         # values: ["4", "8", "16", "32"]
-      - key: "topology.kubernetes.io/zone"
-        operator: In
-        values: [ "us-east-1c", "us-east-1b" ]
+      # - key: "topology.kubernetes.io/zone"
+      #   operator: In
+      #   values: [ "us-east-1c", "us-east-1b" ]
       - key: "kubernetes.io/arch"
         operator: In
         values: [ "arm64", "amd64" ]
