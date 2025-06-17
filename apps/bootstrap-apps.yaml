@@ -29,7 +29,7 @@ spec:
           helm:
             releaseName: "{{appName}}"
             valueFiles:
-              - $values/"{{valuesFile}}"
+              - $values/{{valuesFile}}
         - repoURL: https://github.com/hamletrp/k8s-tests.git
           targetRevision: HEAD
           ref: values 
