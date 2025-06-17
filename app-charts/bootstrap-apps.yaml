@@ -13,8 +13,12 @@ spec:
           repoURL: https://grafana.github.io/helm-charts
           targetRevision: 2.10.2
           valuesFile: app-charts/loki-stack/values-prod.yaml
-        # - appName: ingress-nginx
-        #   namespace: ingress-nginx
+        - appName: cert-manager
+          namespace: cert-manager
+          chart: cert-manager
+          repoURL: https://charts.jetstack.io
+          targetRevision: v1.17.2
+          valuesFile: app-charts/cert-manager/values-prod.yaml
   template:
     metadata:
       name: "{{appName}}"
@@ -29,7 +33,6 @@ spec:
           helm:
             releaseName: "{{appName}}"
             valueFiles:
-              # - $values/app-charts/loki-stack/values-prod.yaml
               - $values/{{valuesFile}}
         - repoURL: https://github.com/hamletrp/k8s-tests.git
           targetRevision: cluster-lab-13
