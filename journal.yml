@@ -70,6 +70,7 @@ TODO:
             https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
 
         istio egres
+        kustomize apply all resources in order
         https://www.devopsschool.com/interview/
         terraform best practices 
         to read cluster autoscaler prod grade setup

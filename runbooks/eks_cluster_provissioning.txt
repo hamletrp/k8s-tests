@@ -91,7 +91,6 @@ appsofapps
         set: subnets & security groups
     k apply -f ./argocd-apps/nodepools.yaml
         set: subnets & security groups
-    TODO: kustomize apply ^^ in order
 
 
     to patch controllers and deployments
