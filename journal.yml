@@ -68,6 +68,8 @@ TODO:
     - Todos
         to build a multi cluster [ 3 ] argo applicationset 
             https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
+            appset for loki
+            appset for enduser app
 
         istio egres
         kustomize apply all resources in order

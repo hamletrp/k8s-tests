@@ -36,14 +36,14 @@ Manual install
             k port-forward service/argocd-server -n argocd 9000:443
 
         htpasswd -bnBC 10 "" 'mySuperSecurepwd' | tr -d ':\n'
-            $2y$10$G2uFnx9qn.7HxGOhc51W8.FWVJz.riTIyalc0qymMqtR.xQ8iKY3.
+            $2y$10$p8B1ul1ThK3mMeJ.6p9JIOUFSJg/nQaiN92O6/yTS3fDyAd5JhBh.
 
         aws secretsmanager put-secret-value \
         --secret-id argocd-admin-secret \
         --region us-east-1 \
         --secret-string '{
-            "admin.password": "$2y$10$G2uFnx9qn.7HxGOhc51W8.FWVJz.riTIyalc0qymMqtR.xQ8iKY3.",
-            "admin.passwordMtime": "2025-06-04T11:00:00Z"
+            "admin.password": "$2y$10$p8B1ul1ThK3mMeJ.6p9JIOUFSJg/nQaiN92O6/yTS3fDyAd5JhBh.",
+            "admin.passwordMtime": "2025-06-17T09:30:00Z"
         }'
 
         to register external secrets 
@@ -51,13 +51,15 @@ Manual install
 
         get admin pwd - MRONjYyLaOlWDcum
             k -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-            k -n argocd get secret argocd-secret -o jsonpath="{.data.password}" | base64 -d; echo
+            kubectl -n argocd get secret argocd-secret \
+            -o jsonpath="{.data.admin\.password}" | base64 --decode && echo
+
 
         log int argo cli 
             k port-forward service/argocd-server -n argocd 9000:443
 
             argocd login localhost:9000 --username admin --password MRONjYyLaOlWDcum --insecure
-            argocd login argocd.doordress.us:8080 --username admin --password XkvF7fiXa9j5O-LC --insecure
+            argocd login localhost:8080 --username admin --password mySuperSecurepwd --insecure
 
 
         Ingress setup 

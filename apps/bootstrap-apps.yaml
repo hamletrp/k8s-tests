@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: main
+spec:
+  generators:
+  - list:
+      elements:
+        - appName: loki-stack
+          namespace: logging
+          repoURL: https://grafana.github.io/helm-charts
+          targetRevision: 2.10.2
+          valuesFile: loki/prod/values.yaml
+        # - appName: ingress-nginx
+        #   namespace: ingress-nginx
+  template:
+    metadata:
+      name: "{{appName}}"
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: bootstrap
+      source:
+        repoURL: "{{repoURL}}"
+        targetRevision: "{{targetRevision}}"
+        helm:
+          releaseName: "{{appName}}"
+          valueFiles:
+            - '{{valuesFile}}'
+      destination:
+        name: in-cluster
+        namespace: "{{namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
