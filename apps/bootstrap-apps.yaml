@@ -9,6 +9,7 @@ spec:
       elements:
         - appName: loki-stack
           namespace: logging
+          chart: loki-stack
           repoURL: https://grafana.github.io/helm-charts
           targetRevision: 2.10.2
           valuesFile: values/loki/prod/values.yaml
@@ -22,6 +23,7 @@ spec:
     spec:
       project: default
       source:
+        chart: "{{chart}}"
         repoURL: "{{repoURL}}"
         targetRevision: "{{targetRevision}}"
         helm:
