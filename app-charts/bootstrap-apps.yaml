@@ -12,7 +12,7 @@ spec:
           chart: loki-stack
           repoURL: https://grafana.github.io/helm-charts
           targetRevision: 2.10.2
-          valuesFile: apps/loki-stack/values/values-prod.yaml
+          valuesFile: app-charts/loki-stack/values-prod.yaml
         # - appName: ingress-nginx
         #   namespace: ingress-nginx
   template:
@@ -29,8 +29,8 @@ spec:
           helm:
             releaseName: "{{appName}}"
             valueFiles:
-              - $values/apps/loki-stack/values/values-prod.yaml
-              # - $values/{{valuesFile}}
+              # - $values/apps/loki-stack/values/values-prod.yaml
+              - $values/{{valuesFile}}
         - repoURL: https://github.com/hamletrp/k8s-tests.git
           targetRevision: HEAD
           ref: values 
