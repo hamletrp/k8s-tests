@@ -42,7 +42,6 @@ spec:
           ref: values 
       destination:
         name: "{{name}}"
-        server: "{{server}}"
         namespace: "{{namespace}}"
       syncPolicy:
         automated:
