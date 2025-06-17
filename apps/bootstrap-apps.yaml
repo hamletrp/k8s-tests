@@ -10,7 +10,7 @@ spec:
           namespace: logging
           repoURL: https://grafana.github.io/helm-charts
           targetRevision: 2.10.2
-          valuesFile: loki/prod/values.yaml
+          valuesFile: values/loki/prod/values.yaml
         # - appName: ingress-nginx
         #   namespace: ingress-nginx
   template:
