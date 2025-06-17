@@ -29,10 +29,10 @@ spec:
           helm:
             releaseName: "{{appName}}"
             valueFiles:
-              - $values/app-charts/loki-stack/values-prod.yaml
-              # - $values/{{valuesFile}}
+              # - $values/app-charts/loki-stack/values-prod.yaml
+              - $values/{{valuesFile}}
         - repoURL: https://github.com/hamletrp/k8s-tests.git
-          targetRevision: HEAD
+          targetRevision: cluster-lab-13
           ref: values 
       destination:
         name: in-cluster
