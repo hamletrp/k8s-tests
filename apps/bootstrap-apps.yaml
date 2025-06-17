@@ -20,7 +20,7 @@ spec:
       annotations:
         argocd.argoproj.io/manifest-generate-paths: ".;.."
     spec:
-      project: bootstrap
+      project: default
       source:
         repoURL: "{{repoURL}}"
         targetRevision: "{{targetRevision}}"
