@@ -12,7 +12,7 @@ spec:
           chart: loki-stack
           repoURL: https://grafana.github.io/helm-charts
           targetRevision: 2.10.2
-          valuesFile: values/prod/values.yaml
+          valuesFile: apps/loki-stack/values/values-prod.yaml
         # - appName: ingress-nginx
         #   namespace: ingress-nginx
   template:
