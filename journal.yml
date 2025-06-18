@@ -1,5 +1,60 @@
 
-some tools 
+
+- TOP Alerts
+    eks cluster provisioning, management, maintenance and disaster recovery plans ?
+
+    1. Cluster Health & Availability
+        | **Alert**                   | **Reason**                                                         |
+        | --------------------------- | ------------------------------------------------------------------ |
+        | `KubeAPIDown`               | API server is unreachable. Core functionality at risk.             |
+        | `KubeSchedulerDown`         | Scheduler not running – workloads won’t be assigned.               |
+        | `KubeControllerManagerDown` | Core controller not functioning – e.g., for deployments, replicas. |
+        | `NodeDown`                  | Node is not Ready for over 5 minutes.                              |
+        | `HighNumberOfNotReadyNodes` | More than 30% of nodes are not ready.                              |
+        | `HighEtcdDiskUsage`         | etcd disk almost full – cluster could become unstable.             |
+
+    2. Resource Pressure
+        | **Alert**                       | **Reason**                                             |
+        | ------------------------------- | ------------------------------------------------------ |
+        | `NodeMemoryPressure`            | Memory near capacity.                                  |
+        | `NodeDiskPressure`              | Disk usage high, may affect performance or crash pods. |
+        | `KubeNodeHighCpuLoad`           | CPU load is very high. May affect pod scheduling.      |
+        | `ContainerMemoryUsageNearLimit` | Container close to OOMKilled.                          |
+        | `PodCrashLooping`               | Indicates app instability.                             |
+
+    3. Workload Failures
+        | **Alert**                         | **Reason**                                |
+        | --------------------------------- | ----------------------------------------- |
+        | `KubeDeploymentReplicasMismatch`  | Deployment desired ≠ available pods.      |
+        | `KubeStatefulSetReplicasMismatch` | Same as above but for StatefulSets.       |
+        | `KubeJobFailed`                   | Kubernetes Job failed to complete.        |
+        | `KubePodNotReady`                 | Pod stuck in Pending or Init state.       |
+        | `KubeDaemonSetRolloutStuck`       | DaemonSet cannot complete rolling update. |
+
+    4. Security and Access
+        | **Alert**                                 | **Reason**                    |
+        | ----------------------------------------- | ----------------------------- |
+        | `KubeNamespaceQuotaExceeded`              | Resource quota exceeded.      |
+        | `RBACAccessDenied` (if logging supported) | Someone is denied via RBAC.   |
+        | `ServiceAccountTokenErrors`               | Token expired or not mounted. |
+
+    5. Network and Ingress  
+        | **Alert**                | **Reason**                                                |
+        | ------------------------ | --------------------------------------------------------- |
+        | `KubeServiceDown`        | Service endpoints missing or not matching selectors.      |
+        | `KubeIngressDown`        | Ingress not routing properly or failing readiness probes. |
+        | `CoreDNSDown`            | DNS not resolving inside cluster.                         |
+        | `KubeNetworkUnavailable` | Overlay or CNI failure.                                   |
+    
+    6. Prometheus Monitoring Itself
+        | **Alert**                 | **Reason**                                 |
+        | ------------------------- | ------------------------------------------ |
+        | `PrometheusDown`          | Self-monitoring fails.                     |
+        | `PrometheusTargetMissing` | Scrape target disappeared (e.g., Kubelet). |
+        | `PrometheusRuleFailures`  | PromQL rules failing to evaluate.          |
+
+
+- some tools 
     Basic kubectl / CLI tools
         k9s basics 
         kubectx / kubens
@@ -37,15 +92,15 @@ some tools
         lens 
         Rancher
 
-etcd back-up 
-    ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
-    --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
-    snapshot save <backup-file-location>    
+    etcd back-up 
+        ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+        --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
+        snapshot save <backup-file-location>    
 
 
-TODO:
+Journal:
     * goal 
-        responsibilities of a k8s application management
+        Responsibilities of a k8s application management
             - Kubernetes Administrator (CKA)
                 - Manages, configures, and maintains K8s clusters.
                 - Handles networking, RBAC, upgrades, backups, and logging.
@@ -63,25 +118,28 @@ TODO:
                 - Works on autoscaling, alerting, and failure remediation strategies.
 
     * randome questions 
-        must have k8s alerts
+        nobody can delete certain namespaces "mistakenly"
 
     - Todos
         to build a multi cluster [ 3 ] argo applicationset 
             https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
-            appset for loki
             appset for enduser app
-
+                helm 
+                    local repo 
+                    remote repo 
+                kustomize 
+        sample multi cluster from json file 
+            https://github.com/devopshobbies/argocd-tutorial/blob/main/v09-argocd-applicationSet-1/git-generator/files-subtype/git-generator-ex1.yml
         istio egres
-        kustomize apply all resources in order
+        the recommended way to provide IAM permissions for "aws-ebs-csi-driver" addon is via pod identity associations; after addon creation is completed, run `eksctl utils migrate-to-pod-identity`
         https://www.devopsschool.com/interview/
         terraform best practices 
         to read cluster autoscaler prod grade setup
         get a job 
-        eks cluster provisioning, management, maintenance and disaster recovery plans ?
         argo-workflows chart 
         ci/cd pipelines on k8s 
-        certs order 
-            eks #here
+        aws certifications order 
+            ...
         ELK Stack
         argo rollouts 
             canary vs bluegreen strategies 

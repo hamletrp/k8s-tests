@@ -1,0 +1,30 @@
+to check 
+    meshConfig:
+    outboundTrafficPolicy:
+        mode: ALLOW_ANY  # (default)
+
+or restrict and control
+    apiVersion: networking.istio.io/v1beta1
+    kind: ServiceEntry
+    metadata:
+    name: external-google-api
+    spec:
+    hosts:
+        - www.googleapis.com
+    ports:
+        - number: 443
+        name: https
+        protocol: HTTPS
+    resolution: DNS
+    location: MESH_EXTERNAL
+
+Option 3: Route via Egress Gateway
+    This setup funnels external traffic through a dedicated Egress Gateway, ideal for static IP or firewall control.
+
+    Steps:
+        Define a ServiceEntry
+        Define a VirtualService targeting the Egress Gateway
+        Configure the DestinationRule
+
+
+

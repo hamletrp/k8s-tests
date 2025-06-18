@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: webapps-main
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - clusters: {}
+          - list:
+              elements:
+                - appName: webapp1
+                  namespace: webapps-dev
+                  env: dev
+                  repoURL: https://github.com/hamletrp/k8s-tests.git
+                  targetRevision: cluster-lab-13
+                  # valuesFile: app-charts/loki-stack/values-prod.yaml
+  template:
+    metadata:
+      name: "{{appName}}"
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: default
+      source:
+        repoURL: "{{repoURL}}"
+        targetRevision: "{{targetRevision}}"
+        path: "charts/{{appName}}"
+        helm:
+          releaseName: "{{appName}}"
+          valueFiles:
+          - "values.yaml"
+          - "values-{{env}}.yaml"
+      destination:
+        server: '{{server}}'
+        namespace: "{{namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -1,5 +1,5 @@
 clusterName: "cluster-lab-13"
-clusterEndpoint: "https://80075B9122585ECE5A971F10582AB387.gr7.us-east-1.eks.amazonaws.com"
+clusterEndpoint: "https://1F9D6DF7A11A3927DB81D4E7170E908A.gr7.us-east-1.eks.amazonaws.com"
 replicas: 2
 webhookCertManager:
   enabled: false
@@ -13,4 +13,4 @@ controller:
     - name: CLUSTER_NAME
       value: "cluster-lab-13"
     - name: CLUSTER_ENDPOINT
-      value: "https://80075B9122585ECE5A971F10582AB387.gr7.us-east-1.eks.amazonaws.com"
+      value: "https://1F9D6DF7A11A3927DB81D4E7170E908A.gr7.us-east-1.eks.amazonaws.com"
