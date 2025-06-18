@@ -13,17 +13,13 @@ spec:
                 - appName: webapp1
                   namespace: webapps-dev
                   env: dev
-                  type: helm
                   repoURL: https://github.com/hamletrp/k8s-tests.git
                   targetRevision: cluster-lab-13
-                  path: "app-charts-enduser/charts/{{appName}}"
-                - appName: kustom-webapp1
-                  namespace: kusapp-dev
-                  env: dev
-                  type: kustomize
+                - appName: webapp1
+                  namespace: webapps-prod
+                  env: prod
                   repoURL: https://github.com/hamletrp/k8s-tests.git
                   targetRevision: cluster-lab-13
-                  path: "app-charts-enduser/charts/{{appName}}/overlays/{{env}}"
   template:
     metadata:
       name: "{{appName}}-{{env}}"
@@ -34,7 +30,12 @@ spec:
       source:
         repoURL: "{{repoURL}}"
         targetRevision: "{{targetRevision}}"
-        path: "{{path}}"
+        path: "app-charts-enduser/charts/{{appName}}"
+        helm:
+          releaseName: "{{appName}}-{{env}}"
+          valueFiles:
+          - "values.yaml"
+          - "values-{{env}}.yaml"
       destination:
         server: '{{server}}'
         namespace: "{{namespace}}"
@@ -44,11 +45,3 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-    {{- if eq .type "helm" }}
-      source:
-        helm:
-          releaseName: "{{appName}}-{{env}}"
-          valueFiles:
-          - "values.yaml"
-          - "values-{{env}}.yaml"
-      {{- end }}

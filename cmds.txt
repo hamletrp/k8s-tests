@@ -87,6 +87,58 @@ karpenter
 
     kubectl rollout restart deployment kiali -n istio-system
 
+sample container image updates 
+  github actios :
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Update image tag for app1 and app2
+        run: |
+          yq e '.app1.image.tag = "v1.2.3"' -i values.yaml
+          yq e '.app2.image.tag = "v2.4.6"' -i values.yaml
+
+      - name: Commit & push
+        run: |
+          git config user.name "ci-bot"
+          git config user.email "ci@bot.local"
+          git commit -am "ci: bump image tags"
+          git push
+
+  app1:
+    deployments:
+      - name: service-a
+        containers:
+          - name: api
+            image:
+              repository: myrepo/api
+              tag: v1.2.3
+          - name: sidecar
+            image:
+              repository: myrepo/sidecar
+              tag: v1.2.3
+      - name: service-b
+        containers:
+          - name: worker
+            image:
+              repository: myrepo/worker
+              tag: v1.2.3
+          - name: proxy
+            image:
+              repository: myrepo/proxy
+              tag: v1.2.3
+          - name: logger
+            image:
+              repository: myrepo/logger
+              tag: v1.2.3
+
+  cmd:
+    specific one: 
+      yq e '(.app1.deployments[].containers[] | select(.name == "api")).image.tag = "v1.2.3"' -i values.yaml
+    all 
+      yq e '.app1.deployments[].containers[].image.tag = "v1.2.3"' -i values.yaml
+
+
+
 
 
 

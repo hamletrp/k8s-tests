@@ -121,13 +121,23 @@ Journal:
         nobody can delete certain namespaces "mistakenly"
 
     - Todos
+        night 
+            kustmize vs helm 
         to build a multi cluster [ 3 ] argo applicationset 
             https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
             appset for enduser app
                 helm 
-                    local repo 
-                    remote repo 
                 kustomize 
+        ci/cd pipeline
+            container-reg-1 
+            gitops-repo-1
+            to see in detail
+                1. GitOps Workflow with CI Pipeline Updating values.yaml
+                2. Use [Argo CD Image Updater] (Fully Declarative)
+                3. Helmfile + CI Pipeline
+
+
+
         sample multi cluster from json file 
             https://github.com/devopshobbies/argocd-tutorial/blob/main/v09-argocd-applicationSet-1/git-generator/files-subtype/git-generator-ex1.yml
         istio egres
