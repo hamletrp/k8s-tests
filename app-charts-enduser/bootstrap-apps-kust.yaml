@@ -27,7 +27,7 @@ spec:
       source:
         repoURL: "{{repoURL}}"
         targetRevision: "{{targetRevision}}"
-        path: "app-charts-enduser/charts/{{appName}}"
+        path: "{{path}}"
         # kustomize:
       destination:
         server: '{{server}}'
