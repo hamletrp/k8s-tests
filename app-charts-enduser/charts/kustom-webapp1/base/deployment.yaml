@@ -4,7 +4,13 @@ metadata:
   name: mywebapp
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      api: my-api
   template:
+    metadata:
+      labels:
+        api: my-api
     spec:
       tolerations:
         - key: workload-type
