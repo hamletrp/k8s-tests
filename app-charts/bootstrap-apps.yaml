@@ -10,6 +10,12 @@ spec:
           - clusters: {}
           - list:
               elements:
+                - appName: stakater-reloader
+                  namespace: core-system
+                  chart: reloader
+                  repoURL: https://stakater.github.io/stakater-charts
+                  targetRevision: 2.1.4
+                  valuesFile: app-charts/stakater-reloader/values-prod.yaml
                 - appName: loki-stack
                   namespace: logging
                   chart: loki-stack

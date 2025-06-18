@@ -1,0 +1,13 @@
+kubernetes:
+  host: https://kubernetes.default
+
+reloader:
+  autoReloadAll: true
+  isArgoRollouts: true
+  deployment:
+    replicas: 1
+    tolerations:
+      - key: workload-type
+        operator: Equal
+        value: regular
+        effect: NoSchedule
