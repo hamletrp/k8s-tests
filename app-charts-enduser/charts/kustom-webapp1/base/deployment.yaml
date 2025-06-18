@@ -7,6 +7,7 @@ spec:
   selector:
     matchLabels:
       api: my-api
+      name: simple-webapp
   template:
     metadata:
       labels:
