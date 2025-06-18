@@ -3,4 +3,4 @@ replicas: 1
 
 configmap:
   data:
-    CUSTOM_HEADER: 'This is on the DEVVVVVV environment!'
+    CUSTOM_HEADER: 'This is on the DEVVVVVV-2 environment!'
