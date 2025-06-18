@@ -11,6 +11,13 @@ spec:
           - list:
               elements:
                 - appName: kustom-webapp1
+                  namespace: kusapp-prod
+                  env: prod
+                  type: kustomize
+                  repoURL: https://github.com/hamletrp/k8s-tests.git
+                  targetRevision: cluster-lab-13
+                  path: "app-charts-enduser/charts/kustom-webapp1/overlays/prod"
+                - appName: kustom-webapp1
                   namespace: kusapp-dev
                   env: dev
                   type: kustomize
