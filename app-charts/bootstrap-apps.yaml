@@ -42,6 +42,7 @@ spec:
           helm:
             releaseName: "{{appName}}"
             valueFiles:
+              # - "values.yaml"
               - $values/{{valuesFile}}
         - repoURL: https://github.com/hamletrp/k8s-tests.git
           targetRevision: cluster-lab-13
