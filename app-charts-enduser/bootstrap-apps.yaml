@@ -15,10 +15,14 @@ spec:
                   env: dev
                   repoURL: https://github.com/hamletrp/k8s-tests.git
                   targetRevision: cluster-lab-13
-                  # valuesFile: app-charts/loki-stack/values-prod.yaml
+                - appName: webapp1
+                  namespace: webapps-prod
+                  env: prod
+                  repoURL: https://github.com/hamletrp/k8s-tests.git
+                  targetRevision: cluster-lab-13
   template:
     metadata:
-      name: "{{appName}}"
+      name: "{{appName}}-{{env}}"
       annotations:
         argocd.argoproj.io/manifest-generate-paths: ".;.."
     spec:
@@ -28,7 +32,7 @@ spec:
         targetRevision: "{{targetRevision}}"
         path: "app-charts-enduser/charts/{{appName}}"
         helm:
-          releaseName: "{{appName}}"
+          releaseName: "{{appName}}-{{env}}"
           valueFiles:
           - "values.yaml"
           - "values-{{env}}.yaml"
