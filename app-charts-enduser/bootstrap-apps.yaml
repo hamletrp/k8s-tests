@@ -44,11 +44,11 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-      {{- if eq .type "helm" }}
+      '{{- if eq .type "helm" }}'
       source:
         helm:
           releaseName: "{{appName}}-{{env}}"
           valueFiles:
           - "values.yaml"
           - "values-{{env}}.yaml"
-      {{- end }}
+      '{{- end }}'
