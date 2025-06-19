@@ -88,6 +88,10 @@ karpenter
     kubectl rollout restart deployment kiali -n istio-system
 
 sample container image updates 
+commands  
+  docker login ghcr.io -u hamletrp@gmail.com -p tokenxxx
+
+
   github actios :
     steps:
       - uses: actions/checkout@v3

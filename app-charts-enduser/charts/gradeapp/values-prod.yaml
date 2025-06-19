@@ -1,0 +1,8 @@
+appName: gradeapp
+
+port: 3000
+
+image:
+  registry: ghcr.io
+  repo_name: hamletrp/kubernetes-cicd-tutorial
+  tag: latest

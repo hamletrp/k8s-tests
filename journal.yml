@@ -125,17 +125,15 @@ Journal:
             kustmize vs helm 
         to build a multi cluster [ 3 ] argo applicationset 
             https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
-            appset for enduser app
-                helm 
-                kustomize 
         ci/cd pipeline
             container-reg-1 
             gitops-repo-1
             to see in detail
                 1. GitOps Workflow with CI Pipeline Updating values.yaml
-                2. Use [Argo CD Image Updater] (Fully Declarative)
-                3. Helmfile + CI Pipeline
+                    github container registry 
+                    dockerhub container registry 
 
+                2. Use [Argo CD Image Updater] (Fully Declarative)
 
 
         sample multi cluster from json file 

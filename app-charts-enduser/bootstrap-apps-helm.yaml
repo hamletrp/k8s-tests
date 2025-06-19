@@ -10,6 +10,11 @@ spec:
           - clusters: {}
           - list:
               elements:
+                - appName: gradeapp
+                  namespace: gradeapp-prod
+                  env: prod
+                  repoURL: https://github.com/hamletrp/k8s-tests.git
+                  targetRevision: cluster-lab-13
                 - appName: webapp1
                   namespace: webapps-dev
                   env: dev

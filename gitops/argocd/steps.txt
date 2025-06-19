@@ -58,7 +58,7 @@ Manual install
         log int argo cli 
             k port-forward service/argocd-server -n argocd 9000:443
 
-            argocd login localhost:9000 --username admin --password MRONjYyLaOlWDcum --insecure
+            argocd login localhost:9000 --username admin --password 07sdrauH47isrd0z --insecure
             argocd login localhost:8080 --username admin --password mySuperSecurepwd --insecure
 
 
