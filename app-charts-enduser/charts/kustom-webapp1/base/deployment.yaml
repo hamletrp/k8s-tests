@@ -20,7 +20,7 @@ spec:
           effect: NoSchedule
       containers:
       - name: mycontainer
-        image: "devopsjourney1/mywebapp:latest"
+        image: kustomwebapp
         ports:
         - containerPort: 80
         envFrom:

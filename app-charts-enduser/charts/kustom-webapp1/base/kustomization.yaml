@@ -2,6 +2,11 @@ resources:
 - deployment.yaml
 - service.yaml
 
+images:
+  - name: kustomwebapp
+    newName: devopsjourney1/mywebapp
+    newTag: latest
+
 commonLabels:
   app: kustomwebapp
 

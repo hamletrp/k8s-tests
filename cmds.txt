@@ -91,11 +91,12 @@ sample container image updates
 commands  
   docker login ghcr.io -u hamletrp@gmail.com -p tokenxxx
   
-  kubectl create secret docker-registry ghcr-secret \
-  --docker-server=ghcr.io \
-  --docker-username=hamletrp@gmail.com \
-  --docker-password= \
-  --namespace=gradeapp-prod
+  token to push images to regitry
+    kubectl create secret docker-registry ghcr-secret \
+    --docker-server=ghcr.io \
+    --docker-username=hamletrp@gmail.com \
+    --docker-password= \
+    --namespace=gradeapp-prod
 
   curl -X POST http://localhost:3000/grades \
   -H "Content-Type: application/json" \
