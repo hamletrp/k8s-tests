@@ -90,6 +90,13 @@ karpenter
 sample container image updates 
 commands  
   docker login ghcr.io -u hamletrp@gmail.com -p tokenxxx
+  
+  kubectl create secret docker-registry ghcr-secret \
+  --docker-server=ghcr.io \
+  --docker-username=hamletrp@gmail.com \
+  --docker-password= \
+  --namespace=gradeapp-prod
+
 
 
   github actios :
