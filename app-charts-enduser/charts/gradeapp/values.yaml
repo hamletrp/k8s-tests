@@ -1,12 +1,9 @@
 appName: gradeapp
-
 port: 3000
-
 image:
   registry: ghcr.io
   repo_name: hamletrp/kubernetes-cicd-tutorial
-  tag: latest
-
+  tag: fc18e818c933a7865291c228b35fab6bb016dcba
 tolerations:
   - key: "workload-type"
     operator: "Equal"
