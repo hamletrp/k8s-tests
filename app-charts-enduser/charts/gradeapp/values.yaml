@@ -3,7 +3,7 @@ port: 3000
 image:
   registry: ghcr.io
   repo_name: hamletrp/kubernetes-cicd-tutorial
-  tag: fdc72f8980c8831a4165e367b11d370004827cec
+  tag: 727de8f6c6f9069d0e92eac5b1348d7a7f933af4
 tolerations:
   - key: "workload-type"
     operator: "Equal"
