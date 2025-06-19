@@ -97,6 +97,11 @@ commands
   --docker-password= \
   --namespace=gradeapp-prod
 
+  curl -X POST http://localhost:3000/grades \
+  -H "Content-Type: application/json" \
+  -d '{"name": "SRE", "subject": "Hamlet R", "score": 9000000}'
+
+
 
 
   github actios :
