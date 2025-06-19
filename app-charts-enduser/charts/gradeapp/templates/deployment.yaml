@@ -18,7 +18,7 @@ spec:
         {{- toYaml .Values.tolerations | nindent 8 }}
       containers:
       - name: grade-submission-api
-        image: "{{ .Values.image.registry }}{{ .Values.image.repo_name }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.image.registry }}/{{ .Values.image.repo_name }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: {{ .Values.port }}
         resources:
