@@ -7,8 +7,8 @@ image:
   repo_name: hamletrp/kubernetes-cicd-tutorial
   tag: latest
 
-tolerations:
-  - key: "workload-type"
-    operator: "Equal"
-    value: "core"
-    effect: "NoSchedule"
+# tolerations:
+#   - key: "workload-type"
+#     operator: "Equal"
+#     value: "core"
+#     effect: "NoSchedule"
