@@ -98,6 +98,18 @@ commands
     --docker-password= \
     --namespace=gradeapp-prod
 
+
+    --docker-server=https://index.docker.io/v1/
+
+
+    kubectl create secret docker-registry dockerhub-secret \
+    --docker-server=docker.io \
+    --docker-username=hamuretto \
+    --docker-password= \
+    --docker-email=hamletrp@gmail.com \
+    --namespace=gradeapp-prod
+
+
   curl -X POST http://localhost:3000/grades \
   -H "Content-Type: application/json" \
   -d '{"name": "SRE", "subject": "Hamlet R", "score": 9000000}'
@@ -153,6 +165,8 @@ commands
       yq e '(.app1.deployments[].containers[] | select(.name == "api")).image.tag = "v1.2.3"' -i values.yaml
     all 
       yq e '.app1.deployments[].containers[].image.tag = "v1.2.3"' -i values.yaml
+
+    yq e '.images[] |= select(.name == "my-app").newTag = "v1.2.5"' -i kustomization.yaml
 
 
 

@@ -15,7 +15,7 @@ spec:
       values: |
         installCRDs: true
         clusterName: "cluster-lab-13"
-        clusterEndpoint: "https://1F9D6DF7A11A3927DB81D4E7170E908A.gr7.us-east-1.eks.amazonaws.com"
+        clusterEndpoint: "https://114D7A43B56410B2165D3B2CC7D9B7CA.gr7.us-east-1.eks.amazonaws.com"
         replicas: 2
         webhookCertManager:
           enabled: true
@@ -32,7 +32,7 @@ spec:
             - name: CLUSTER_NAME
               value: "cluster-lab-13"
             - name: CLUSTER_ENDPOINT
-              value: "https://1F9D6DF7A11A3927DB81D4E7170E908A.gr7.us-east-1.eks.amazonaws.com"
+              value: "https://114D7A43B56410B2165D3B2CC7D9B7CA.gr7.us-east-1.eks.amazonaws.com"
   destination:
     server: https://kubernetes.default.svc
     namespace: karpenter
