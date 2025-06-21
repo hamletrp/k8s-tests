@@ -1,7 +1,39 @@
 
 
+- https://learnk8s.io/production-best-practices
+- Some questions and answers 
+    https://www.turing.com/interview-questions/kubernetes#intermediate-kubernetes-interview-questions-and-answers
+- must set pod labels - an admission controller following CIS
+    name: such "User API"
+    instance: use the container image tag
+    version: an incremental counter
+    component: such as "API" or "database"
+    part-of: a higher-level application
+    managed-by:  "kubectl" or "Helm" or agocd
+    
+    +business labels: owner, project, business-unit
+    +security related: confidentiality, compliance
+- Paramount imp. k8s config
+    kube-bench and [CIS] Center for Internet Security 
+        Admision controller to enforce Kyverno & Gatekeeper
+    - Disable metadata cloud providers metadata API
 - TOP Alerts
-    eks cluster provisioning, management, maintenance and disaster recovery plans ?
+    K8s - Security 
+        1️⃣ RBAC → restrict who can delete things
+        2️⃣ Admission Controllers → Prevent dangerous actions
+            OPA Gatekeeper → enforce policies → e.g. "nobody can delete certain namespaces".
+            Kyverno → Kubernetes-native policy engine → excellent for protecting resources.
+        3️⃣ Resource finalizers → add guardrails
+        4️⃣ GitOps + Argo CD → Immutable Desired State
+            Deleting something in the cluster that is still in Git → Argo CD will auto-reconcile and restore it.
+        5️⃣ Soft-delete patterns
+            ✅ For certain critical apps → you can implement soft-delete:
+            Mark a resource deletionRequested: true.
+            CI/CD or operators must process this → not direct kubectl delete.
+        6️⃣ Audit and Monitoring
+            to see logs of delete attpemts 
+        7️⃣ Final bonus → Backup and DR
+
 
     1. Cluster Health & Availability
         | **Alert**                   | **Reason**                                                         |
@@ -59,6 +91,9 @@
         k9s basics 
         kubectx / kubens
         stern / kubetail
+            #here testing
+            stern pingpong
+            stern --tail 1 --timestamps --all-namespaces weave
         jq / yq
     GitOps & Deployment
         argocd 
@@ -98,6 +133,29 @@
         snapshot save <backup-file-location>    
 
 
+
+Gremlin as a chaos engineering platform
+    - Inject failures (e.g., CPU, memory, network) to uncover weaknesses
+    - runs a lightweight agent on nodes or containers
+    - Safe and reversible chaos, with scheduling and blast radius controls
+    🧪 Sample Chaos Scenarios with Gremlin
+        - CPU Attack: Simulate high CPU usage on a node to test autoscaling.
+        - Latency Attack: Introduce 300ms latency on an API to test retry logic.
+        - Kill Process Attack: Terminate nginx to test self-healing via K8s deployments.
+        - Blackhole Attack: Drop all outgoing traffic to a database for X seconds.
+    ✅ Benefits
+        Find weaknesses before your users do
+        Improve observability, alerting, and failover
+        Build system confidence with game days and real-world testing
+
+Resume:
+    - start with a 3-4 sentence summary 
+    - relevant work history, think creatively about what you’ve done that relates to reliability.
+    - List your most important skills first
+    - Be short
+    - quantify what you’ve done or what you know about SRE
+    - 
+
 Journal:
     * goal 
         Responsibilities of a k8s application management
@@ -117,36 +175,106 @@ Journal:
                 - Monitors system health, manages incidents, and tunes performance.
                 - Works on autoscaling, alerting, and failure remediation strategies.
 
-    * randome questions 
-        nobody can delete certain namespaces "mistakenly"
+    * randome questions    
+        What does your metrics & monitoring setup look like? 
+            Metrics
+                Metrics Collection
+                    Metrics Server: Collects CPU/memory usage for HPA
+                prometheus-stack
+                    Node Exporter for node-level metrics
+                    Collects detailed cluster metrics
+                Kube-State-Metrics
+                    k8s object state metrics
+
+            Visualization
+                Grafana - Dashboards for metrics
+                    pre-integrated in kube-prometheus-stack
+                    Ready-to-use dashboards for cluster, nodes, etc.    
+                        directly from Grafana community
+
+            Logging
+                Fluentd 
+                Loki (grafana integrated)
+                AWS CloudWatch Logs (Fluent Bit ships logs to CloudWatch)
+
+            Tracing
+                Jaeger or AWS X-Ray
+
+            Alerting
+                Alertmanager (Bundled with Prometheus stack)
+                CloudWatch Alarms
+
+            Optional Add-ons
+                Kubecost
+                Network visibility - Cilium with Hubble
+                K8s policy enforcement - Kyverno, OPA/Gatekeeper
+
+
+        How do you debug issues within your k8s systems?
+            a practical structured approach followed at Fuss
+                0- Monitoring & Alerting Tools
+                    the dashboard and latest events 
+                1- look at alerts
+                    kubectl get events --sort-by=.metadata.creationTimestamp
+                    also look at failed pods 
+                        kubectl get pods --all-namespaces | grep -i evicted
+                2- Check Core Components
+                    the API server
+                    Controller Manager / Scheduler
+                    Etcd: If self-hosted, inspect logs and snapshot status.
+                3- Check on Resource Pressure
+                4- Analized failed pods 
+                5- Check Deployments and ReplicaSets
+                6- Network Troubleshooting
+                    DNS resolution: 
+                        kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup <service>
+                    logs of CNI Plugin: Check logs (e.g., calico-node, aws-node, etc.)
+                    Service / Endpoints:
+                7- RBAC + Access Control
+                    Is there any access denied errors?
+                
+
+        Grafana Cluster management dashboards 
+         * what are all the categories 
+            Kubernetes Monitoring
+            kubernetes cluster prometheous
+            kubernetes cluster auto scaler 
+            kubernetes app metrics 
+            kubernetes deployment metrics 
+            coredns
+            argocd 
+            aws alb cloud watch metrics 
+            loki stack monitoring  
+            nodejs application dashboard 
+            k8s 
+            cert-manager 
+
+            istio 
+
+        grafana loki data sources   
+            how to
+
+        How would you rate test coverage and do you continue to measure that?
+            What about test coverage is important to the team?
+        How do engineers share their work with product teammates in the QA phase?
+        How would you describe the relationship between the operations team, IT, and the rest of the engineering team?
+            everything is about a common understanding
+        How to setup a self-service infrastructure stack for aservice with data store?
+        Sample engineering team values statement
+        terraform all policy types examples 
 
     - Todos
-        night 
-            kustmize vs helm 
-        to build a multi cluster [ 3 ] argo applicationset 
-            https://github.com/devopshobbies/argocd-tutorial/tree/main/v09-argocd-applicationSet-1
-        ci/cd pipeline
-            to see in detail
-                1. GitOps Workflow with CI Pipeline Updating values.yaml
-                    github container registry 
-                        done
-                    dockerhub container registry 
-                2. Use [Argo CD Image Updater] (Fully Declarative)
-
-
-        sample multi cluster from json file 
-            https://github.com/devopshobbies/argocd-tutorial/blob/main/v09-argocd-applicationSet-1/git-generator/files-subtype/git-generator-ex1.yml
-        istio egres
-        helm lint vs kubectl apply -k --dry-run
-        the recommended way to provide IAM permissions for "aws-ebs-csi-driver" addon is via pod identity associations; after addon creation is completed, run `eksctl utils migrate-to-pod-identity`
-        https://www.devopsschool.com/interview/
+        https://github.com/mxssl/sre-interview-prep-guide
         terraform best practices 
-        to read cluster autoscaler prod grade setup
         get a job 
-        argo-workflows chart 
         ci/cd pipelines on k8s 
+            2. Use [Argo CD Image Updater] (Fully Declarative)
+        multiple pod networks in parallel
+        argo-workflows chart 
         aws certifications order 
-            ...
+            AWS Certified DevOps Engineer - Professional
+            CKAD - Certified Kubernetes Application Developer
+            CKA - Certified Kubernetes Administrator
         ELK Stack
         argo rollouts 
             canary vs bluegreen strategies 
@@ -158,6 +286,9 @@ Journal:
                 https://github.com/hamletrp/argocd-examples
             other tutorials 
                 https://github.com/devopshobbies/argocd-tutorial
+            sample multi cluster from json file 
+                https://github.com/devopshobbies/argocd-tutorial/blob/main/v09-argocd-applicationSet-1/git-generator/files-subtype/git-generator-ex1.yml
+
 
         https://www.youtube.com/watch?v=XNXJtxkUKeY&t=644s
             How To Combine Argo Events, Workflows & Pipelines, CD, and Rollouts

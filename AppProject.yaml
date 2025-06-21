@@ -1,0 +1,47 @@
+
+# The Argo CD AppProject is a Kubernetes custom resource used to logically group and enforce policies across a set of Argo CD applications. It helps with multi-tenancy, security boundaries, resource restrictions, and source control scoping.
+
+# | Feature                                    | Description                                                           |
+# | ------------------------------------------ | --------------------------------------------------------------------- |
+# | `sourceRepos`                              | List of allowed Git repos for apps in 
+# | `destinations`                             | Which clusters/namespaces apps can be 
+# | `clusterResourceWhitelist` / `Blacklist`   | Controls which cluster-scoped K8s res 
+# | `namespaceResourceWhitelist` / `Blacklist` | Same, but for namespace-scoped res
+# | `roles`                                    | RBAC roles scoped to project
+# | `orphanedResources`                        | Enables tracking and optionally deleting resources not defined in Git |
+
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: my-team-project
+  namespace: argocd
+spec:
+  description: Project for My Team's Applications
+
+  sourceRepos:
+    - https://github.com/my-org/*
+  
+  destinations:
+    - namespace: my-team-ns
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: "ConfigMap"
+    - group: "apps"
+      kind: "Deployment"
+
+  roles:
+    - name: developer
+      description: Developers with read-only access
+      policies:
+        - p, proj:my-team-project:developer, applications, get, my-team-project/*, allow
+      groups:
+        - my-org:dev-team
+
+  orphanedResources:
+    warn: true

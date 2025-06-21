@@ -1,0 +1,37 @@
+stages:
+  - lint
+  # - deploy
+
+variables:
+  KUBECONFIG: "/builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/kubeconfig"
+
+before_script:
+  - export KUBECONFIG=$(pwd)/kubeconfig
+  - echo "$KUBECONFIG_DATA" | base64 -d > $KUBECONFIG
+
+lint:
+  stage: lint
+  image: alpine/helm
+  script:
+    # lint the chart
+    - helm lint ./charts/my-app
+
+    # check/validate it with the api server
+    - helm template my-release ./charts/my-app --values values.yaml | kubectl apply --dry-run=server -f -
+    
+    # check/validate it with the api server
+    - kubectl kustomize overlays/staging | kubectl apply --dry-run=server -f -
+
+# deploy_helm_staging:
+#   stage: deploy
+#   image: bitnami/kubectl:latest
+#   script:
+#     - helm upgrade --install my-app ./charts/my-app -n staging --values values-staging.yaml
+
+# deploy_kustomize_prod:
+#   stage: deploy
+#   image: bitnami/kubectl:latest
+#   script:
+#     - kubectl apply -k overlays/production
+#   only:
+#     - main
