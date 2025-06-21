@@ -20,3 +20,16 @@ extraArgs:
   scale-down-enabled: true
   scale-down-unneeded-time: 3m
   scale-down-delay-after-add: 5m
+
+tolerations:
+  - key: "workload-type"
+    operator: "Equal"
+    value: "core"
+    effect: "NoSchedule"
+  - key: "CriticalAddonsOnly"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+  - key: ""
+    operator: "Exists"
+    effect: "NoSchedule"
