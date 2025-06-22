@@ -18,15 +18,38 @@ vpc:
 addons:
   - name: coredns
     version: latest
+    configurationValues: |
+      tolerations:
+        - key: "workload-type"
+          operator: "Equal"
+          value: "core"
+          effect: "NoSchedule"
+        - key: "CriticalAddonsOnly"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
   - name: kube-proxy
     version: latest
   - name: eks-pod-identity-agent
     version: latest 
-  - name: aws-ebs-csi-driver
-    serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
-    version: latest
+  # # provisioned via terraform, due to limitations of configurationValues tolerations, afinity et
+  # - name: aws-ebs-csi-driver
+  #   version: latest
+  #   serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
   - name: vpc-cni
     version: latest 
+  - name: metrics-server
+    version: v0.7.2-eksbuild.4
+    configurationValues: |
+      tolerations:
+        - key: "workload-type"
+          operator: "Equal"
+          value: "core"
+          effect: "NoSchedule"
+        - key: "CriticalAddonsOnly"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
 
 iam:
   withOIDC: true

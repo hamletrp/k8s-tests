@@ -17,29 +17,12 @@ Create cluster
 
     eksctl get cluster --name cluster-lab-13 --region us-east-1
 
-patchs due to tainted nodes 
-
-    kubectl patch deployment.apps/metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}, {"key": "CriticalAddonsOnly","operator": "Equal","value": "true","effect": "NoSchedule"}]}]' \
-    && kubectl patch deployment.apps/ebs-csi-controller -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}, {"key": "CriticalAddonsOnly","operator": "Equal","value": "true","effect": "NoSchedule"}]}]' \
-    && kubectl patch deployment.apps/coredns -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "core","effect": "NoSchedule"}, {"key": "CriticalAddonsOnly","operator": "Equal","value": "true","effect": "NoSchedule"}]}]'
-
-    eksctl update addon \
-      --name coredns \
-      --cluster cluster-lab-13 \
-      --region us-east-1 \
-      --force
-
-    eksctl update addon \
-      --name metrics-server \
-      --cluster cluster-lab-13 \
-      --region us-east-1 \
-      --force
-
-    eksctl update addon \
-      --name aws-ebs-csi-driver \
-      --cluster cluster-lab-13 \
-      --region us-east-1 \
-      --force
+    #sample #addon #command #cmd
+        eksctl update addon \
+        --name aws-ebs-csi-driver \
+        --cluster cluster-lab-13 \
+        --region us-east-1 \
+        --force
 
 
 Set storage classes

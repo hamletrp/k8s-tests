@@ -134,7 +134,7 @@
 
 
 
-Gremlin as a chaos engineering platform
+- Gremlin as a chaos engineering platform
     - Inject failures (e.g., CPU, memory, network) to uncover weaknesses
     - runs a lightweight agent on nodes or containers
     - Safe and reversible chaos, with scheduling and blast radius controls
@@ -148,7 +148,7 @@ Gremlin as a chaos engineering platform
         Improve observability, alerting, and failover
         Build system confidence with game days and real-world testing
 
-Resume:
+- Resume:
     - start with a 3-4 sentence summary 
     - relevant work history, think creatively about what you’ve done that relates to reliability.
     - List your most important skills first
@@ -156,7 +156,7 @@ Resume:
     - quantify what you’ve done or what you know about SRE
     - 
 
-Journal:
+- Journal:
     * goal 
         Responsibilities of a k8s application management
             - Kubernetes Administrator (CKA)
@@ -220,7 +220,8 @@ Journal:
                         kubectl get pods --all-namespaces | grep -i evicted
                 2- Check Core Components
                     the API server
-                    Controller Manager / Scheduler
+                    Scheduler
+                    Controller Manager
                     Etcd: If self-hosted, inspect logs and snapshot status.
                 3- Check on Resource Pressure
                 4- Analized failed pods 
@@ -233,29 +234,50 @@ Journal:
                 7- RBAC + Access Control
                     Is there any access denied errors?
                 
+        Cluster testing  
+            1. Cluster-Level Tests - Core Tests
+                | Test Type             | Tool(s)                                       | What It Verifies                             |
+                | --------------------- | --------------------------------------------- | -------------------------------------------- |
+                | API Server health     | `kubectl get --raw /healthz`                  | API availability and latency                 |
+                | Node health           | `kubectl get nodes` / `kubectl describe node` | Node status, taints, allocatable resources   |
+                | Scheduler             | Deploy a test pod and check placement         | Scheduling logic                             |
+                | Kubelet & kube-proxy  | Log inspection or via Prometheus              | Edge-level service proxy health              |
+                | Networking (DNS, CNI) | `nslookup`, `curl`, `ping` from Pods          | DNS, service discovery, network connectivity |
+                | Admission webhooks    | `kubectl apply` test objects                  | Admission control is functioning             |
+                | RBAC                  | `kubectl auth can-i`                          | Access control enforcement                   |
+                | Cluster autoscaler    | Deploy HPA or create pending pods             | Node provisioning reacts properly            |
+                + other compliance and Vulnerability scanner tools 
+            2. Application-Level Tests
+                | Test Type            | Tool(s)                      | Purpose                                           |
+                | -------------------- | ---------------------------- | ------------------------------------------------- |
+                | Readiness/Liveness   | Probes in Deployments        | App startup and runtime health                    |
+                | Functional API       | Postman/Newman, REST client  | Validates app endpoints                           |
+                | Load/Stress          | k6, Locust, Artillery        | Measures app performance and scaling              |
+                | Chaos Engineering    | Gremlin, LitmusChaos         | Observe app resilience under fault injection      |
+                | Canary/Rollout tests | Argo Rollouts + Prometheus   | Safe progressive delivery based on metrics        |
+                | Data validation      | Custom scripts, CI pipelines | Assert expected DB state, logs, or business logic |
+            3. Manifests lint test levels 
+                kube-linter
+                #helmtest
+                    kubectl apply -f overlays/staging --dry-run=server | client
+                    helm test <release-name> --logs
+                    Manifests sample 
+                        helm-test-sample.yaml
+                    Test Lifecycle
+                        1. helm upgrade --install myapp ./mychart
+                        2. helm test myapp --logs
+                        3. Helm identifies and runs all resources with the helm.sh/hook: test annotation.
+                        4. It waits for Jobs to complete and checks their success/failure.
+                        * Include at least one connection check or smoke test per chart.
+                #kustomize tsts
+                    kubectl apply -k overlays/staging --dry-run=server | client
 
-        Grafana Cluster management dashboards 
-         * what are all the categories 
-            Kubernetes Monitoring
-            kubernetes cluster prometheous
-            kubernetes cluster auto scaler 
-            kubernetes app metrics 
-            kubernetes deployment metrics 
-            coredns
-            argocd 
-            aws alb cloud watch metrics 
-            loki stack monitoring  
-            nodejs application dashboard 
-            k8s 
-            cert-manager 
 
-            istio 
 
-        grafana loki data sources   
-            how to
 
-        How would you rate test coverage and do you continue to measure that?
-            What about test coverage is important to the team?
+
+
+
         How do engineers share their work with product teammates in the QA phase?
         How would you describe the relationship between the operations team, IT, and the rest of the engineering team?
             everything is about a common understanding

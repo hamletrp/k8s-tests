@@ -47,7 +47,7 @@ create oidc pool
     gcloud iam workload-identity-pools providers create-oidc gcloud-eks-oidc \
     --location="global" \
     --workload-identity-pool="smart-valet-mobile" \
-    --issuer-uri="https://oidc.eks.us-east-1.amazonaws.com/id/2C26979DE266DAC8A033226F8D2E91D8" \
+    --issuer-uri="https://oidc.eks.us-east-1.amazonaws.com/id/C11B9587A82A3DD534C0DB3F9EC32C48" \
     --attribute-mapping="MAPPINGS" \
     --attribute-condition="CONDITIONS"
 
