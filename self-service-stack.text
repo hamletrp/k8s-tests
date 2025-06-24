@@ -1,0 +1,27 @@
+self-service-stack/
+├── README.md
+├── apps/
+│   ├── kustomize/
+│   │   ├── base/
+│   │   │   ├── app-deployment.yaml
+│   │   │   ├── postgres.yaml
+│   │   │   └── externalsecret.yaml
+│   │   └── overlays/
+│   │       ├── dev/
+│   │       └── qa/
+│   ├── helm/
+│   │   ├── Chart.yaml
+│   │   ├── templates/
+│   │   │   ├── deployment.yaml
+│   │   │   ├── service.yaml
+│   │   │   ├── postgres.yaml
+│   │   │   └── externalsecret.yaml
+│   │   └── values.yaml
+├── infrastructure/
+│   ├── argocd/
+│   │   ├── application.yaml       # single Helm/Kustomize app
+│   │   └── applicationset.yaml    # preview/templated deployment
+│   ├── external-secrets/
+│   ├── ingress-nginx/
+│   ├── cert-manager/
+│   └── postgres-operator/ (optional)

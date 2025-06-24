@@ -70,6 +70,8 @@ grafana:
   sidecar:
     datasources:
       enabled: true
+    dashboards:
+      enabled: true
   # adminPassword: loki-password
   admin:
     existingSecret: loki-adm-pwd

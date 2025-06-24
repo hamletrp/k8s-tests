@@ -1,5 +1,6 @@
 
-
+- https://github.com/mxssl/sre-interview-prep-guide?tab=readme-ov-file
+- https://github.com/mxssl/sre-interview-prep-guide
 - https://learnk8s.io/production-best-practices
 - Some questions and answers 
     https://www.turing.com/interview-questions/kubernetes#intermediate-kubernetes-interview-questions-and-answers
@@ -54,7 +55,7 @@
         | `ContainerMemoryUsageNearLimit` | Container close to OOMKilled.                          |
         | `PodCrashLooping`               | Indicates app instability.                             |
 
-    3. Workload Failures
+    3. Workload Failures or desired state mismatch
         | **Alert**                         | **Reason**                                |
         | --------------------------------- | ----------------------------------------- |
         | `KubeDeploymentReplicasMismatch`  | Deployment desired ≠ available pods.      |
@@ -91,7 +92,6 @@
         k9s basics 
         kubectx / kubens
         stern / kubetail
-            #here testing
             stern pingpong
             stern --tail 1 --timestamps --all-namespaces weave
         jq / yq
@@ -147,14 +147,6 @@
         Find weaknesses before your users do
         Improve observability, alerting, and failover
         Build system confidence with game days and real-world testing
-
-- Resume:
-    - start with a 3-4 sentence summary 
-    - relevant work history, think creatively about what you’ve done that relates to reliability.
-    - List your most important skills first
-    - Be short
-    - quantify what you’ve done or what you know about SRE
-    - 
 
 - Journal:
     * goal 
@@ -223,7 +215,7 @@
                     Scheduler
                     Controller Manager
                     Etcd: If self-hosted, inspect logs and snapshot status.
-                3- Check on Resource Pressure
+                3- Check on Resource ussage Pressure
                 4- Analized failed pods 
                 5- Check Deployments and ReplicaSets
                 6- Network Troubleshooting
@@ -242,7 +234,7 @@
                 | Node health           | `kubectl get nodes` / `kubectl describe node` | Node status, taints, allocatable resources   |
                 | Scheduler             | Deploy a test pod and check placement         | Scheduling logic                             |
                 | Kubelet & kube-proxy  | Log inspection or via Prometheus              | Edge-level service proxy health              |
-                | Networking (DNS, CNI) | `nslookup`, `curl`, `ping` from Pods          | DNS, service discovery, network connectivity |
+                | Networking (DNS, CNI) | `nslookup`, `curl`, `ping`, telnet from Pods  | DNS, service discovery, network connectivity |
                 | Admission webhooks    | `kubectl apply` test objects                  | Admission control is functioning             |
                 | RBAC                  | `kubectl auth can-i`                          | Access control enforcement                   |
                 | Cluster autoscaler    | Deploy HPA or create pending pods             | Node provisioning reacts properly            |
@@ -261,36 +253,152 @@
                 #helmtest
                     kubectl apply -f overlays/staging --dry-run=server | client
                     helm test <release-name> --logs
-                    Manifests sample 
-                        helm-test-sample.yaml
+                        Manifests sample 
+                            helm-test-sample.yaml
                     Test Lifecycle
                         1. helm upgrade --install myapp ./mychart
                         2. helm test myapp --logs
                         3. Helm identifies and runs all resources with the helm.sh/hook: test annotation.
+                            ideal for post-install or post-upgrade checks
                         4. It waits for Jobs to complete and checks their success/failure.
                         * Include at least one connection check or smoke test per chart.
                 #kustomize tsts
                     kubectl apply -k overlays/staging --dry-run=server | client
 
 
-
-
-
-
-
-        How do engineers share their work with product teammates in the QA phase?
         How would you describe the relationship between the operations team, IT, and the rest of the engineering team?
-            everything is about a common understanding
-        How to setup a self-service infrastructure stack for aservice with data store?
+            everything is about a common understanding and a well defined Responsibilities scope
+        How to setup a self-service infrastructure stack for a service with data store?
+            1. Define What You Need
+                | Layer             | Example                                              |
+                | ----------------- | ---------------------------------------------------- |
+                | **Service**       | Microservice (containerized, Helm/Kustomize)         |
+                | **Datastore**     | PostgreSQL, MySQL, Redis, MongoDB                    |
+                | **Ingress**       | NGINX/ALB Ingress + TLS + DNS                        |
+                | **Secrets**       | API keys, DB credentials (External Secrets Operator) |
+                | **Observability** | Prometheus, Grafana dashboards, logging, alerts      |
+                | **Namespace**     | Isolated environment per team or service             |
+            2. Use Templates + GitOps
+                Helm / Kustomize 
+            3. Expose Self-Service via a GitOps Platform
+                Argo CD / ApplicationSet 
+            4. Handle Secrets Properly
+                Secrets Operator (ESO) with AWS/GCP Vault/Secrets Manager.
+            5. Ingress + DNS + TLS
+                NGINX, TRAEFIK, HAProxy or AWS ALB ingress controller 
+            6. Monitoring & Dashboards
+                Prometheus Service and Pod Monitor
+                Grafana dashboards for DB + app metrics
+                Alertmanager routes (Slack/email)
+            7. Developer Workflow (Self-Service Flow)
+                Dev fills a form / submits a Git PR (e.g., services/my-new-app/values.yaml)
+                Git triggers Argo CD or Crossplane to:
+                    Create namespace
+                    Deploy app & DB
+                    Inject secrets
+                    Setup Ingress + TLS
+                    Argo CD shows real-time sync + dashboard
+                    Dev gets access to live service + monitoring + logs
+
+        Common Mount Options
+            async, auto, defaults, loop, exec, noexec, nouser, ro, rw, user
+
         Sample engineering team values statement
-        terraform all policy types examples 
+            We empower developers and enable reliability by building secure, scalable, and self-service infrastructure on Kubernetes.
+            - Automation Over Manual Work
+            - Simplicity and Clarity
+            - Resilience Through Testing
+            - Security by Design
+            - Collaboration / Open source 
+            - Observability as a First-Class Citizen 
+        Linux troubleshooting tools
+            System Monitoring Tools
+                - free
+                    RAM and swap usage; quick snapshot of memory pressure.
+                    free -h 
+                - vmstat
+                    virtual memory, processes, CPU, I/O,
+                    vmstat 1
+                - mpstat
+                    CPU usage per core (part of sysstat package)
+                    mpstat -P ALL 1
+            Network Diagnostics Tools
+                - netstat
+                    open ports, active connections, routing tables
+                    netstat -tuln
+                - ping
+                    ICMP echo packets to test reachability + latency.
+                    ping google.com
+                - traceroute
+                    network path (hops) to a destination
+                    traceroute github.com
+                - telnet 
+                    TCP connectivity to a host and port
+                    telnet example.com 443
+                - tcpdump
+                    network traffic packets for inspection
+                    tcpdump -i eth0 port 80
+
+                | Problem Type             | Recommended Tool        |
+                | ------------------------ | ----------------------- |
+                | RAM or swap exhaustion   | `free`, `vmstat`        |
+                | CPU bottlenecks          | `mpstat`, `top`, `htop` |
+                | Open ports or listening  | `netstat`, `ss`         |
+                | Connectivity failure     | `ping`, `telnet`, `nc`, 'curl'  |
+                | Trace route to service   | `traceroute`            |
+                | Debug HTTP/HTTPS traffic | `tcpdump`, `wireshark`  |
+
+        SLO (Service Level Objective) is a target reliability or performance goal that a service must meet 
+            | SLI (metric)                                 | Typical SLO                        |
+            | -------------------------------------------- | ---------------------------------- |
+            | `http_request_duration_seconds`              | 95% of requests respond in < 500ms |
+            | `container_cpu_usage_seconds_total`          | CPU usage < 80% over 10 minutes    |
+            | `kube_pod_status_ready`                      | 99.9% of pods are ready            |
+            | `apiserver_request_total` / error ratio      | < 0.1% error rate                  |
+            | `etcd_debugging_mvcc_db_total_size_in_bytes` | etcd size < 80% of disk quota      |
+            How Are SLOs Implemented?
+                Define SLI → Metrics that represent the health of your service
+                    (e.g. request latency, error rate, availability)                
+                Set SLO thresholds → Acceptable target ranges
+                    (e.g. 99.95% availability in 30 days)
+                Create alerts or dashboards using:
+                    Prometheus + Alertmanager
+                    Grafana dashboards
+                    SLO tools like Nobl9, sloth.dev
+
+    🔟 Most Popular Grafana Dashboards
+    | #  | Dashboard Title                                | Description                                                                            | ID on grafana.com |
+        | -- | ---------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------- |
+        | 1  | **Kubernetes Cluster Monitoring**              | Full cluster view: nodes, pods, CPU, memory, network, disk. From kube-prometheus-stack | `315`             |
+        | 2  | **Node Exporter Full**                         | Detailed Linux system metrics from `node_exporter` (CPU, mem, disk, network, load)     | `1860`            |
+        | 3  | **Prometheus Stats**                           | Prometheus internals: scrape performance, targets, rule eval time                      | `3662`            |
+        | 4  | **Kubernetes / Compute Resources / Namespace** | Shows CPU/mem usage broken down by namespace                                           | `namespace` tab   |
+        | 5  | **Nginx / Ingress Controller**                 | Monitor NGINX ingress controllers (requests, latency, 4xx/5xx errors)                  | `9614`, `9616`    |
+        | 6  | **Kubernetes API Server**                      | Specific metrics from `apiserver` component (latency, errors, QPS)                     | `3030`            |
+        | 7  | **Etcd Metrics**                               | Tracks key-value store performance (size, latency, ops, leader elections)              | `3070`            |
+        | 8  | **Loki Log Monitoring**                        | Explore logs via Grafana Loki integration                                              | via plugin        |
+        | 9  | **Istio / Envoy**                              | Observe traffic, latency, and failures in Istio-managed apps                           | `7639`, `11829`   |
+        | 10 | **PostgreSQL Monitoring**                      | DB-level metrics: connections, transactions, locks, cache hits                         | `9628`            |
+
+
 
     - Todos
-        https://github.com/mxssl/sre-interview-prep-guide
-        terraform best practices 
-        get a job 
+        gist of a monorepo
+        SLI vs SLO
+        Splunk
+        Dynatrace         
+        Spinnaker
+        incident write-ups format 
+        Clear on-call handoffs
+        internal wikis document format 
+
+        to lab 
+            kube-prometheus-stack
         ci/cd pipelines on k8s 
             2. Use [Argo CD Image Updater] (Fully Declarative)
+                https://argocd-image-updater.readthedocs.io/en/stable/install/installation/
+        lab cloudnative-pg 
+            https://gist.github.com/vfarcic/8301efb15748af1da3e376b7132e519e
         multiple pod networks in parallel
         argo-workflows chart 
         aws certifications order 
@@ -458,6 +566,10 @@ K8s
 
 
         etcd backup
+            --quota-backend-bytes to increase size
+            alerts on 
+                mvcc: database space exceeded
+
             ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
             --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
             snapshot save <backup-file-location>
