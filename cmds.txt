@@ -101,6 +101,8 @@ commands
 
     --docker-server=https://index.docker.io/v1/
 
+   https://index.docker.io/v1/
+   https://registry-1.docker.io/v2/
 
     kubectl create secret docker-registry dockerhub-secret \
     --docker-server=docker.io \
@@ -113,6 +115,33 @@ commands
   curl -X POST http://localhost:3000/grades \
   -H "Content-Type: application/json" \
   -d '{"name": "SRE", "subject": "Hamlet R", "score": 9000000}'
+
+  reboot kubelet 
+    aws ssm send-command \
+      --instance-ids i-044539059ad208e4f \
+      --document-name "AWS-RunShellScript" \
+      --parameters 'commands=["systemctl status kubelet"]' \
+      --comment "kubelet status" \
+      --region us-east-1 
+
+    aws ssm list-command-invocations --command-id "83991f3c-cc50-4690-9b0b-a0e1b402f29a --details
+
+    aws ssm get-command-invocation \
+    --command-id "83991f3c-cc50-4690-9b0b-a0e1b402f29a \
+    --instance-id i-044539059ad208e4f
+
+    aws ssm send-command \
+    --document-name "AWS-RunShellScript" \
+    --comment "Restart kubelet" \
+     --parameters '{"commands":["sudo systemctl restart kubelet"]}' \
+    --region us-east-1
+
+    status: 
+      https://us-east-1.console.aws.amazon.com/systems-manager/run-command/executing-commands?region=us-east-1
+    or 
+      aws ssm list-commands \
+      --max-results 5 \
+      --region us-east-1
 
 
 
@@ -167,6 +196,49 @@ commands
       yq e '.app1.deployments[].containers[].image.tag = "v1.2.3"' -i values.yaml
 
     yq e '.images[] |= select(.name == "my-app").newTag = "v1.2.5"' -i kustomization.yaml
+
+kubectl 
+  kubectl set image deployment worker worker=dockercoins/worker:v0.1 --record
+  kubectl set image deployment worker worker=dockercoins/worker:v0.2 --record
+  kubectl rollout history deployment worker
+  kubectl scale deployment worker --replicas=3 --record
+  kubectl rollout history deployment worker
+
+logs 
+  stern / kubetail
+    #here testing
+    stern pingpong
+    stern --tail 1 --timestamps --all-namespaces weave
+    stern -l app
+
+  spread pods across node, for HA
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - my-app
+        topologyKey: "kubernetes.io/hostname"
+
+#helmtest
+  helm test <release-name> --logs
+  Test Lifecycle
+    1. helm upgrade --install myapp ./mychart
+    2. helm test myapp --logs
+    3. Helm identifies and runs all resources with the helm.sh/hook: test annotation.
+    4. It waits for Jobs to complete and checks their success/failure.
+
+#telnet to test a service  
+  kubectl run -it --rm debug --image=alpine --restart=Never -- sh
+  apk add busybox-extras
+  telnet my-service.default.svc.cluster.local 8080
+    Connected to my-service.default.svc.cluster.local
+    telnet: can't connect to remote host (x.x.x.x): Connection refused
+
+
+
 
 
 
