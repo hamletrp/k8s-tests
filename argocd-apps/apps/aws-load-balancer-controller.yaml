@@ -24,7 +24,7 @@ spec:
         ingressGroup:
           name: devops-group
         nameOverride: awsalb-load-balancer-controller
-        replicaCount: 4
+        replicaCount: 1
         autoscaling:
           enabled: false
           minReplicas: 2
