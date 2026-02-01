@@ -1,0 +1,28 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: my-eks-cluster
+  region: us-east-1
+
+managedNodeGroups:
+  - name: app-nodes
+    instanceTypes: ["m5.large"]
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 4
+
+    # Reference to the Launch Template you created separately
+    launchTemplate:
+      name: eks-nodes-launch-template     # name of the launch template
+      version: "1"                        # optional, defaults to $Default
+
+    # Required: match EKS cluster and tagging used in the launch template
+    tags:
+      "k8s.io/cluster-autoscaler/enabled": "true"
+      "k8s.io/cluster-autoscaler/my-eks-cluster": "owned"
+
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+        ebs: true

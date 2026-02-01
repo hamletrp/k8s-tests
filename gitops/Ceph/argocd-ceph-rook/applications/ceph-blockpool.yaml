@@ -1,0 +1,41 @@
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: ceph-blockpool
+  namespace: rook-ceph
+spec:
+  failureDomain: host  # host, zone, region — determines where replicas are placed
+
+  replicated:
+    size: 3                  # Number of full copies (replicas)
+    requireSafeReplicaSize: true  # If false, allows size=1
+    replicasPerFailureDomain: 1   # How many replicas per host/zone
+    subFailureDomain: ""          # Optional: e.g., disk
+
+  erasureCoded:                # (alternative to replicated)
+    dataChunks: 2
+    codingChunks: 1
+    algorithm: jerasure         # or lrc, isa, shec, etc.
+
+  compressionMode: none        # none, passive, aggressive, force
+
+  mirroring:                   # Ceph RBD mirroring (multi-cluster)
+    enabled: false
+    mode: pool                 # pool or image
+    snapshotSchedules:
+      - interval: 24h
+        startTime: "14:00:00-05:00"
+
+  parameters: {}               # Arbitrary Ceph pool parameters (advanced)
+
+  quotas:
+    maxBytes: 100000000000     # Limit pool size by bytes
+    maxObjects: 1000000        # Limit by number of RADOS objects
+
+  # Placement of the pool on specific storage devices (advanced use only)
+  deviceClass: ""              # Ceph device class (hdd, ssd, nvme, etc.)
+
+  # Optional pool replica affinity (advanced)
+  crushRoot: "default"         # CRUSH map root bucket (default unless customized)
+
+  enableRBDStats: false        # Enable RBD pool stats collection

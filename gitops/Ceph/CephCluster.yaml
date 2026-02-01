@@ -1,0 +1,33 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v18.2.2  # Use stable Ceph version
+    allowUnsupported: false
+
+  dataDirHostPath: /var/lib/rook  # Host path for Ceph data (OSDs, logs, etc.)
+
+  mon:
+    count: 3                      # Ceph Monitors for quorum
+    allowMultiplePerNode: false
+
+  network:
+    provider: host                # host or multus
+
+  dashboard:
+    enabled: true                 # Optional: enable Ceph dashboard
+
+  storage:
+    useAllNodes: true             # Use all Kubernetes nodes
+    useAllDevices: true           # Use all discovered block devices
+    config:
+      osdsPerDevice: "1"          # One OSD per disk
+      encryptedDevice: "false"    # Enable LUKS encryption (optional)
+
+  disruptionManagement:
+    managePodBudgets: true
+    osdMaintenanceTimeout: 30
+    monOutTimeout: 300

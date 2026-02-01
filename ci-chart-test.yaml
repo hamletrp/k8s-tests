@@ -1,0 +1,24 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Helm Lint
+        run: |
+          helm lint charts/my-app
+          helm template my-release ./charts/my-app --values values.yaml | kubectl apply --dry-run=server -f -
+
+      - name: Kustomize Dry Run
+        run: |
+          kubectl kustomize overlays/staging | kubectl apply --dry-run=server -f -
+
+

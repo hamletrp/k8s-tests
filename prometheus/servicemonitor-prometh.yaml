@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: myapi
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: myapi
+  namespaceSelector:
+    matchNames: ["default"]
+  endpoints:
+    - port: http-metrics # 8080 6d1d7bd
+      path: /metrics
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          targetLabel: pod
