@@ -226,6 +226,192 @@ logs
     telnet: can't connect to remote host (x.x.x.x): Connection refused
 
 
+k -n pluto get all -o wide
+
+    Commands 
+        k config get-clusters
+        k config get-contexts 
+        k config use-context ctxname
+
+        kubectl create namespace argocd
+        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+        kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+        servicename=$(k get service -l "app={{ .Values.appName }}" -o jsonpath="{.items[0].metadata.name}")
+
+        kubectl --namespace <namespace> port-forward service/{{ .Values.appName }} 8888:80
+
+        kubectl port-forward service/argocd-server -n argocd 8080:443
+
+        patch argocd 
+            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+        k create deploy nginxx --image nginx --dry-run=client -o yaml > deployyyy.yml
+        
+        kubectl replace -f /tmp/kubectl-edit-xxxx.yaml --force
+
+        kubectl run -it busybox --rm --image=busybox --restart=Never -- /bin/sh
+
+        test static pods creation 
+            kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+            kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+
+        k top pod -n namespace
+
+        # check etcd file locations 
+        ps aux | grep etcd 
+
+        # force delete pod 
+        k delete -n namesp pods podname  --grace-period=0
+
+        # replace 
+        k replace -f --foce -n namesapce
+
+        # allow update to package kubeadm
+        apt-mark unhold kubeadm
+
+        # block auto update to package kubeadm
+        apt-mark hold kubeadm
+
+        kubectl exec -it super-user-pod -- /bin/sh
+        capsh --print | grep SYS_TIME
+
+        k set image deploy/dep_name cntnr=img
+
+        kubectl get nodes -o jsonpath='{range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address} {.metadata.name}{"\n"}{end}'
+
+        k get nodes -o jsonpath="{.items[*].status.addresses[0].address}"
+
+        kubectl get nodes -o jsonpath='{range .items[*]}"Internal IP: "{.status.addresses[?(@.type=="InternalIP")].address} " "{.metadata.name}{"\n"}{end}' >> /root/CKA/node_ips
+
+        kubectl top nodes --sort-by=cpu
+
+        k top -h
+
+        # network test
+        kubectl exec -it mypod -- nc -zv google.com 80
+
+        # pod command
+        kubectl run alpine-sleeper-cka15-arch --image=alpine --command -- sleep 200
+
+        # check auth permissions 
+        kubectl auth can-i get namespaces --as=system:serviceaccount:default:green-sa-cka22-arch
+            - apiGroups:
+            - "*"
+            resources:
+            - namespaces
+            verbs:
+            - get
+
+        ssh nodename
+        nano /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+        kubectl get pv papaya-pv-cka09-str -o yaml > /tmp/papaya-pv-cka09-str.yaml
+        nano /tmp/papaya-pv-cka09-str.yaml
+        Delete all entries for uid:, annotations, status:, claimRef:
+
+        Update pvc increase size only, access mode and storage class cannot be changed 
+            pre-requisites: 
+                Check If Your StorageClass Supports Expansion
+                    kubectl get storageclass <name> -o yaml | grep allowVolumeExpansion
+
+            1- kubectl patch pvc my-pvc -p '{"spec": {"resources": {"requests": {"storage": "10Gi"}}}}'
+            2- kubectl edit pvc my-pvc
+
+
+
+        etcd backup
+            --quota-backend-bytes to increase size
+            alerts on 
+                mvcc: database space exceeded
+
+            ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+            --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
+            snapshot save <backup-file-location>
+
+            replace the variables from 
+                cat /etc/kubernetes/manifests/etcd.yaml | grep file 
+
+        k create deployment name --image=image --replicas=2 --dry-run=client -o yaml
+        
+        update deployment image: 
+            k set image deploy dpname cntner=image:tag --record
+
+        check deployment changes:
+            k rollout history deploy dpname
+
+        for i in {1..35}; do
+            kubectl exec --namespace=kube-public curl -- sh -c 'test=`wget -qO- -T 2  http://webapp-service.default.svc.cluster.local:8080/info 2>&1` && echo "$test OK" || echo "Failed"';
+            echo ""
+        done
+
+        
+        # service 
+            k expose <resource-type> <resource-name> --port=<port> --target-port=<container-port> --type=<service-type> [options]
+            k expose deployment my-app --port=80 --target-port=8080 --type=ClusterIP
+            k expose pod podname --name=svcname  --port 80
+            k expose pod podname --name=svcname  --port 80 --type=NodePort
+
+        # test a service or a pod is reachable from another pod
+            k exec -it podname -- nslookup svc name
+
+        # autoscale
+            k autoscale deployment <deployment-name> --cpu-percent=80 --min=1 --max=10
+
+        # check kubelet service status
+            systemctl status kubelet 
+
+        # pods connection pods communication check 
+            k exec podid -- telnet otherpod-ip-address
+
+
+        # check pods resource requests/limits
+            kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].resources}{"\n"}{end}'
+
+    k run tmp --restart=Never --rm -i --image=nginx:alpine -- curl -m 5 10.12.2.15
+
+    kubectl run mypod --image=nginx --restart=Never
+
+    See Enabled Admission Plugins
+      kubectl get --raw /configz | jq '.admissionControl.pluginNames'
+
+    kubectl exec nginx-secret -- env
+
+    kubectl exec -it mytest -- ls -l /etc/hosts
+
+    kubectl config get-contexts, ~/.kube/config
+
+    kubectl explain pods, kubectl explain svc
+
+    helm repo add argo https://argoproj.github.io/argo-helm
+    helm install my-release argo/argocd-apps
+
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm install redis bitnami/redis
+
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm upgrade --install pg bitnami/postgresql -f values.yaml
+
+    kubectl -n default describe pod pod1 | grep -i status:
+
+    # will show a long list of all possible value-settings
+    helm show values bitnami/apache 
+
+    # parse yaml and show with colors
+    helm show values bitnami/apache | yq e
+
+    # shows secrets with first annotation
+    # If a Secret belongs to a ServiceAccount, it'll have the annotation kubernetes.io/service-account.name.
+    k -n neptune get secrets -oyaml | grep annotations -A 1 
+
+    k -n pluto delete pod holy-api --force --grace-period=0
+
+    kubectl get secret my-secret -o jsonpath="{.data.token}" | base64 --decode
+
+    
+
+
 
 
 

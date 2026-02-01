@@ -33,7 +33,7 @@ addons:
   - name: eks-pod-identity-agent
     version: latest 
   # # provisioned via terraform, due to limitations of configurationValues tolerations, afinity et
-  # - name: aws-ebs-csi-driver
+  # - name: aws-ebs-  -driver
   #   version: latest
   #   serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
   - name: vpc-cni
@@ -56,14 +56,28 @@ iam:
 
 managedNodeGroups:
   - name: linux-nodes-13
+    # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
     instanceTypes: ["m5.large"]
+    # ✅ Support multiple AZs by referencing multi-AZ subnets
+    # availabilityZones: ["us-east-1a", "us-east-1b"]
+    # overrideBootstrapCommand: |
+    #   #!/bin/bash
+    #   /etc/eks/bootstrap.sh my-cluster \
+    #     --kubelet-extra-args '--node-labels=purpose=custom'
     # instanceTypes: ["m5.large", "t3.medium"]
     # spot: true
+    # launchTemplate:
+    #   id: lt-0d8a5c8a5fcbe8f53    
+    #   version: "1"                        
     desiredCapacity: 1
     minSize: 1
-    maxSize: 4
-    volumeSize: 40
-    maxPodsPerNode: 110
+    maxSize: 2
+    # volumeSize: 40 # suggested >= 100 Gib This volume is for the OS and kubelet — not for pods.
+    # volumeType: gp3 # gp2 (default), gp3, io1, etc.
+    # volumeEncrypted: true
+    # volumeKmsKeyID: arn:aws:kms:us-east-1:123456789012:key/abcd-efgh-ijkl
+    ## 🧠 Bonus Tip: Monitor with kubelet_volume_stats
+    # maxPodsPerNode: 110
     iam:
       instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-13-nodegroup-linu-NodeInstanceRole
     labels:
@@ -79,8 +93,12 @@ managedNodeGroups:
       - key: "CriticalAddonsOnly"
         value: "true"
         effect: "NoSchedule"
+  # EKS Hybrid Nodes
   - name: linux-nodes-13-2
+    # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
     instanceTypes: ["m5.large", "t3.medium"]
+    # ✅ Support multiple AZs by referencing multi-AZ subnets
+    # availabilityZones: ["us-east-1a", "us-east-1b"]
     desiredCapacity: 2
     minSize: 2
     maxSize: 6
