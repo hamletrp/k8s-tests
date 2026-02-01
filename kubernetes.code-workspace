@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../terraform"
+		},
+		{
+			"path": "../grade-api-gitops"
+		},
+		{
+			"path": "../kubernetes-cicd-tutorial"
+		}
+	],
+	"settings": {}
+}
