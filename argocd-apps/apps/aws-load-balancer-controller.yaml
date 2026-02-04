@@ -20,11 +20,11 @@ spec:
       values: |
         clusterName: cluster-lab-13
         region: us-east-1
-        vpcId: vpc-0ef72aded3e424ccc
+        vpcId: vpc-00e45850cd6216abb
         ingressGroup:
           name: devops-group
         nameOverride: awsalb-load-balancer-controller
-        replicaCount: 3
+        replicaCount: 2
         autoscaling:
           enabled: false
           minReplicas: 2
