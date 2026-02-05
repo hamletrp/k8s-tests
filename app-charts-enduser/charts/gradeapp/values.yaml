@@ -7,7 +7,7 @@ port: 3000
 image:
   registry: docker.io
   repo_name: hamuretto/gradeapp
-  tag: fe43cc9
+  tag: "4250070"
 tolerations:
   - key: "workload-type"
     operator: "Equal"
