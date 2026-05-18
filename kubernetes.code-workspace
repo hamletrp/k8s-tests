@@ -11,6 +11,21 @@
 		},
 		{
 			"path": "../kubernetes-cicd-tutorial"
+		},
+		{
+			"path": "../dagger"
+		},
+		{
+			"path": "../terraform-tutor"
+		},
+		{
+			"path": "../terragrunt-hooks-demo"
+		},
+		{
+			"path": "../dot-ai-website"
+		},
+		{
+			"path": "../drafty-bird-fork"
 		}
 	],
 	"settings": {}

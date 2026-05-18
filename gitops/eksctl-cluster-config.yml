@@ -33,7 +33,7 @@ addons:
   - name: eks-pod-identity-agent
     version: latest 
   # # provisioned via terraform, due to limitations of configurationValues tolerations, afinity et
-  # - name: aws-ebs-  -driver
+  # - name: aws-ebs-driver
   #   version: latest
   #   serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
   - name: vpc-cni

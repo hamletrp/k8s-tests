@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: operator-namespace-creator
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: namespace-creator
+  namespace: operator-namespace-creator
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: namespace-creator
+  namespace: operator-namespace-creator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: namespace-creator
+  template:
+    metadata:
+      labels:
+        app: namespace-creator
+    spec:
+      serviceAccountName: namespace-creator
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: namespace-creator
+        image: alpine/kubectl:latest
+        command:
+        - /bin/sh
+        - -c
+        - >
+          while true;
+            do
+            kubectl version
+        
+            for ns in ns-100 ns-200 ns-300; do
+
+             kubectl get ns "$ns" >/dev/null 2>&1 || kubectl create ns "$ns"
+
+             kubectl label namespace "$ns" managed-by=namespace-creator --overwrite
+
+            done
+            
+            sleep 1
+          done;
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: namespace-creator
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: namespace-creator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: namespace-creator
+subjects:
+- kind: ServiceAccount
+  name: namespace-creator
+  namespace: operator-namespace-creator

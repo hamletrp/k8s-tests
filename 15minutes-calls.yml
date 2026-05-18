@@ -1,0 +1,426 @@
+
+
+- About v2:
+    I am a Computer Science Engineer / DevOps engineer, with a background of full-stack application engineering, I have been in the industry for over 15 years... designing, implementing and operating distributed systems across both on-premises and cloud environments. 
+
+    Deep hands-on experience building platforms using a wide variety of tech stacks, which I will summarize as serverless architectures and containerized applications powered by Docker and Kubernetes, the latter on top of AWS and it's managed offering AWS EKS. 
+
+    last 6 years my contributions working with cross-functional teams
+    Responsibilities included -
+    - Architecture design 
+    - Infrastructure provisioning and automation using tools like pulumi, Terraform, AWS CDK, CF, scripting languages
+    - Security compliance and best practices
+        (PCI-DSS, HIPAA, SOC2, FedRAMP)
+    - Important Collaboration on - FINOPS
+    - Shift-left CI/CD pipeline orchestration
+    - AND Configuratin Management and GitOps-driven deployments with ArgoCD and related tools
+
+    AND PERHAPS IS IMPORTANT TO MENTION...
+    * I went thru the degree, so I am Graduated and also AWS Certified 
+
+    Kitesurf, travel, chess, family time, wining and dining, cooking ?
+
+    Wide range of clientes: Banks, the government, loteries, Insurance companies
+    the US DOT, Yum brands, Real State software and data companies, among others, investment firms, online workout companies 
+    
+
+- About v1:
+    I am a Computer Science Engineer / DevOps engineer, with a background of full-stack application engineering, I have been in the industry for over 15 years... designing, implementing and operating enterprise-grade, large-scale, highly available event-driven distributed systems across both on-premises and cloud environments. 
+
+    Experienced building platforms using a variaety of tech stacks, which I will summarize as serverless architectures and containerized applications powered by Docker and Kubernetes, the latter on top of AWS and it's managed offering EKS.
+
+    last 5 years my contributions working with cross-functional teams
+    tasks and Responsibilities included -
+    - Architecture design 
+    - Infrastructure provisioning using Terraform, AWS CDK, CF, scripting languages and a bit of pulumi
+    - Security compliance and best practices
+    - Shift-left CI/CD pipeline automation
+    - Configuratin Management and GitOps-driven deployments with Argo CD
+        along with platform engineering and operational improvements.
+    - Important Collaboration on - Cost controls
+
+    Wide range of clientes: Banks, the government, loteries, Insurance companies
+    the US DOT, Yum brands, Real State software and data companies, among others, investment firms, online workout companies 
+    
+
+
+- Questions to make:  
+    - Biggest prioritis on the Projects this year ?
+    - How can this role bring value from day one ?
+    - Will I be giving full autonomy on the projects, including the possibility to incorporate other engineers, as required ?
+    - For Prod - Are you doing multi-tenancy, separate clusters or a mix ?  
+    - How are you building in a monorepos source control strategy s?
+
+
+    - Professional STRESS 
+    •	Is this urgent?
+	•	Is this important?
+	•	Is this mine?
+
+    Resolvenes
+        Externalize everything:
+            •	Task lists || Checklists
+            •	Clear next steps
+        Simple resets:
+            •	5-minute walk
+            •	Short workout
+            •	Step away from screen
+
+
+
+- CULTURAL FIT INTERVVIEW:
+    * Core specs 
+        you will contribute to building and scaling our AI platform 
+        by ensuring our systems on AWS, Kubernetes, and GitOps workflows 
+        are reliable, observable, and automated.
+
+    - good env: 
+        colaborative, creativity and room for PoCs
+        AND posibilities to growth 
+        PLUS shared responsibilities
+
+
+
+    - like about the company 
+        innovation and a mature team... important on today fast evolution in our industry
+        you guys are: 
+            modern and mature cloud‑native infrastructure
+
+
+
+- Future looking eyes   
+    PoCs: Senth on AWS, Custom Scheduler
+
+
+    - Tell me about a time:
+        - Questions to answer - A FussMobile on top of AWS EKS
+            - To mention a few deliveries at the most recent project 
+                - Delivered the infra and a couple of repos for other dev teams to work on.
+                    * Infra was built using terraform and other miscelaneous tools on top of EKS
+                    * The repo gave the devs teams the capability to commiting code: 
+                        * Code is being compiled, linted, tested, wich in turn upon succeed
+                        * Builds and push the imgae to the registry, later then
+                        * Getting parallel GitOps repo PR created and upon PR Approval 
+                        * Code change is made live into the cluster 
+                - Applied Chaos Engineering to test Resilience using Gremlin
+                    * CPU Attack and scheduling preasure: Simulate high CPU usage on a node to test autoscaling.
+                    * Latency Attack: Introduce 300ms latency on an API to test retry logic.
+                    * Kill Process Attack: Terminating certain processes like nginx to test self-healing.
+                        HA shined since part of these where manually killing a pod on one node and seeing traffic flowing to the pods on other nodes. ALL showed the early circuit breaking forcing consumer retries
+                - Important Collaboration on - Cost controls (without hurting performance)
+                    * ENIs represent a challenge. Karpenter use diff instance types
+                        8 per node
+                        29 ips each
+                    * By using Spot instances for non-hot-paths batch/async event processing workloads
+                        * For this project Cost is controlled via workload-aware compute placement and aggressive use of Spot where safe, so workload that: Can tolerate interruption (batch, workers, async)
+                            E.G 
+                                * About all rest-apis
+                                * Nightly jobs: 
+                                    Aggregate bar sales, 
+                                    Calculate casino totals, 
+                                    reports for HQ 
+                                        Report Generation Jobs:
+                                        •	Generate PDFs
+                                        •	Daily financial exports
+                                        •	Passenger activity summaries
+                        * 🛑 What Should NOT Run on Spot On a cruise ship - go on On-Demand nodes only
+                                •	POS API
+                                •	Payment authorization
+                                •	Cabin access system
+                                •	WiFi auth service
+                                •	Crew emergency comms
+                                •	Navigation telemetry
+                                •	Engine control systems
+
+
+                - Performance Optimization
+                    #performance at journal
+
+
+
+
+- CULTURAL FIT INTERVVIEW:
+    * Core specs 
+        you will contribute to building and scaling our AI platform 
+        by ensuring our systems on AWS, Kubernetes, and GitOps workflows 
+        are reliable, observable, and automated.
+
+    - good env: 
+        colaborative, creative and room for PoCs
+        AND posibilities to growth 
+        PLUS shared responsibilities
+
+
+
+    - like about the company 
+        innovation and a mature team... important on today fast speed evolution in our industry
+            which I can tell by the tooling
+            you guys are using 
+        you guys are: 
+            modern and mature cloud‑native infrastructure
+
+
+
+    - challenges:
+        understand and digest every detail throughly
+        and break down the problem into smaller more managable parts 
+        and then see potential solutions while hearing inputs from all parties 
+        as collaboration yields diverse perspectives for inovative ideas 
+        THEN adjust approach the approach as we go and new information arises 
+
+
+
+    - conflicts 
+        understand everyone perspective, concerns and priorities AS IF IT IS MY OWN
+        then identifying the root cause of the problem 
+            target everyone concerns by achieving, common ground and shared plan to resolve all the issues
+
+
+
+    - me:
+        organized based on urgency and priorities
+        divide and conquer
+        open communication and mindset 
+        STAYING UP TO SPEED
+            Kubernetes release notes
+            KubeCon keynotes
+            TLDR DevOps
+            Watch GitHub Activity
+                EKS
+                istio
+                ArgoCD
+                Karpenter
+                Prometheus
+            Security Channels 
+                AWS Security Bulletins
+        
+        - 6 months plan 
+            The Staff Mindset Shift
+                You are not optimizing:
+                    •	Pull request throughput
+
+                You are optimizing:
+                    •	standardizing environments
+                    •	Organizational friction
+                    •	Technical direction
+                    •	Architecture Optimization
+                    
+            * Core objectives:
+                - simplifying workflows
+                - standardizing environments 
+                - reducing operational friction
+
+            Month 0–1: Deep Listening Mode
+                Focus
+                    Architecture (real vs diagram)
+                    SDLC
+                    Deployment and release pipeline
+                    Incident history
+                        Read past postmortems
+                    Company plan and pressure points for 2026 
+                Result for myself
+                    A written “System + Risk + Friction” memo.
+
+            Month 2: Targeted Value Injection
+                Objective: Ship something visible but low-risk.
+                    Find one of:
+                        •	A flaky deployment step
+                        •	Observability gap
+                        •	Recurring operational pain
+                        •	Cost inefficiency
+                    Fix it quietly. Let impact speak.
+            Month 3: Technical Direction Setting
+                Now you’ve earned listening rights.
+                Core target
+                    - simplifying workflows
+                    - standardizing environments 
+                    - reducing operational friction
+                Start, depending on findings:
+                    •	Aligning architecture with business roadmap
+                    •	Surfacing long-term risks
+                    •	Drafting 1–2 technical strategy documents
+            Month 5: Enablement Over Execution
+                Shift from doing to multiplying.
+                Examples:
+                    •	Create internal RFC template
+                    •	Establish architectural review cadence
+                    •	Document service maturity model
+                    •	Mentor 2–3 senior engineers
+                You are building leverage.
+            Month 6: Durable Structural Change
+                By now you should be able to:
+                    •	Kill one major anti-pattern
+                    •	Establish one durable standard
+                    •	Reduce one systemic risk
+                    •	Improve one critical KPI
+
+                And have people say:
+                    “This team feels more coherent than 6 months ago.”
+            
+        Staff Engineer Is a Systems Role
+
+            You operate at 3 levels simultaneously:
+                1.	Code
+                2.	Architecture
+                3.	Organization
+
+                If one is missing, impact shrinks.
+                                                            
+
+
+
+
+
+
+
+- PERFORMANCE & SCALING OPTIMIZATION
+    - My way to think abut performance optimization and scaling setups 
+        in order to handle real volume of transactions in a cluster 
+        - Refer to one real world sample  
+        1- We have a framework of work based one: 
+            - Workload type, metrics and compute capacity 
+                APIs, req/res, streaming, async backlog (queues etc), INGRESS
+            and there are standarized numbers that works based on the load 
+        2- Which is my way to approach it based on these inputs:
+            - FOCUS on the transaction workflow
+            i.e hotpaths, kpi's measured transactions 
+            and pinpoint the endpoints, async workers, handlers etc
+            and optimize those within their isolated scope
+            - PLUS doing the same for all related dependencies and dependee
+            and more important on the spot where these workload overlap 
+        PARAMOUNT:
+            - To determine the load a process/pod can handle avoiding 
+            cpu/memory saturation
+                If cap is 50 in-flight per pod, set autoscaling to maintain headroom, e.g.:
+                    •	target 30–40 in-flight per pod, not 50
+                    •	that way you scale out before you hit overload
+
+
+
+
+
+
+RECENT CALLS 
+=================================================================================
+    EUROPA Y LATAM 
+        Clients in the US 
+
+        k8s cluster across clouds
+        Cloud contact centers solutions 
+            call center products 
+        2,500 empleados 
+        
+
+        Responsibilities:
+            Deploy and manage enterprise-scale Kubernetes in cloud-based production environments.
+            Automate cluster lifecycle and application deployment using tools like Terraform, Helm, and GitOps workflows.
+            Optimize cluster performance on bare-metal hardware, including CPU, memory, and networking resources.
+            Apply Kubernetes security best practices, including RBAC, network policies, and pod security standards.
+            Implement monitoring and alerting solutions using Prometheus, Grafana, and logging stacks.
+            Participate in incident management and postmortems, driving continuous improvement in platform reliability.
+            
+
+        Requirements & Skills:
+            5+ years of experience in infrastructure, platform engineering, or SRE roles.
+            Proven hands-on experience running Kubernetes in production, cloud environments.
+            Strong knowledge of Linux systems, networking, and container runtimes.
+            Experience with automation and GitOps tools such as Terraform, Helm, or Argo CD.
+            Familiarity with observability and monitoring solutions, including Prometheus, Grafana, or ELK/EFK.
+            Skilled in troubleshooting, tuning, and optimizing Kubernetes clusters.
+
+
+
+
+===================================================================================
+
+1. How would you design and deploy a production-ready, highly available RKE2 cluster from scratch, and what architectural decisions would you need to make?
+    Not previous E2E experience with RKE2. Thought here the main points to address prior to any cluster provisioning, based on EKS:
+        1- To define Region and Availability zones or data centers strategy
+            Meaning data centers geographycally isolated
+        2- VPC and networking design 
+            Meaning the network segmentation: private and public subnets 
+        3- Cluster add-ons
+            DNS Resolution, Storage, networking, Load balancing, ingress and certificates management
+        4- The design of a compute strategy
+            i.e workload-aware node pools and autoscaling
+        5- Security, secrets configs and access management 
+        6- Deployment, delivery strategy
+        7- Monitoring and obsevability
+
+    though all of this is directly influenced by the projects size, required proyected workloads capacity, number of environments and multi-account organization
+
+ 
+2. In a production multi-cluster environment managed with Rancher, how do you handle day-to-day operations, troubleshooting, and upgrades while minimizing downtime?
+    Following a short-rule of troubleshooting: 
+        Cluster health, node health, networking & storage, workloads, recent changes and secrets rotation.
+        An example excercise is as simple as deploying a small workload, say a single pod reachable from outside the cluster...seeing it running serves as a test that the cluster is operational.
+        Or dig deeper based on rancher dashboard, unhealthy nodes, logs metrics, resources utilization. And specific non running pods's errors and events.
+
+ 3. If a production Kubernetes cluster suddenly becomes unstable (random pod restarts, some services unavailable, no obvious CPU/memory exhaustion), how would you systematically diagnose the problem, and in what order?
+        same approach as above
+        and in details, orderly looking at workloads dependencies:
+            its controller/operator running and healthy
+                        does the CRD  exists
+                        does the secret/config exists
+                        its the ExternalSecret synced
+                        its the CSI secret mount and ready
+                        its the CSI secret re-read
+                        its database/service reachable
+                        its on the right namespace
+                NETWORK CONSTRAINT
+                        what about the RBAC, MESH and network policies 
+                HEALTH MANAGEMNT & MITIGATIONS 
+                    preStop
+                    InitContainers
+                    START-UP, LIVENESS, READINESS  probes
+                    Argo CD sync waves
+                    Explicit dependency ordering
+                SCALING MISMATCH
+                    IF PENDING STATE
+                        Taints & Tollerations
+                        NodeAfinity 
+                        PodAfinity and PodAntiAfinity
+                Subnet and ENI ips capacity
+ 
+
+Whitestack TestGorilla assessment 
+    Docker top topics and a brief detail of each, used to evaluate a senior cloud integration engineer. Intended to use as a brush-up
+
+    Kubernetes top topics and a brief detail of each, used to evaluate a senior cloud integration engineer. Intended to use as a brush-up
+
+    Cloud Networking top topics and a brief detail of each, used to evaluate a senior cloud integration engineer. Intended to use as a brush-up
+
+Gist about:
+	•	DNS TTL
+	•	caching behavior
+	•	service discovery patterns
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

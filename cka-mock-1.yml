@@ -1,0 +1,292 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: orange-stc-cka07-str
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: orange-pv-cka07-str
+spec:
+  capacity:
+    storage: 150Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: orange-stc-cka07-str
+  local:
+    path: /opt/orange-data-cka07-str
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - cluster1-controlplane
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: orange-pvc-cka07-str
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: orange-stc-cka07-str
+  volumeName: orange-pv-cka07-str
+  resources:
+    requests:
+      storage: 128Mi
+
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: "This priority class is for high-priority applications."
+
+# helm install --generate-name ./new-version --namespace default
+
+# Modify the Deployment to Fit Within the ResourceQuota
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: web-gateway
+  namespace: cka5673
+spec:
+  gatewayClassName: nginx
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: kodekloud.com
+      tls:
+        certificateRefs:
+          - name: kodekloud-tls
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-route
+  namespace: cka7395
+spec:
+  parentRefs:
+  - name: nginx-gateway
+    namespace: nginx-gateway
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api
+    backendRefs:
+    - name: api-service
+      port: 8080
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: web-service
+      port: 80
+
+# high cpu consumer nodes 
+
+#   student-node ~ ➜  ssh cluster1-controlplane "kubectl top node --no-headers | sort -nr -k2 | head -1"
+#   cluster1-controlplane   127m   1%    703Mi   1%    
+
+#   student-node ~ ➜  ssh cluster3-controlplane "kubectl top node --no-headers | sort -nr -k2 | head -1"
+#   cluster3-controlplane   577m   7%    1081Mi   1%    
+
+#   student-node ~ ➜  ssh cluster4-controlplane "kubectl top node --no-headers | sort -nr -k2 | head -1"
+#   cluster4-controlplane   130m   1%    679Mi   1%    
+
+---
+
+# helm get manifest security-alpha-apd -n security-alpha-01 | grep image
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-ui-hpa
+  namespace: ck1967
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-ui-deployment
+  minReplicas: 2
+  maxReplicas: 12
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 20
+          periodSeconds: 45
+    scaleDown:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 65
+
+--- 
+
+cluster3-controlplane  ~ ➜ kubectl  apply -f - <<EOF
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: external-webserver-cka03-svcn
+  namespace: kube-public
+  labels:
+    kubernetes.io/service-name: external-webserver-cka03-svcn
+addressType: IPv4
+ports:
+  - protocol: TCP
+    port: 9999
+endpoints:
+  - addresses:
+      - 192.168.222.128   # IP of student node
+EOF
+
+probes 
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8080
+
+  livenessProbe:
+    tcpSocket:
+      port: 3306
+
+  livenessProbe:
+    exec:
+      command:
+        - cat
+        - /tmp/healthy
+
+# all main components must have the right endpoint, port, httpS, ca certs
+
+  #etcd 
+    - --etcd-cafile=/etc/kubernetes/pki/ca.crt
+      This is wrong. The API server should use the etcd-specific CA certificate.
+    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+
+# wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+---
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: coconut-pv-cka01-str
+  labels: 
+    storage-tier: gold
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /opt/coconut-stc-cka01-str
+  storageClassName: coconut-stc-cka01-str
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - cluster1-node01
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: coconut-pvc-cka01-str
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: coconut-stc-cka01-str
+  selector: 
+    matchLabels:
+      storage-tier: gold
+
+
+---
+
+# all k8s component must match kubeadm version or at least one minor version difference.
+
+# k exec -it -n cka4974 deployments/nginx-frontend -- curl -I http://localhost:81
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-webserver-cka03-svcn
+  namespace: kube-public
+spec:
+  clusterIP: 10.43.92.160
+  clusterIPs:
+  - 10.43.92.160
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 9999
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  labels:
+    kubernetes.io/service-name: external-webserver-cka03-svcn
+  name: external-webserver-cka03-svcn-urls
+  namespace: kube-public
+addressType: IPv4
+endpoints:
+- addresses:
+  - 10.244.222.54
+ports:
+- name: http
+  port: 9999
+  protocol: TCP 
+
+# port name must match 
+# svc target port must be same port as slice listening port. i.e port
+
+# helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+# helm repo update
+# helm install metrics-server metrics-server/metrics-server
+# edit deploy manifest: --kubelet-insecure-tls
+
+
+
+
+
+
+
+

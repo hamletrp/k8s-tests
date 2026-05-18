@@ -1,10 +1,723 @@
 
+WIDE HORIZON OBJECTIVES PRIORITIES 
+    - K8s Platform A grade Engineer 
+        - Certifications 
+            - CKAD
+                #here
+            - Terraform
+                #next #maybe
+    - Smart Valet 
+        - Tablets version
+             Done
+        - ezparkings 
+            - guests profile 
+                Done
+            - recurrent tickets
+                ...In progress
+            - guard screen
+            - reports
+        - Packaged Subscriptions
+        - Ads
+    - ezparking ( US, RD and CTG markets )
+
+
+regulatory requirements? (PCI-DSS, HIPAA, SOC2, FedRAMP)
+
+Static Application Security Testing (SAST)
+    SonarQube
+    Snyk Code
+    GitLab SAST
+
+Dynamic Application Security Testing tools (DAST)
+    "black-box" security solutions that scan running webapps, APIs 
+    for vulnerabilities—such as:
+         SQL injection 
+         and Cross-Site Scripting 
+         (XSS)—by simulating external attacks.
+    Tools: 
+        OWASP ZAP
+        Invicti
+
+
+Karpenter provisioneers === nodeclass & nodepools 
+
+
+At fuss and we are handling a mix of scaling strategies 
+    From HPA, VPA and KEDA 
+    all with a very simple yet effective approach 
+        Scale ahead of time, with a good headroom, prior to traffic spike 
+        A very well tested stabilization window, to avoid flapping and oscillations
+            this done thru simulated stress test and observation 
+        AND scale-to-zero for non-critical workloads, to save cost on idle compute
+
+        in all we have a combination of custom metrics, KEDA, external metrics and others
+
+CKA 
+    Golden troubleshooting order
+        1. Kubelet
+        2. container runtime
+        3. static pod manifests
+        4. etcd
+        5. kube-apiserver
+        6. scheduler/controller-manager
+        7. CoreDNS/networking
+
+    High-value commands
+        crictl ps -a
+        crictl logs <id>
+
+        journalctl -u kubelet -f
+
+        systemctl status kubelet
+        systemctl status containerd
+
+        kubectl get pods -A
+
+        etcdctl endpoint health
+
+    Mental model
+        kubelet runs static pods
+        etcd stores cluster state
+        apiserver exposes cluster API
+        everything else depends on those
+
+
+- New Toolbelt added
+    - Dagger 
+        - https://docs.google.com/document/d/1IbYoyc-6_XPddVQf2Rzhv4ikzNdqtA-ixJHLUGXUna4/edit?usp=sharing
+        - /Users/hamlet/projects/research_&_dev/dagger/dagger-ci-gitops.ts
+
+    - monorepos - merges perfectly with dagger 
+        pros 
+            Single git, multiple projetcs
+            easier colaboration 
+            dependency management 
+            refactor is easier 
+            one single clone 
+        cons 
+            could become messy, a lot together in one place...
+            bigger build 
+                requires additional tools 
+            
+
+- New Intros
+        I am Computer Science Engineer with over 14 years of experience designing and operating enterprise-grade, large-scale, highly available systems across both on-premises and cloud environments. Experienced in building platforms using serverless architectures and containerized applications powered by Docker and Kubernetes.
+
+        In recent projects, collaborated with cross-functional teams to deliver high-quality platform solutions on AWS EKS. 
+        Responsibilities included -
+            - Architecture design 
+            - Infrastructure provisioning using Terraform, AWS CDK, CF and a bit of pulumi
+            - Implementing CI/CD pipeline automation
+            - And managing GitOps-driven deployments with Argo CD
+              along with additional platform engineering and operational improvements.
+
+        So my contribution ends up being simplifying workflows, standardizing environments and reducing operational friction.
+
+
+
+Interview lessons learned 
+    - SECURITY AND COMPLIANCE sample    
+        * a secret never visible by anyone, NOT in etcd, written to disk
+          and workload read it from there
+    - Prioritizing reliability over feature velocity
+    - Cost awareness (Spot usage, scaling tuning)
+    - Rate limiting & circuit breaking
+        both not just for authentication and authorization
+        but to throtle requests which serves as a security measure 
+        and in the case of circuit breaking 
+            to avoid cascading failures to scale to downstream and upstream systems 
+    - Image promotion strategies
+    - Immutable tagging
+    - Drift detection
+
+    intro end
+        constantly involved in "hybrid applications workflows" EVENT-driven 
+        reliable and highly available 
+        DISTRIBUTED polyglot systems that runs hybrid workloads.
+        on a mix of architectures serverles and containerized applications 
+        on top of aws.
+
+
+    To get prepared 
+        Hiring: Full Time- Sr. Platform Engineer- Kubernetes & Middleware Platforms
+        $200B Global Investment Company, Privately held in NY metro area
+
+        Role: Sr. Platform Engineer- Kubernetes & Middleware Platforms
+        -Design/impl infra abstraction & API to deploy AI on Kubernetes
+        -architect/deploy/manage Kubernetes platforms(AWS EKS & Red-Hat)
+        focus here. could answer have done PoC 
+            -HA Kafka clusters(mirroring/partitioning/tooling)  
+            -Managed Redis Enterprise clusters
+
+        -Build & manage helm charts, templating, parameterization, versioning
+
+        Your experience:
+            -Kubernetes platforms (EKS/OpenShift) in production
+            -Manage streaming/caching infrastructure at scale
+            -admin/develop API Management/Gateway platforms
+            -DevSecOps principles, container security, govern/compl enterprise
+            -strong automation exp: Helm, GitOps, ArgoCD, AIC
+            -config service mesh/network policy controls/multi-tenancy in Kub
+
+            Allen Cunningham - Headhunter: SWE,Dev, Data & AI
+            860.888.2699 | allen@sound-search.net
+
+
+    SMART QUESTIONS ABOUT IMPLEMENTATION 
+        AT GorillaLogic 
+            USED operators/controllers  -  Improved answer 
+                There are PLATFORM and APPLICATIONS controllers
+                Well looking at a K8s implementation as a whole 
+                    For Storage 
+                        aws-ebs-csi-driver
+                    For Networking 
+                        aws vpc-cni
+                         though eks manages it 
+                         as well as Metrics Server 
+                    workloads 
+                        ESO 
+                        Secret Store CSI Driver 
+                        Stakatar Reloader 
+                        Image Updater 
+                        NATs
+                    Ingress, Services and mesh
+                        aws load balancer controller
+                        istio 
+                        cert-mamager 
+                        kiali 
+                        nginx 
+                    Deployments management tools
+                        Argo CD
+                        Argo Rollouts 
+                        Argo Events & workflows 
+                        Kyverno 
+                    Auto Scaler 
+                        Karpenter 
+                        Cluster Autoscaler 
+
+
+                    
+        At Natalia's boss call 
+            - Why choosing to stay on EKS rather than ECS 
+                •	EKS is the cloud native way of doing things 
+                    * more secure, reliable, scalable, performant and lower cost on the long run 
+
+        AT MONKS 
+            Why choosing virtual cluster thru namespaces rather than separate ones?
+            "Actual Clusters"  vs Virtual Clusters”
+            Well...each way serve different purposes:
+                •	Separate clusters for:
+                    Actual Clusters
+                        •	prod vs non-prod
+                        •	compliance and regulated
+                        •	critical or high risk vs low risks
+                    Virtual Clusters”
+                        -   for business domain related workloads and same low risk profile
+                        -   experimental and low risk profile
+                        -   non-compliance and non-regulated
+
+    PERFORMANCE & SCALING OPTIMIZATION #performance
+        - My way to think abut performance optimization and scaling setups 
+          in order to handle real volume of transactions in a cluster 
+            - Refer to one real world sample  
+            1- We have a framework of work based one: 
+                - Workload type, metrics and compute capacity 
+                    APIs, req/res, streaming, async backlog (queues etc), INGRESS
+                and there are standarized numbers that works based on the load 
+            2- Which is my way to approach it based on these inputs:
+                - FOCUS on the transaction workflow
+                i.e hotpaths, kpi's measured transactions 
+                and pinpoint the endpoints, async workers, handlers etc
+                and optimize those within their isolated scope
+                - PLUS doing the same for all related dependencies and dependee
+                and more important on the point where these workload overlap.
+                  AND flag these as critical, for proper scheduling.
+            PARAMOUNT:
+                - To determine the load a process/pod can handle avoiding 
+                cpu/memory saturation
+                    If cap is 50 in-flight per pod, set autoscaling to maintain headroom, e.g.:
+                        •	target 30–40 in-flight per pod, not 50
+                            Autoscaling gets time to react
+                        •	that way you scale out before you hit overload
+
+        - capping in-flight reduces #TAIL-LATENCY
+            When concurrency gets too high on one pod:
+                •	Timeouts/retries kick in → extra traffic → positive feedback loop
+                •   So p50 might look “okay” while p99 goes feral.
+
+                recursive dependencies - OPTIMIZATION first
+                    Pick the bottleneck and set a safe pod budget
+
+                PROTECT LATENCY
+                    concurrency limiter middleware (semaphore)
+                        “Only N requests are allowed to execute at the same time.
+                            Everyone else must wait briefly or fail fast.”
+
+            #TAIL-LATENCY
+            Where to enforce the cap in-flight:
+                You can cap in 3 places (often you do 2 of them):
+                    1) Inside the app (most precise)
+                        Node.js REST
+                            •	Use a semaphore / concurrency limiter middleware.
+                            •	If full: return 429 or 503, ideally with Retry-After.
+                        gRPC
+                            •	Limit max concurrent RPC handlers (semaphore around handlers).
+                            •	For streaming, limit active streams separately.
+
+                        A cap keeps the system in the “stable region”: less queueing, fewer timeouts, fewer retries.
+
+                    2) At the proxy/ingress/mesh (fast protection)
+                        •	Envoy/Istio/NGINX can cap:
+                        •	max requests in-flight
+                        •	max connections
+                        •	circuit breaking / outlier detection
+                        •	Great for “shielding” pods from bursts.
+
+                    3) At the dependency boundary (DB pool is an implicit cap)
+                        •	DB connection pool size is a hard ceiling.
+                        •	If your in-flight cap exceeds pool capacity, you’ll just create queueing inside the app.
+
+            #TAIL-LATENCY
+            Setup guideline (practical steps)
+                Step 1: Pick the bottleneck and set a safe pod budget
+
+                Common starting points per pod:
+                    •	CPU-bound API: in-flight ≈ 2–5 × vCPU
+                    •	I/O-heavy API (DB calls): in-flight ≈ 1–2 × DB pool size
+                    •	gRPC streaming: cap streams, not just requests
+                If you don’t know yet, start conservative (e.g., 50 inflight/pod) and tune.
+
+                If cap is 50 in-flight per pod, set autoscaling to maintain headroom, e.g.:
+                    •	target 30–40 in-flight per pod, not 50
+                    •	that way you scale out before you hit overload
+
+            #TAIL-LATENCY
+            ORDERED OPTIMIZATION 
+                * Circuit breaking buys time for autoscaling to work.
+                - Service mesh Shields pods from bursts
+                    e.g - CircuitBreaking: DestinationRule:
+                            trafficPolicy:
+                                connectionPool: 200
+                    e.g: 
+                        and a VirtualService:
+                            Timeouts + retry policy
+                - HPA/KEDA to Add capacity before cap is hit
+                - Concurrency limitter Protects handler & dependencies
+                - DB connection pool Protects database
+
+                RESULT: 
+                    •	Circuit breaking happens at the envoy proxy / service mesh
+                    •	Requests are rejected early
+                    •	Clients see fast failures
+                    •	Pods are shielded
+                    •	Autoscaling gets time to react
+                            
+            how to Ensure PDB + topology spread.
+                TL;DR checklist
+                    •	✅ PDB: maxUnavailable: 1 (or % for large fleets)
+                    •	✅ Spread: topology.kubernetes.io/zone + kubernetes.io/hostname
+                    •	✅ maxSkew: 1
+                    •	✅ Replicas/minReplicas aligned with number of AZs
+                                >= AZs
+                    - #summary #HA #availability
+                        HPA + PDB + topology spread + minReplicas aligned with # of AZs
+
+            #wrk, k6s & ab is a high-performance HTTP #benchmarking #tool used 
+            to validate #scaling and #performance changes.
+
+
+    - DevOps explained in your own words 
+        Devops is the practice and integration of:  
+            - agile project management
+            - IaC
+            - shift-left CI/CD
+            - automation
+            - monitoring
+            - observability
+            - and continuous feedback
+            into software in order to increase the speed and quality of software projects.
+        Devops Promotes a CULTURE of:
+            - Collaboration 
+            - Shared ownership 
+            - small, frequent changes 
+            - Continuos Improvements 
+            - Others: 
+                - Automation Over Manual Work
+                - Simplicity and Clarity
+                - Resilience Through Testing
+                - Security by Design
+                - Collaboration / Open source 
+                - Observability as a First-Class Citizen 
+
+    - Kubernetes controllers 
+        (how the control loop works, desired vs actual state,
+         and common controllers like Deployment/ReplicaSet).
+            THE HEART of k8s: 
+                Core Engine 
+                Controllers/Operators whether: 
+                    PLATFORM operators or APPLICATIONS operators
+                    and it consist of an infinite loop...
+                    Desired vs actual state 
+
+
+    - How Infrastructure as Code improves reliability (portable,reproducibility, version control,
+      fewer human errors, consistent environments).
+        “Infrastructure as Code MAKES RELIABILITY POSSIBLE
+            IaC works because it’s:
+                Version controlled
+                portable
+                predictable
+                repeatable
+                reviewable
+                recoverable
+        by making infrastructure reproducible, versioned, automated, 
+        and consistent, which reduces human error, prevents configuration drift, 
+        and enables predictable changes and recovery.”
+            - Reproducibility (same input → same result)
+                terraform apply
+                    → same VPC, same subnets, same IAM, every time
+            - Version controlled (history & rollback accountability)
+                Every change is committed, reviewed, and traceable
+            - Consistent environments
+                applying stacks results on the same structure across env
+            - Predictable changes
+            - Repeatable recovery & disaster readiness
+                since everying is define as code                
+            - leading to Fewer to no human errors
+
+    - Differences between Deployment and StatefulSet 
+    (stateless vs stateful workloads, persistent identities, volumes, 
+    and deployment order).
+        Differences between Deployment and StatefulSet - stateless vs stateful workloads
+            Deployment and StatefulSet 
+                differs by the type of workload they were designed for:
+                    Deployment are design for stateless workloads (back evnt processors, microservices, apis)
+                        where identity is random, storage is shared or ephemeral,
+                        pods are interchangable, not START/SHUTDOWN order.
+                        Use a clusterIP SVC and manage rolling updates during render.
+                    differs from stateful workloads (databases, queues, key-value like redis)
+                        where pods are not interchangable, 
+                        have a persistent identity and storage, OREDERED start/shutdown, 
+                        use a headless service and the scaling is predictable
+                        
+
+
+        Persistent identities
+            By examples:
+                - stateful pod names 
+                - AWS IAM Role
+                - K8s Service Account 
+                - IRSA and EKS Pod Identity
+            They live regardless of the lifecycle of other resources instances
+            so they are logical identity that are assigned to a workload or a service 
+            and that use short-lived credentials for authentication.
+                - ServiceAccounts + IAM roles are the backbone
+                - Enables zero-trust, least privilege, and automation
+                - Fundamental to modern cloud-native security
+        
+        Deployment Order - #debugging 
+            “Deployment order is about satisfying dependencies: 
+                infrastructure and controllers first, 
+                then configuration and RBAC, 
+                then workloads, 
+                and finally traffic. 
+            and we do this recursively for each piece of deployment.
+                Controllers before resources it reconciles 
+                CRD before the resources to be used
+                Secrets before apps
+                live and Readiness probes before traffic
+
+
+            - Every piece of deployment has dependencies, securities boundaries and compliance rules 
+            that must be in-place prior to deploy, therefore each of these must be previously set,
+            and this is applied recursively until a safe, clean deployment is achieve 
+            A few example of these are:
+                - The obvious one: Infa (nodes & node groups, vpc, subnets, IAM setups)
+                    virtual cluster via namespaces prior to workloads. 
+                !So we have a cluster!
+                - The security layer: RBAC, Serv. Accounts, NetworkPolicies, ResourceQuotas
+                - Storage classes prior to workloads that requires storage and volumes
+                - A Controller/operator before the resources it reconciles
+                    [Secrets Store CSI Driver] *SecretProviderClass 
+                    [External Secrets Operator] *External Secrets Operator
+                - CRDS before any resource that uses them 
+                    [Argo CD] Application
+                    [External Secrets] ExternalSecret
+                    [VirtualService] VirtualService
+                - Secrets and Configs before application uses them 
+                - Readiness, livenes probes 
+                - Services (ALB, Ingress) prior to be able to serve traffic
+                - etc
+
+    - Troubleshooting a custom controller that keeps reconciling the same resources 
+    (reconcile loop, idempotency, logs, events, CRDs, race conditions).
+        * reconciliation issues starts at the moment of deploying a resource
+          before their dependencies are provisioned.
+            - Pod starts before its dependencies are ready
+
+                DEPENDENCY MISCONFIGURATION
+                    e.g - its controller/operator running and healthy
+                        does the CRD               exists
+                        does the secret/config     exists
+                        its the ExternalSecret     synced
+                        its the CSI secret mounted and ready
+                        its the CSI secret re-read
+                        its database reachable
+                        its on the right namespace
+                NETWORK CONSTRAINT
+                        what about the RBAC, MESH and network policies 
+                HEALTH MANAGEMNT & MITIGATIONS 
+                    preStop
+                    InitContainers
+                    START-UP, LIVENESS, READINESS  probes
+                    Argo CD sync waves
+                    Explicit dependency ordering
+                SCALING MISMATCH
+                    IF PENDING STATE
+                        Node Labels
+                        Taints & Tollerations
+                        NodeAfinity 
+                        PodAfinity and PodAntiAfinity
+                Subnet and ENI ips capacity
+
+                If many re-starts 
+                    to look for OOMKilled by restart the pod 
+                        solution is to increase resources
+
+
+        * Kubernetes favors speed over ordering
+          Controllers act independently
+          Readiness ≠ availability ≠ dependency readiness
+          Explicit coordination prevents races
+
+
+    - How to ensure reliability during a rollout for a client 
+      with strict uptime requirements (blue-green or canary deployments, 
+      pre-release testing, monitoring, clear communication, and a rollback plan).
+        Well abrief plan could be:
+            1- To Pick a rollout strategy that limits blast radius
+                whether Blue/Green or canary 
+                    Blue/Green more suitable since we want instant rollback
+            2- Gate the release with pre-production validation
+                to ensure new version can SERVE REQUESTS 
+                    At deploy, done prior to release
+                        - Automated tests in CI: unit, integration, contract tests
+                        - Pre-release smoke tests against the “green” environment
+                        - Load tests for hot paths (login, checkout, payments, orders, etc.)
+                    At release 
+                        - E2E hot paths workflows 
+            3- make the rolloback safe 
+                - Dashboards + alerts ready
+                - Rollback is one-step and tested
+                    - flip ALB / DNS target back
+                    - Change Service selector back to BLUE env
+                    - helm rollback
+                    - argo rollouts abort
+                    - revert a commit
+                    - etc
+            4- To Monitor like you mean it
+                - Business KPIs (checkout/payments/order success, login failures)
+                - Error rate (5xx) increase
+                - p95/p99 latency increase
+            5- To name the owner of each part of the process 
+                e.g:
+                    Driver: executes the rollout
+                    Observer: watches dashboards & alerts
+                    Decision owner: authorizes rollback if needed
+                    Communicator: updates client / business
+            6- Communicate clearly
+                Before: WHAT we are deploying and WHEN. and if any IMPACT
+                        INCLUDING: ROLLBACK Criteria 
+                During: Live updates in channels - Slack / Teams
+                After:
+                    result: 
+                        “Deployment completed successfully.”
+                        OR “Rolled back at 14:07 due to elevated latency.”
+
+    IaC Pattern:
+        “Common IaC patterns include declarative desired state, immutable infra, 
+        environment parity, modularization, remote state, Git-based workflows, 
+        drift detection, least privilege, and idempotent operations.”
+
+        #summary #IaC
+            Infra and workloads must be deployed across environments in an immutable manner.
+            Repeating deploys must produce the same outcome.
+            How:
+                declarative desired state 
+                modularization
+                remote state 
+                Git-based workflows
+                least privilege
+                idempotent operations
+                immutable infrastructure
+
+
+
+Incident Response and Postmortem Processes
+    Incident MGMT 
+        Detect & Triage [ A valid alert ? - Severity and Impact ]
+        Contain & Stabilize [ scale replicas, roll back a deploy, disable feature flag ]
+            actions MUST BE easy rolled back
+        Diagnosing [ logs, events, metrics, dashboards, app source code and recent commits ]
+        Resolving [ reproduce in a test pod, push a fix or patch live cluster ]
+        Preventing [ Document, add unexisting alerts, circuit breakers, retries, backoff, strengthening infrastructure or scaling rules ]
+
+        THEN postmorterm
+
+
+FINOPS 
+    It starts with Visibility.
+        Which service costs what, and is that justified?
+            means: AWS Cost Explorer and Cost and Usage Reports
+                   For Kubernetes, tools like Kubecost
+                   
+        tagging every resource — by project, team, service and environment. 
+
+        Can be estimated with infracost if using terraform
+
+        
+    9️⃣ Cost controls (without hurting performance)
+        * INFRA cost & APPLICATION cost
+        •	instances & node pools rightsizing 
+                +20% extr - although tune based on usage patterns
+                applies to WORKLOADS
+                    * if Kubernetes pods below 40% is a red flag. APPLY Tunning 
+                    *  pod requests and limits - PROPERLY - NOT OVERPROVISIONED, NOT UNDERPROVISIONED
+                        HPA, VPA, Karpenter
+                Combined that with Savings Plans / Reserved Instances - for your baseline load - cut your bill significantly
+        •	Spot instance without risking HA and Security 
+        •	Scale-to-zero for non-critical workloadas
+        •	Storage lifecycle policies
+        *   Full plan 
+                Baseline - saving plan for steady-state workloads
+                Burst - spot where applicable
+
+        Rule
+            Never save money on HA or security.
+            Save money on idle compute.
+
+    Governance
+        Enforce tagging policies
+        budgets and alerts
+
+    shift-left FINOPS 
+        estimate its cost before prod 
+            Terraform → Infracost → PR review
+
+    END-2-END
+        visibility:
+            Estimates with Infracost into CI/CD 
+            Cost Explorer dashboards
+            budgets and alerts
+            Kubecost: workload-level visibility
+    Call to Action
+        Visibility first THEN tune, improve and optimize 
+            three metrics: 
+                Cost per service
+                Utilization percentage
+                Cost trends over time
+
+        govern always
+        FinOps: Visibility → Optimization → Governance
+        Tools: AWS Cost Explorer · CUR · Kubecost · Infracost · Karpenter
+
+
+    Top cost areas:
+        1. Compute (EC2/EKS/Lambda)
+        2. Storage (S3/EBS/RDS)
+            backups
+            storage lifecycle policies - archive/remove old backups
+        3. Data transfer (NAT, cross-AZ)
+        4. Kubernetes inefficiency
+        5. Idle/orphaned resources
+
+
+
+ONE PARAGRAPH K8S ARCHITECTURE DESIGNS 
+    - The platform uses domain-isolated EKS clusters across three AZs
+    - Tiered node pools with Spot for batch processing, strict pod-level identity, 
+      and strong observability
+    - Reliability through conservative autoscaling, concurrency caps, and circuit breaking
+    - Cost is controlled via workload-aware compute placement and aggressive use of Spot where safe
+
+
+Polyglot system and Hybrid Workflows 
+    A polyglot system is one built with multiple prog languages, runtimes, frameworks,
+    and data exists - tied together through:
+        •	API contracts
+        •	message buses
+        •	RPC frameworks
+        •	consistent DevOps tooling
+
+    Why teams build polyglot systems
+        •	Different workloads have different performance profiles
+        •	No single language excels at everything
+        •	Teams optimize for:
+            •	compliance
+            •	throughput
+            •	latency
+            •	developer productivity
+            •	ecosystem maturity
+    Typical polyglot stack (example)
+        Layer	            Technology
+        ======================================================
+        APIs	                Java, Go, Node.js
+        Streaming	            Kafka, Kinesis
+        Batch	                Spark, Flink
+        ML	                    Python
+        Storage	                (RDS) Postgres, DynamoDB, S3
+        Infra	                Terraform, Kubernetes
+        Observability	         Prometheus, OpenTelemetry
+
+    🚀 Hybrid Application Workflows
+        A hybrid application workflow is a business or technical process 
+        that spans multiple execution models, such as:
+        •	synchronous calls (REST/gRPC)
+        •	asynchronous events (pub/sub)
+        •	background jobs / queues
+        •	scheduled tasks
+        •	human approvals / manual inputs
+        •	state machines / orchestrators
+        •	cloud services (Lambda, Step Functions, Workflows)
+
+        In other words:
+            One workflow that mixes sync + async + event-driven + batch + orchestration.
+            It’s hybrid because it pulls together several workflow styles into a single cohesive flow.
+
+    🧩 Why Hybrid Workflows Exist
+        Real applications rarely fit one style. They often require:
+            ✔ Immediate real-time responses → synchronous RPC / REST
+            ✔ Long-running or retryable jobs → async queues
+            ✔ System-to-system communication → events
+            ✔ Coordination → orchestrators
+            ✔ Human interaction → approvals, emails, dashboards
+            ✔ Cloud-native integrations → serverless functions or APIs
+
+            Combining them gives you resilience, scalability, and flexibility.
+
+        Sample: Sync + Async + Event chaining
+            User calls API - From WebApp || Mobile App
+            → API stores data  
+            → emits event  
+            → multiple services react  
+            → one of them triggers background job  
+            → job emits completion event  
+            → another service updates state
+
 - https://github.com/mxssl/sre-interview-prep-guide?tab=readme-ov-file
 - https://github.com/mxssl/sre-interview-prep-guide
 - https://learnk8s.io/production-best-practices
 - Some questions and answers 
     https://www.turing.com/interview-questions/kubernetes#intermediate-kubernetes-interview-questions-and-answers
-- must set pod labels - an admission controller following CIS
+
+======================================================================================
+
+- Automation end-to-end
+    - zero manual steps, no downtime, and no GitOps drift.
+
+- Best Practices 
+    - https://spacelift.io/blog/kubernetes-best-practices
+- must set pod labels - and admission controller following CIS
     name: such "User API"
     instance: use the container image tag
     version: an incremental counter
@@ -18,25 +731,73 @@
     kube-bench and [CIS] Center for Internet Security 
         Admision controller to enforce Kyverno & Gatekeeper
     - Disable metadata cloud providers metadata API
-- TOP Alerts
+- TOP
+    - During memory pressure, the API latency spikes → probes fail → Kubernetes restarts the pod.
+    - CrashLoopBackOff due to constant OOMKills
     K8s - Security 
         1️⃣ RBAC → restrict who can delete things
-        2️⃣ Admission Controllers → Prevent dangerous actions
+        2️⃣ Admission Controllers -> policy engines → Prevent dangerous actions
             OPA Gatekeeper → enforce policies → e.g. "nobody can delete certain namespaces".
             Kyverno → Kubernetes-native policy engine → excellent for protecting resources.
+            For:
+                - ensure resources section 
+                - securityContext 
+                - PDB
         3️⃣ Resource finalizers → add guardrails
-        4️⃣ GitOps + Argo CD → Immutable Desired State
-            Deleting something in the cluster that is still in Git → Argo CD will auto-reconcile and restore it.
         5️⃣ Soft-delete patterns
             ✅ For certain critical apps → you can implement soft-delete:
             Mark a resource deletionRequested: true.
             CI/CD or operators must process this → not direct kubectl delete.
         6️⃣ Audit and Monitoring
-            to see logs of delete attpemts 
+            to see logs of delete attepmts 
+        4️⃣ GitOps + Argo CD → Immutable Desired State
+            Deleting something in the cluster that is still in Git → Argo CD will auto-reconcile and restore it.
         7️⃣ Final bonus → Backup and DR
 
 
     1. Cluster Health & Availability
+        Cluster testing  
+            1. Cluster-Level Tests - Core Tests
+                | Test Type             | Tool(s)                                       | What It Verifies                             |
+                | --------------------- | --------------------------------------------- | -------------------------------------------- |
+                | API Server health     | `kubectl get --raw /healthz`                  | API availability and latency                 |
+                | Node health           | `kubectl get nodes` / `kubectl describe node` | Node status, taints, allocatable resources   |
+                | Scheduler             | Deploy a test pod and check placement         | Scheduling logic                             |
+                | Kubelet & kube-proxy  | Log inspection or via Prometheus              | Edge-level service proxy health              |
+                | Networking (DNS, CNI) | `nslookup`, `curl`, `ping`, telnet from Pods  | DNS, service discovery, network connectivity |
+                | Admission webhooks    | `kubectl apply` test objects                  | Admission control is functioning             |
+                | RBAC                  | `kubectl auth can-i`                          | Access control enforcement                   |
+                                          kubectl -n kiali auth can-i get pods --as=system:serviceaccount:kiali:kiali
+
+                | Cluster autoscaler    | Deploy HPA or create pending pods             | Node provisioning reacts properly            |
+                + other compliance and Vulnerability scanner tools 
+            2. Application-Level Tests
+                | Test Type            | Tool(s)                      | Purpose                                           |
+                | -------------------- | ---------------------------- | ------------------------------------------------- |
+                | Readiness/Liveness   | Probes in Deployments        | App startup and runtime health                    |
+                | Functional API       | Postman/Newman, REST client  | Validates app endpoints                           |
+                | Load/Stress          | k6, Locust, Artillery        | Measures app performance and scaling              |
+                | Chaos Engineering    | Gremlin, LitmusChaos         | Observe app resilience under fault injection      |
+                | Canary/Rollout tests | Argo Rollouts + Prometheus   | Safe progressive delivery based on metrics        |
+                | Data validation      | Custom scripts, CI pipelines | Assert expected DB state, logs, or business logic |
+            3. Manifests lint test levels 
+                kube-linter
+                #helmtest
+                    kubectl apply -f overlays/staging --dry-run=server | client
+                    helm test <release-name> --logs
+                        Manifests sample 
+                            helm-test-sample.yaml
+                    Test Lifecycle
+                        1. helm upgrade --install myapp ./mychart
+                        2. helm test myapp --logs
+                        3. Helm identifies and runs all resources with the helm.sh/hook: test annotation.
+                            ideal for post-install or post-upgrade checks
+                        4. It waits for Jobs to complete and checks their success/failure.
+                        * Include at least one connection check or smoke test per chart.
+                #kustomize tsts
+                    kubectl apply -k overlays/staging --dry-run=server | client
+
+
         | **Alert**                   | **Reason**                                                         |
         | --------------------------- | ------------------------------------------------------------------ |
         | `KubeAPIDown`               | API server is unreachable. Core functionality at risk.             |
@@ -139,14 +900,23 @@
     - runs a lightweight agent on nodes or containers
     - Safe and reversible chaos, with scheduling and blast radius controls
     🧪 Sample Chaos Scenarios with Gremlin
-        - CPU Attack: Simulate high CPU usage on a node to test autoscaling.
+        - CPU Attack/load attack: Simulate high CPU usage on a node to test autoscaling.
         - Latency Attack: Introduce 300ms latency on an API to test retry logic.
         - Kill Process Attack: Terminate nginx to test self-healing via K8s deployments.
         - Blackhole Attack: Drop all outgoing traffic to a database for X seconds.
-    ✅ Benefits
+    ✅ Benefits #key
         Find weaknesses before your users do
         Improve observability, alerting, and failover
         Build system confidence with game days and real-world testing
+
+8️⃣ “Resource correctness” in practice (checklist)
+    When someone says “we’ll review Kubernetes resource correctness”, they usually mean:
+        🧩 Does everything validate against the API schema?
+        🔗 Do labels/selectors glue resources together correctly?
+        ⚙️ Are resource requests/limits & probes sensible?
+        🔐 Are RBAC, securityContext, and NetworkPolicy sane?
+        🔑 Are ConfigMaps/Secrets/env references correct?
+        🚦 Is the rollout strategy safe (HPA, PDB, strategies)?
 
 - Journal:
     * goal 
@@ -190,7 +960,7 @@
                 AWS CloudWatch Logs (Fluent Bit ships logs to CloudWatch)
 
             Tracing
-                Jaeger or AWS X-Ray
+                Jaeger, kiali or AWS X-Ray
 
             Alerting
                 Alertmanager (Bundled with Prometheus stack)
@@ -226,49 +996,9 @@
                 7- RBAC + Access Control
                     Is there any access denied errors?
                 
-        Cluster testing  
-            1. Cluster-Level Tests - Core Tests
-                | Test Type             | Tool(s)                                       | What It Verifies                             |
-                | --------------------- | --------------------------------------------- | -------------------------------------------- |
-                | API Server health     | `kubectl get --raw /healthz`                  | API availability and latency                 |
-                | Node health           | `kubectl get nodes` / `kubectl describe node` | Node status, taints, allocatable resources   |
-                | Scheduler             | Deploy a test pod and check placement         | Scheduling logic                             |
-                | Kubelet & kube-proxy  | Log inspection or via Prometheus              | Edge-level service proxy health              |
-                | Networking (DNS, CNI) | `nslookup`, `curl`, `ping`, telnet from Pods  | DNS, service discovery, network connectivity |
-                | Admission webhooks    | `kubectl apply` test objects                  | Admission control is functioning             |
-                | RBAC                  | `kubectl auth can-i`                          | Access control enforcement                   |
-                | Cluster autoscaler    | Deploy HPA or create pending pods             | Node provisioning reacts properly            |
-                + other compliance and Vulnerability scanner tools 
-            2. Application-Level Tests
-                | Test Type            | Tool(s)                      | Purpose                                           |
-                | -------------------- | ---------------------------- | ------------------------------------------------- |
-                | Readiness/Liveness   | Probes in Deployments        | App startup and runtime health                    |
-                | Functional API       | Postman/Newman, REST client  | Validates app endpoints                           |
-                | Load/Stress          | k6, Locust, Artillery        | Measures app performance and scaling              |
-                | Chaos Engineering    | Gremlin, LitmusChaos         | Observe app resilience under fault injection      |
-                | Canary/Rollout tests | Argo Rollouts + Prometheus   | Safe progressive delivery based on metrics        |
-                | Data validation      | Custom scripts, CI pipelines | Assert expected DB state, logs, or business logic |
-            3. Manifests lint test levels 
-                kube-linter
-                #helmtest
-                    kubectl apply -f overlays/staging --dry-run=server | client
-                    helm test <release-name> --logs
-                        Manifests sample 
-                            helm-test-sample.yaml
-                    Test Lifecycle
-                        1. helm upgrade --install myapp ./mychart
-                        2. helm test myapp --logs
-                        3. Helm identifies and runs all resources with the helm.sh/hook: test annotation.
-                            ideal for post-install or post-upgrade checks
-                        4. It waits for Jobs to complete and checks their success/failure.
-                        * Include at least one connection check or smoke test per chart.
-                #kustomize tsts
-                    kubectl apply -k overlays/staging --dry-run=server | client
-
-
         How would you describe the relationship between the operations team, IT, and the rest of the engineering team?
             everything is about a common understanding and a well defined Responsibilities scope
-        How to setup a self-service infrastructure stack for a service with data store?
+        How to setup a self-service infrastructure stack for a service with data store
             1. Define What You Need
                 | Layer             | Example                                              |
                 | ----------------- | ---------------------------------------------------- |
@@ -284,6 +1014,7 @@
                 Argo CD / ApplicationSet 
             4. Handle Secrets Properly
                 Secrets Operator (ESO) with AWS/GCP Vault/Secrets Manager.
+                Secret Store CSI Driver 
             5. Ingress + DNS + TLS
                 NGINX, TRAEFIK, HAProxy or AWS ALB ingress controller 
             6. Monitoring & Dashboards
@@ -296,6 +1027,7 @@
                     Create namespace
                     Deploy app & DB
                     Inject secrets
+                    Service Account + IAM + RBAC
                     Setup Ingress + TLS
                     Argo CD shows real-time sync + dashboard
                     Dev gets access to live service + monitoring + logs
@@ -338,13 +1070,15 @@
                 - tcpdump
                     network traffic packets for inspection
                     tcpdump -i eth0 port 80
+                    nc -vz redis.myapp.svc.cluster.local 6379
+
 
                 | Problem Type             | Recommended Tool        |
                 | ------------------------ | ----------------------- |
                 | RAM or swap exhaustion   | `free`, `vmstat`        |
                 | CPU bottlenecks          | `mpstat`, `top`, `htop` |
                 | Open ports or listening  | `netstat`, `ss`         |
-                | Connectivity failure     | `ping`, `telnet`, `nc`, 'curl'  |
+                | Connectivity failure     | `ping`, `telnet`, `nc`, 'curl' 'nc -vz <host> <port>'  |
                 | Trace route to service   | `traceroute`            |
                 | Debug HTTP/HTTPS traffic | `tcpdump`, `wireshark`  |
 
@@ -380,18 +1114,254 @@
         | 9  | **Istio / Envoy**                              | Observe traffic, latency, and failures in Istio-managed apps                           | `7639`, `11829`   |
         | 10 | **PostgreSQL Monitoring**                      | DB-level metrics: connections, transactions, locks, cache hits                         | `9628`            |
 
+    EKS Hybrid Nodes 
+        benefits 
+        | Benefit                   | Description                                  |
+        | ------------------------- | -------------------------------------------- |
+        | 💵 **Cost Optimization**  | Use cheaper Spot/Fargate where possible      |
+        | 🧠 **Workload Placement** | Pin sensitive apps to specific node groups   |
+        | 🔁 **Fault Tolerance**    | Spread across zones and types                |
+        | 🌍 **Workload Diversity** | Support legacy, high-perf, or test workloads |
+
+    Paramount importance about nodes root volume (kubelet and logs)
+        if using large images 
+            can fill it up and risk eviction of pods 
+            or degraded kubelet 
+        ✅ Best Practice: Use a Dedicated Volume for Overlay (images)
+
+    mount a volume on a vm 
+        <device>    <mount-point>    <fs-type>    <options>        <dump/Backup> <pass/ Order of fsck checks at boot (1 for root, 2 for others)>
+        /dev/xvdb   /var/lib/containerd  xfs       defaults,nofail    0            2
+
+    aws config rules 
+        To maintain best practices and more important, compliance
+        ssm patch manager, etc
+    What is Cilium?
+        Cilium is an eBPF-based networking, observability, and security layer 
+        for Kubernetes environments. 
+        It replaces traditional kube-proxy and provides advanced networking and security features without requiring kernel modules or sidecars.
+    kubevirt 
+        virtualization on top of k8s 
+    nutanix
+        full platform to run kubernetes - all inclusive and hybryd clouds
+
+    Calculate nodes capacity
+        Large Worker Node
+            8 x pods replicas
+            ⇒ Total 16 CPU Cores / 32 GB RAM
+
+            OS/Kubelet
+            ⇒ 4.8 CPU Cores / 3.3 GB RAM
+
+            Eviction Threshold - 10% of the planned capacity
+            ⇒ 3.2 CPU Cores / 6.4 GB RAM
+
+            Total: 24 CPU Cores / 41.7 GB RAM
+    
+    Prevent Misconfigurations on your k8s clusters``
+        https://youtu.be/Edza84ausS0?si=jf-je8F39jK0XCd4
+            minute 7:11
+        https://www.datree.io/
+            Policies are defined here, on ones account, applied at ci/cd pipeline
+            https://www.instagram.com/accounts/hide_story_and_live_from/ 
 
 
-    - Todos
-        gist of a monorepo
-        SLI vs SLO
-        Splunk
-        Dynatrace         
-        Spinnaker
-        incident write-ups format 
-        Clear on-call handoffs
-        internal wikis document format 
 
+    - Todos  ...here 
+        Forced to learn some more shit
+            CKA Exam
+                code: KILLER30
+
+
+
+            Azure AKS course ?
+            OpenShift ?
+                https://www.coursera.org/learn/foundations-of-red-hat-cloud-native-development/lecture/W9cMy/guided-exercise-contrasting-kubernetes-distributions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        cloud native Technical bussiness review input, process and ouput
+        technical chat to non-technical stakeholders in cloud native space
+        pre-sale role 
+        post-sale role 
+        thinking mindset about a cloud agnostic platform engineering 
+
+        Glovo 
+            Samples of internal tooling and automation scripts using Go and Python
+
+        howdy role 
+            https://www.linkedin.com/in/srga/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_people%3Bq49FCIk8QwW5pRVAUQGR9w%3D%3D
+
+        VKS
+            Sample engagements between enterprise CIOs/CTOs and kubernetes engineers 
+                add responsibilities and meeting output artifacts produced be the kubernetes engineers
+
+        AI 
+            claude skills, then Claude agents, etc
+            create repeatable things so you dont have to write chat prompt every time, that's a skill
+            Then you can take it up a notch and create an agend with multiple skills
+            get familiar with it, then play with other personal agents, like openclaw or hermes
+
+            random questions while studying
+                reccommnended way to ask questions to claude
+
+        graphana dashboards
+            cluster nodes
+            critial app metrics
+            critial service metrics
+
+        image registry image scanning and common tools
+        Top 10 including XSS and known bad inputs
+        questions around k8s ingress and service meshes
+
+
+        lab:
+            up a cluster 
+            expose argo cd 
+                via nginx ingress 
+                via istio ingress gateway 
+            grafana metrics queries and dashboards 
+                a rest api 
+                wrk or k6 to generate load
+                grafana metrics queries and dashboards 
+            argo rollout sample  - eye
+        
+
+        how to: ExternalDNS (Route53 automation) using terraform 
+
+        Flux 
+            https://www.udemy.com/course/flux-cd-mastery-automating-kubernetes-with-gitops/learn/lecture/38417046#overview
+
+        kubernetes keda lab      
+        prometheous adapter and custom metrics 
+            hands-on 
+
+        prometheous prod query and formulas to calc prod most used metrics 
+        nx 
+            https://www.youtube.com/watch?v=nuzOLHio2lQ
+        Flux
+        Dagger lab 
+
+        how to setup a helm repository in argocd
+        how to setup a helm repository in FluxD
+
+        To cancel iPad kiosker subscription 
+        To review at a high level on k8s 
+            streaming platforms, distributed caching, and high-throughput systems.
+        labs #here top
+            - Repeat current labs 
+                - to integrate aws ecr
+            - HA Kafka clusters(mirroring/partitioning/tooling)  
+            - Managed Redis Enterprise clusters
+
+        kube builder 
+
+        Certs 
+            Linux foundation certificates
+                CKAD 
+            HashiCorp certifications
+                terraform 
+
+        Go 
+        promql basics 
+            https://www.youtube.com/watch?v=FLT0d8fyhK4
+            gpt: list most used promql querying 
+
+======================================================================================
+
+Mark 
+    617-794-0972
+Gus
+    617-697-0756
+
+Kristen Bowles: Kristen.bowles@marriott.com, 843-408-3667
+
+Julie Collins: Julie.m.Collins@marriott.com, 978-766-5912
+
+Patrick Rogers: Patrick.rogers@marriott.com, 843-302-6462
+
+======================================================================================
+
+Next:
+    - career convalidation 
+    - k8s labs hands on
+        moneygram: 
+            experience show & tell writing
+    - resume update
+    - crypto bet 
+    - Smart Valet: 
+        tablet, 
+        demo retro/reply - Dennis,
+        reporting, 
+        new ticket mock-up, 
+        recent meetings follow-up
+
+
+sblutner@parkingsystems.com
+Jcandiotti@parkingsystems.com
+jbaron@parkingsystems.com
+
+
+======================================================================================
+
+
+        Velero
+        Choose a testing platform like hacker rank and work on scenarios
+        k8s hands-on repeat
+            - PoCs
+                - argo roll outs
+                    https://youtu.be/w3xdopP4aEk?si=0wSyNYjJmlX2SDzj
+                - Vault Agent or CSI Secrets Store Driver
+                    https://youtu.be/MTnQW9MxnRI?si=FKnCCht4njEXZXvy
+                - Argo Events - Event-Based Dependency Manager for Kubernetes
+                    https://youtu.be/sUPkGChvD54?si=VsEb-wac9R_WvYZ6
+                - eks pod identity hands-on sample
+                - Operators - Can wait 
+                    https://youtu.be/i9V4oCa5f9I?si=gcGofIy7EYlVLC8Y
+        later
+            pulumi brush-up - ppt
+            youtube video operators explained
+                and to turorial about writing one E2E
+            youtube k8s
+                helm vs kus
+        read best practices on all chats
+
+
+
+
+        Gisse Phone call
+            Jesualdo Carillo
+
+        AWS Copilot
+        Zero Trust architecture
+
+        CKAD Simulator 
+        https://www.youtube.com/watch?v=g9USwIPr7Xs
+            minute 15:23
+
+        Certifications order 
+            CKAD - Certified Kubernetes Application Developer 
+            AWS Certified DevOps Engineer - Professional 
+
+        - Generative AI technologies ? 
+
+        - Alejandro Quote 
+            2 separate work:
+                cluster provisioning, production ready cluster
+                And 2nd the application migration planning and work
+            
         to lab 
             kube-prometheus-stack
         ci/cd pipelines on k8s 
@@ -403,7 +1373,6 @@
         argo-workflows chart 
         aws certifications order 
             AWS Certified DevOps Engineer - Professional
-            CKAD - Certified Kubernetes Application Developer
             CKA - Certified Kubernetes Administrator
         ELK Stack
         argo rollouts 
@@ -462,6 +1431,14 @@
         - Alertmanager
 
 
+🔧 1. Principles of Advanced Infrastructure Automation
+    Immutable Infrastructure: Rebuild rather than mutate servers. E.g., replace EC2 instances via auto scaling groups instead of patching in place.
+    Idempotency: Repeated automation runs should always produce the same result (e.g., using Terraform, Ansible).
+    Declarative over Imperative: Describe what you want (e.g., Kubernetes manifests, Terraform code), not how to do it.
+    GitOps: Use Git as the source of truth for infra & application states. Changes flow through PRs and sync tools (e.g., Argo CD, Flux).
+    Event-Driven Automation: Trigger workflows based on events (e.g., new commit, tag push, image update, etc.).
+
+
 K8s
     Ways to provission a Cluster 
         eksctl 
@@ -469,151 +1446,6 @@ K8s
         terraform 
         rancher 
         aws
-
-
-
-    Commands 
-        k config get-clusters
-        k config get-contexts 
-        k config use-context ctxname
-
-        kubectl create namespace argocd
-        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-        kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-
-        servicename=$(k get service -l "app={{ .Values.appName }}" -o jsonpath="{.items[0].metadata.name}")
-
-        kubectl --namespace <namespace> port-forward service/{{ .Values.appName }} 8888:80
-
-        kubectl port-forward service/argocd-server -n argocd 8080:443
-
-        patch argocd 
-            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
-
-        k create deploy nginxx --image nginx --dry-run=client -o yaml > deployyyy.yml
-        
-        kubectl replace -f /tmp/kubectl-edit-xxxx.yaml --force
-
-        kubectl run -it busybox --rm --image=busybox --restart=Never -- /bin/sh
-
-        test static pods creation 
-            kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
-            kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -oyaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
-
-        k top pod -n namespace
-
-        # check etcd file locations 
-        ps aux | grep etcd 
-
-        # force delete pod 
-        k delete -n namesp pods podname  --grace-period=0
-
-        # replace 
-        k replace -f --foce -n namesapce
-
-        # allow update to package kubeadm
-        apt-mark unhold kubeadm
-
-        # block auto update to package kubeadm
-        apt-mark hold kubeadm
-
-        kubectl exec -it super-user-pod -- /bin/sh
-        capsh --print | grep SYS_TIME
-
-        k set image deploy/dep_name cntnr=img
-
-        kubectl get nodes -o jsonpath='{range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address} {.metadata.name}{"\n"}{end}'
-
-        k get nodes -o jsonpath="{.items[*].status.addresses[0].address}"
-
-        kubectl get nodes -o jsonpath='{range .items[*]}"Internal IP: "{.status.addresses[?(@.type=="InternalIP")].address} " "{.metadata.name}{"\n"}{end}' >> /root/CKA/node_ips
-
-        kubectl top nodes --sort-by=cpu
-
-        k top -h
-
-        # network test
-        kubectl exec -it mypod -- nc -zv google.com 80
-
-        # pod command
-        kubectl run alpine-sleeper-cka15-arch --image=alpine --command -- sleep 200
-
-        # check auth permissions 
-        kubectl auth can-i get namespaces --as=system:serviceaccount:default:green-sa-cka22-arch
-            - apiGroups:
-            - "*"
-            resources:
-            - namespaces
-            verbs:
-            - get
-
-        ssh nodename
-        nano /etc/kubernetes/manifests/kube-controller-manager.yaml
-
-        kubectl get pv papaya-pv-cka09-str -o yaml > /tmp/papaya-pv-cka09-str.yaml
-        nano /tmp/papaya-pv-cka09-str.yaml
-        Delete all entries for uid:, annotations, status:, claimRef:
-
-        Update pvc increase size only, access mode and storage class cannot be changed 
-            pre-requisites: 
-                Check If Your StorageClass Supports Expansion
-                    kubectl get storageclass <name> -o yaml | grep allowVolumeExpansion
-
-            1- kubectl patch pvc my-pvc -p '{"spec": {"resources": {"requests": {"storage": "10Gi"}}}}'
-            2- kubectl edit pvc my-pvc
-
-
-
-        etcd backup
-            --quota-backend-bytes to increase size
-            alerts on 
-                mvcc: database space exceeded
-
-            ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
-            --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
-            snapshot save <backup-file-location>
-
-            replace the variables from 
-                cat /etc/kubernetes/manifests/etcd.yaml | grep file 
-
-        k create deployment name --image=image --replicas=2 --dry-run=client -o yaml
-        
-        update deployment image: 
-            k set image deploy dpname cntner=image:tag --record
-
-        check deployment changes:
-            k rollout history deploy dpname
-
-        for i in {1..35}; do
-            kubectl exec --namespace=kube-public curl -- sh -c 'test=`wget -qO- -T 2  http://webapp-service.default.svc.cluster.local:8080/info 2>&1` && echo "$test OK" || echo "Failed"';
-            echo ""
-        done
-
-        
-        # service 
-            k expose <resource-type> <resource-name> --port=<port> --target-port=<container-port> --type=<service-type> [options]
-            k expose deployment my-app --port=80 --target-port=8080 --type=ClusterIP
-            k expose pod podname --name=svcname  --port 80
-            k expose pod podname --name=svcname  --port 80 --type=NodePort
-
-        # test a service or a pod is reachable from another pod
-            k exec -it podname -- nslookup svc name
-
-        # autoscale
-            k autoscale deployment <deployment-name> --cpu-percent=80 --min=1 --max=10
-
-        # check kubelet service status
-            systemctl status kubelet 
-
-        # pods connection pods communication check 
-            k exec podid -- telnet otherpod-ip-address
-
-
-        # check pods resource requests/limits
-            kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].resources}{"\n"}{end}'
-
-
 
     TODO'S  
         - to learn tooling like
@@ -660,10 +1492,406 @@ s                - For that learn about deploying istio, haproxy controllers for
 
 
 exam 
- 20KODE – handy to get a 20% discount while registering for the CKA exam with Linux Foundation.
+ 20KODE - handy to get a 20% discount while registering for the CKA exam with Linux Foundation.
 
 
-Questions: TODO: 
+Questions:
+    - 
+    - Samples of
+        Sample of - Documentation
+            Provide a short README explaining:
+                Architecture
+                Deployment instructions
+                How to run locally
+                How to check logs / metrics
+        most common readiness and liveness probes 
+        format of an Incident Report
+        samples of On-call dashboards
+        IMPORTANT NUONCES 
+            metrics scrapping 
+                prometheus scrapping interval 
+                VS 
+                pods terminationGracePeriodSeconds and preStop
+                OR 
+                Prometheus Pushgateway for job-style metrics (push on completion)
+
+
+        command samples 
+
+            ip addr show 
+
+            k set image deploy/ocean-tv-wl09 webapp=kodekloud/webapp-color:v2
+
+            k8s instance pre-requisites 
+                sudo tee /etc/sysctl.d/k8s.conf > /dev/null <<EOF
+                    net.bridge.bridge-nf-call-iptables = 1
+                    net.bridge.bridge-nf-call-ip6tables = 1
+                    net.ipv4.ip_forward = 1
+                    net.ipv4.conf.all.forwarding = 1
+                    EOF
+
+                sudo modprobe br_netfilter
+                    # immediately activates the network bridge filtering module 
+                echo br_netfilter | sudo tee /etc/modules-load.d/k8s.conf
+                    # This command creates or overwrites the configuration file and immediately writes the text br_netfilter into it.
+                sudo sysctl --system
+                    # Apply settings immediately
+
+
+            helm repo update kubesphere
+            helm search repo kubesphere/nginx -l | head -n10
+            or helm search repo kubesphere/nginx --version | head -n10
+
+            k kustomize /root/web-dashboard-kustomize/overlays/dev | kubectl apply -f -
+                "-f -" tells it to read that file from the pipe (|) (standard input) 
+
+            helm upgrade lvm-crystal-apd kubesphere/nginx-1.3.0 \
+             --version 1.3.4 --set replicaCount=3
+                or --values values.yaml
+
+            wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+                rather install via helm
+
+            k replace -f /root/elastic-app-cka02-arch.yaml --force
+                pod "elastic-app-cka02-arch" deleted
+                pod/elastic-app-cka02-arch replaced
+
+            global repo search 
+                helm search hub nginx --list-repo-url | head -n15
+
+            k run dns-test --rm -it --image=busybox:1.36 -- nslookup <svc-name>.<ns>.svc
+            k run dns-test --rm -it --image=busybox:1.36 -- dig <svc-name>.<ns>.svc
+
+            k run curl-test --rm -it --image=curlimages/curl -- curl -vk http://<svc-name>
+            k run curl-test --rm -it --image=curlimages/curl -- curl -vk http://<svc-name>.<ns>.svc
+
+            k run curl-test --rm -it --image=curlimages/curl -- curl -vk http://<pod-ip>:<port>
+
+            k patch pv <pv-name> -p '{"spec":{"claimRef": null}}'
+
+            k create cm db-user-pass-cka17-arch --from-file=/opt/db-user-pass
+
+            k get pod -l mode=exam,type=external -n spectra-1267                                    
+
+            kubectl get crd | grep -i verticalpodautoscaler
+
+            kubectl top node --no-headers | sort -nr -k2 | head -1
+
+            helm install --generate-name
+
+            helm get manifest security-alpha-apd -n security-alpha-01 | grep image
+
+            kubectl get pods -o custom-columns='POD_NAME:.metadata.name,IP_ADDR:.status.podIP' \
+             --sort-by=.status.podIP
+
+            Deployment on UP-TO-DATE 0 
+                check status, must says psused 
+                    kubectl rollout resume deployment test
+
+            setting up a cluster 
+                kubeadm init  \ 
+                --kubernetes-version=v1.35.1  \
+                --pod-network-cidr=192.168.0.0/16 \
+                --ignore-preflight-errors=NumCPU,Mem
+
+                kubeadm token create --print-join-command
+                    per node 
+                
+                then cni plugin 
+                    cilium install 
+                    cillium status --wait 
+
+            backup a cluster etc 
+                ETCDCTL_API=3 etcdctl \
+                --endpoints=https://172.30.1.2:2379 \
+                --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+                --cert=/etc/kubernetes/pki/etcd/server.crt \
+                --key=/etc/kubernetes/pki/etcd/server.key \
+                snapshot save /root/backup/etcd-$(date +%F-%H%M).db
+
+                ETCDCTL_API=3 etcdctl snapshot status /root/backup/etcd-2026-05-11-1610.db
+
+            kubeadm upgrade issues 
+                Update the Administrative Kubeconfig
+                    Because the certificates embedded inside the administrative config files were rotated, you need to overwrite your local ~/.kube/config file to regain access
+                        sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+                        sudo chown $(id -u):$(id -g) $HOME/.kube/config
+                    
+                    View real-time kubelet error logs 
+                        sudo journalctl -xeu kubelet
+
+                    Fix a broken upgrade:
+                        The Automatic Backup: 
+                        kubeadm automatically backs up your old working manifests to:
+                        /etc/kubernetes/tmp/ before an upgrade.
+                            sudo cp /etc/kubernetes/tmp/kubeadm-backup-manifests-*/*.yaml /etc/kubernetes/manifests/
+                            sudo systemctl restart kubelet
+
+                        
+
+                                    
+
+                certs renewal
+                    sudo kubeadm certs renew all
+                    or 
+                    sudo kubeadm certs renew apiserver
+
+
+
+            curl -k -v https://apiserver:443
+            curl -k -v https://10.96.0.1:443
+
+            k auth can-i delete pods --as smoke
+
+            apiserver check logs 
+                cat /var/log/pods/kube-system_kube-apiserver-controlplane_*/kube-apiserver/*.log
+                cat /var/log/pods/kube-system_kube-apiserver-*/kube-apiserver/*
+                cat /var/log/pods/kube-system_kube-controller-manager-controlplane_*/kube-controller-manager-controlplane/*
+
+                crictl pods 
+                crictl ps
+                watch crictl ps
+                crictl logs <container-id>
+
+                or 
+                    export CONTAINER_RUNTIME_ENDPOINT=unix:///var/run/containerd/containerd.sock
+                        
+
+                       
+#
+
+                journalctl -u kubelet | grep apiserver
+
+            kubelet issues 
+                svc 
+                    /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+                journalctl -u kubelet | grep failed
+                systemctl status kubelet
+                systemctl restart kubelet
+
+            generate selfsigned certs
+                openssl req -x509 -newkey rsa:2048 -nodes -keyout tls.key -out tls.crt -days 365
+
+            alias kcache='kubectl -n cache'
+
+            random N requests to a url nice printed 
+                for i in $(seq 1 20); do curl -s http://imagine.app:30080/web; done | sort | uniq -c
+                    $(seq 1 20): print 1..20
+                    sort | uniq -c: sort and count unique lines 
+
+
+            recent re-scheduled pods
+                k get events -A --sort-by='{.metadata.creationTimestamp}' | tac | head
+
+                kubectl get pods -A --sort-by=.metadata.creationTimestamp
+                kubectl get pods -A --sort-by=.metadata.creationTimestamp | tail
+
+            evicted pods 
+                kubectl get pods -A -o wide | grep Evicted
+                kubectl get events -A --field-selector reason=Evicted --sort-by=.lastTimestamp
+
+
+            k taint nodes controlplane my-cool-key=my-awesome-value:NoSchedule
+
+            kubectl get node abc -o json | jq '.metadata.labels'
+
+            kubectl get node abc -o jsonpath='{.metadata.labels}'
+
+            kubectl get node abc --show-labels
+
+            kubectl rollout history deployment/<deployment-name>
+
+            kubectl rollout history deployment/nginx
+
+            kubectl rollout history deployment/nginx --revision=3
+
+            kubectl rollout status deployment/<deployment-name>
+
+            kubectl rollout undo deployment/<deployment-name> --to-revision=<n>
+
+            kubectl rollout undo deployment/nginx --to-revision=2
+
+            grep -E = use extended regular expressions (ERE) for more advanced pattern matching
+                grep -E "error|warning"
+
+            kubectl config view --minify --output 'jsonpath={..namespace}'
+
+            kubectl config set-context --current --namespace=db
+            
+
+
+            kubectl run --rm -it dns-client --image=busybox:1.28 --restart=Never -- nslookup myapp.internal
+
+            helm repo add traefik https://traefik.github.io/charts
+
+            helm repo update
+
+            helm show values traefik/traefik
+            helm show values traefik/traefik | grep -i kubernetesGateway -A 5
+
+            helm install traefik traefik/traefik --namespace traefik --create-namespace \
+             --set experimental.kubernetesGateway.enabled=true
+
+             helm list -A
+             helm history my-release
+             helm rollback my-release 2
+             helm get values my-release
+             helm get manifest my-release
+             helm rollback my-release 2 \
+            --wait \
+            --timeout 5m
+                        # or set a custom values.yaml file
+
+             helm get values traefik -n traefik
+                # Displays the Helm values currently applied to the Traefik release
+
+
+            kustomize 
+                kustomize build argo-cd/overlays/production | kubectl apply --filename -
+
+            $ k -n argo-events port-forward $EVENTSOURCE_POD_NAME 12000:12000 &
+            "$" toss it in the background
+
+            load testing 
+                kubectl run -it --rm load --image=curlimages/curl -- sh
+                while true; do curl -s http://myapi.default.svc.cluster.local/api > /dev/null; done
+
+            wrk
+
+            nslookup
+            tcpdump
+            telnet
+            netstat
+            ping 
+            traceroute
+
+            kubectl get peerauthentication -A
+
+            kubectl get pvc <pvc-name> -o yaml | grep -E "name:|namespace:|uid:"
+
+
+            Configs 
+                kubectl create configmap app-config --from-literal=ENV=prod --from-literal=LOG_LEVEL=info
+                kubectl get configmap db-config -n my-namespace -o jsonpath='{.data.DB_CONNECTION_STRING}'
+
+            metrics 
+                kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | head
+                kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1/namespaces/default/pods/*/http_requests_per_second"
+
+            AWS ALB - istio Ingress
+                kubectl get svc istio-ingressgateway -n istio-system -o
+                    jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+            pods 
+                kubectl exec mypod -- nslookup myservice
+                kubectl exec -it mypod -- sh
+
+                kubectl exec pod -- nslookup myservice
+                kubectl exec pod -- dig myservice
+
+                kubectl logs <pod> --since=5m
+                kubectl logs <pod> -c <container> --since=10m
+                kubectl logs <pod> --previous --since=5m
+                    container’s last crash
+                kubectl top pod <pod>
+                    current CPU and memory usage
+
+                kubectl top node
+
+                Create temporary pods for debugging
+                    kubectl run debug --image=busybox -it -- sh
+                    kubectl run netshoot --image nicolaka/netshoot -it -- bash
+
+                ALL EVENTS  
+                    kubectl get events -A --sort-by=.metadata.creationTimestamp
+
+
+                kubectl debug pod/pod -it --image=busybox
+                kubectl exec pod -- cat /etc/resolv.conf
+                kubectl exec pod -- ip route    
+                    # check default route 
+                    #  traffic exiting via eth0
+
+                look for errors 
+                    kubectl get pods -A | grep -i crash
+
+            networking 
+                kubectl get svc
+                kubectl get svc service
+                kubectl describe svc service
+                kubectl get endpoints
+                kubectl get endpoints service
+                kubectl describe endpoints service
+                kubectl get endpointslices
+                kubectl exec pod -- nslookup myservice
+                kubectl exec pod -- dig myservice
+                kubectl exec pod -- curl http://service:port
+                kubectl exec pod -- nc -vz service port
+                    Checking connectivity to databases (Postgres, MySQL)
+                    Checking if a service is listening on a port
+                    Testing Kubernetes pod-to-pod or pod-to-service reachability
+                    * Equivalent commands using curl, telnet, or timeout
+                kubectl port-forward pod/pod 8080:80
+                kubectl port-forward svc/serv 8080:80
+                kubectl get networkpolicy
+                kubectl describe networkpolicy policy
+                kubectl get ingress
+                kubectl describe ingress ingress
+                kubectl get svc -o wide
+                kubectl exec pod -- cat /etc/resolv.conf
+                kubectl exec pod -- ip route    
+                    # check default route 
+                    #  traffic exiting via eth0
+                test outbound traffic directly from node 
+                    kubectl debug node/<node> -it --image=busybox
+                    curl https://google.com
+
+                kubectl get ingress <ingress> -o yaml | grep -i target-type -n
+
+
+
+                Incident-ready checklist
+                    Can pod resolve DNS?
+                    Does pod have a default route?
+                    Are egress NetworkPolicies present?
+                    Is node in private subnet with NAT?
+                    Is NAT attached to IGW?
+                    Are SGs allowing outbound?
+
+            Security 
+                kubectl -n kiali auth can-i get pods --as=system:serviceaccount:kiali:kiali
+                kubectl auth can-i patch deployment/myapp --subresource=scale -n myns --as=system:serviceaccount:myns:scaler-sa
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        most common pod status/errors, please add the causes and soluitions for each
+        OOMKilled error 
+        most common way to write k8s custom controllers 
+        most common way to write k8s custom operators 
+        gist and sample of Circuit breaker on top of k8s 
+        interview-style questions about controllers/operators
+
+
+
     - Can operate in BGP mode, VXLAN, or IPIP tunneling
 
 # eks-nodes-pem
@@ -754,9 +1982,6 @@ K8s Cluster Infrastructure setup
         - reload all changes made to the file system
             sudo sysctl --system 
         - to install container runtime
-            TODO: how to install docker on a K8s cluster
-        - to enable docker repo
-            TODO: how to?
         - to update lix dist
             sudo apt update
         - restart and enable container service
@@ -783,5 +2008,3 @@ K8s Cluster Infrastructure setup
             kubectl get pods -n kube-system
             and check all pods to be RUNNING
         - 
-
-        
