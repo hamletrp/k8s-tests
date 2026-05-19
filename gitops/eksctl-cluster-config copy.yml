@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: cluster-lab-13
   region: us-east-1
-  version: "1.33"
+  version: "1.36"
   tags:
     environment: staging
     team: platform

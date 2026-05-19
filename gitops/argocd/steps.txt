@@ -68,6 +68,18 @@ Manual install
             
 
 
+argo rollout test 
+    https://github.com/devopsjourney1/argo-rollouts-101
+
+    k apply -f ./rollouts-demo/rollout-vanilla.yml
+    k argo rollouts get rollout rollouts-demo -n argo-rollouts --watch
+    k argo rollouts get rollout rollouts-demo -n argo-rollouts
+
+    kubectl argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow -n argo-rollouts
+        or thru a PR
+
+
+
         Ingress setup 
             nginx 
                 HTTPS 
