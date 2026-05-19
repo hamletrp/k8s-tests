@@ -62,19 +62,6 @@ CKA
         6. scheduler/controller-manager
         7. CoreDNS/networking
 
-    High-value commands
-        crictl ps -a
-        crictl logs <id>
-
-        journalctl -u kubelet -f
-
-        systemctl status kubelet
-        systemctl status containerd
-
-        kubectl get pods -A
-
-        etcdctl endpoint health
-
     Mental model
         kubelet runs static pods
         etcd stores cluster state
@@ -857,7 +844,7 @@ Polyglot system and Hybrid Workflows
             stern --tail 1 --timestamps --all-namespaces weave
         jq / yq
     GitOps & Deployment
-        argocd 
+
         flux 
         Helm
     Cluster Observability (Monitoring & Logging)
@@ -1516,7 +1503,9 @@ Questions:
                 Prometheus Pushgateway for job-style metrics (push on completion)
 
 
-        command samples 
+        commands samples 
+
+            
 
             ip addr show 
 
@@ -1627,15 +1616,10 @@ Questions:
                             sudo cp /etc/kubernetes/tmp/kubeadm-backup-manifests-*/*.yaml /etc/kubernetes/manifests/
                             sudo systemctl restart kubelet
 
-                        
-
-                                    
-
                 certs renewal
                     sudo kubeadm certs renew all
                     or 
                     sudo kubeadm certs renew apiserver
-
 
 
             curl -k -v https://apiserver:443
@@ -1656,9 +1640,6 @@ Questions:
                 or 
                     export CONTAINER_RUNTIME_ENDPOINT=unix:///var/run/containerd/containerd.sock
                         
-
-                       
-#
 
                 journalctl -u kubelet | grep apiserver
 
@@ -1719,8 +1700,6 @@ Questions:
 
             kubectl config set-context --current --namespace=db
             
-
-
             kubectl run --rm -it dns-client --image=busybox:1.28 --restart=Never -- nslookup myapp.internal
 
             helm repo add traefik https://traefik.github.io/charts
