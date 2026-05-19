@@ -1153,8 +1153,26 @@ Polyglot system and Hybrid Workflows
             https://www.instagram.com/accounts/hide_story_and_live_from/ 
 
 
+    K8s dashboard 
+        headlamp
+            Done
+        freelens
+            Done
+        k9s 
+            Done
+        rancher (multiple clusters)
+        OpenShift/Portainer
+         
+    K8s cost explorer 
+        IBM Kubecost
+            Done
+
 
     - Todos  ...here 
+        review app-end-user values files 
+        Prometheus, graphana quantiles, metrics, rollout analysis 
+        karpenter 
+
         Forced to learn some more shit
             CKA Exam
                 code: KILLER30
@@ -1505,7 +1523,7 @@ Questions:
 
         commands samples 
 
-            
+
 
             ip addr show 
 

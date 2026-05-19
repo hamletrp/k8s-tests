@@ -1,0 +1,61 @@
+
+global:
+  ## clusterId is required and must match the previous value of .Values.prometheus.server.global.external_labels.cluster_id, which must be removed.
+  clusterId: "cluster-lab-13"
+
+clusterController:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+# 1. Root level toleration (Only covers cost-analyzer/aggregator)
+tolerations:
+  - key: "workload-type"
+    operator: "Equal"
+    value: "regular"
+    effect: "NoSchedule"
+
+# 2. Tolerations for the New Core Microservices
+cloudCost:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+finopsagent:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+forecasting:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+frontend:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+aggregator:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"
+
+localStore:
+  tolerations:
+    - key: "workload-type"
+      operator: "Equal"
+      value: "regular"
+      effect: "NoSchedule"

@@ -1,0 +1,4 @@
+/Applications/Freelens.app/Contents/MacOS/Freelens &
+
+permanent solution 
+    sudo ln -sf /usr/local/bin/aws /opt/homebrew/bin/aws

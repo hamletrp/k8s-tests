@@ -1,0 +1,9 @@
+helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
+
+helm repo update
+
+helm install hlamp headlamp/headlamp --namespace kube-system --values ./headlamp/headlamp.values.yml
+
+kubectl create token hlamp-headlamp -n kube-system | pbcopy
+
+

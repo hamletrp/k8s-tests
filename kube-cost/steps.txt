@@ -1,0 +1,17 @@
+
+docs:
+    https://www.apptio.com/products/kubecost/install-thankyou/
+
+
+helm repo add kubecost \
+    https://kubecost.github.io/cost-analyzer
+
+helm repo update
+
+helm upgrade --install kubecost kubecost \
+--repo https://kubecost.github.io/kubecost \
+--namespace kube-system \
+--values ./kube-cost/kubecost.values.yml \
+--wait
+
+

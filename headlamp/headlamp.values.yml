@@ -1,0 +1,13 @@
+# Default values for headlamp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- Number of desired pods
+replicaCount: 1
+
+# -- Toleration labels for pod assignment
+tolerations:
+  - key: "workload-type"
+    operator: "Equal"
+    value: "regular"
+    effect: "NoSchedule"
