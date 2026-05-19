@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-gateway-fabric
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: oci://ghcr.io/nginx/charts
+    chart: nginx-gateway-fabric
+    targetRevision: 2.1.4
+    helm:
+      releaseName: nginx-gateway-fabric
+      valuesObject:
+        nginxGateway:
+          gatewayClass:
+            name: nginx
+          tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nginx-gateway
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

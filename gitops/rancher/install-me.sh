@@ -15,14 +15,14 @@ echo "Installing rancher"
 helm upgrade --install \
     rancher rancher/rancher \
     --namespace cattle-system \
-    --create-namespace \
-    --set hostname=rancher.itsnotrocketscience.tech \
+    --values ./gitops/rancher/rancher-values.yaml
+    # --set hostname=rancher.itsnotrocketscience.tech \
     # --set ingress.tls.source=letsEncrypt \
     # --set letsEncrypt.email=hamletrp@gmail.com \
     --wait
 
 echo "Applying rancher ingress"
-k apply -f ./gitops/rancher/rancher-ingress.yaml
+k apply -f ./gitops/rancher/rancher-ingress-alb.yaml
 
 echo
 echo "✅ Successfully installed rancher"

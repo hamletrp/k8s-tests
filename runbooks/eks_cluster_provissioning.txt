@@ -58,6 +58,7 @@ appsofapps
     k apply -f ./argocd-apps/service-accounts.yaml
     kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
     kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+    kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
     apply referencegrants crds 
         kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
     k apply -f ./argocd-apps/apps.yaml

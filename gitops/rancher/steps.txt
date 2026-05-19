@@ -12,12 +12,17 @@ to run
 
     helm upgrade --install \
         rancher rancher/rancher \
-        --namespace cattle-system \
+        --namespace kube-system \
         --create-namespace \
         --set hostname=$RANCHER_ADDR \
         --set ingress.tls.source=letsEncrypt \
         --set letsEncrypt.email=hamletrp@gmail.com \
         --wait
+
+    helm install rancher rancher/rancher \
+    --namespace cattle-system \
+    --create-namespace \
+    --values ./gitops/rancher/rancher-values.yaml
 
     to replace ingress for an aws alb
     

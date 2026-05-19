@@ -1,4 +1,16 @@
 bootstrapPassword: "fuckingRancheeer" # initial admin password
 
-hostname: rancher.doordress.us  
-replicas: 2 # Production-grade HA deployment
+hostname: rancher.itsnotrocketscience.tech 
+replicas: 3
+
+postDelete:
+  enabled: false
+
+ingress:
+  enabled: false
+
+extraTolerations:
+  - key: "workload-type"
+    operator: "Equal"
+    value: "regular"
+    effect: "NoSchedule"

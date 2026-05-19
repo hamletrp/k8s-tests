@@ -1,0 +1,59 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: istio-prod-gateway-itsnotrocketscience
+  namespace: gateway-infra
+spec:
+  gatewayClassName: istio
+  # Production Best Practice: Route cloud parameters through the API infrastructure block
+  infrastructure:
+    annotations:
+      # 1. Force the AWS Load Balancer Controller to provision an NLB
+      service.beta.kubernetes.io/aws-load-balancer-type: "external"
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+      
+      # 2. Attach your exact AWS ACM Certificate ARN to the external balancer
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404"
+      
+      # 3. Tell AWS to map public port 443 (HTTPS) to the Istio backend port 80 (HTTP)
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+  listeners:
+  - name: https
+    protocol: HTTP # Correct: Bypasses local crypto since ACM handles it at the AWS edge
+    port: 80
+    hostname: "*.itsnotrocketscience.tech"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            gateway-access: "istio-prod-gateway"
+  - name: http
+    protocol: HTTP
+    port: 8080
+    hostname: "*.itsnotrocketscience.tech"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            gateway-access: "istio-prod-gateway"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: https-redirect
+  namespace: gateway-infra
+spec:
+  parentRefs:
+  - name: istio-prod-gateway-itsnotrocketscience
+    sectionName: http
+  hostnames:
+  - "*.itsnotrocketscience.tech"
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+
