@@ -20,9 +20,20 @@ spec:
             effect: "NoSchedule"
         deployment:
           replicas: 1
+          gateway:
+        listeners:
+          web:
+            namespacePolicy:
+              from: All   
         providers:
           kubernetesGateway:
             enabled: true # Triggers the creation of the 'traefik' GatewayClass
+        ingressRoute:
+          dashboard:
+            enabled: true
+            matchRule: Host(`dashboard.traefik`)
+            entryPoints:
+              - web
         logs:
           general:
             level: ERROR # Production standard to reduce I/O and disk bloat

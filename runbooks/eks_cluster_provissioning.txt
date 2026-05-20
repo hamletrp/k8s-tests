@@ -64,7 +64,6 @@ appsofapps
         Experimental
             k apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
 
-
     apply referencegrants crds 
         kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
     k apply -f ./argocd-apps/apps.yaml
