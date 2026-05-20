@@ -3,7 +3,7 @@ WIDE HORIZON OBJECTIVES PRIORITIES
     - K8s Platform A grade Engineer 
         - Certifications 
             - CKAD
-                #here
+                ...here
             - Terraform
                 #next #maybe
     - Smart Valet 
@@ -39,7 +39,7 @@ Dynamic Application Security Testing tools (DAST)
         Invicti
 
 
-Karpenter provisioneers === nodeclass & nodepools 
+Karpenter provisioneers (OLD) === nodeclass & nodepools 
 
 
 At fuss and we are handling a mix of scaling strategies 
@@ -57,16 +57,10 @@ CKA
         1. Kubelet
         2. container runtime
         3. static pod manifests
-        4. etcd
-        5. kube-apiserver
-        6. scheduler/controller-manager
+            4. etcd
+            5. kube-apiserver
+            6. scheduler/controller-manager
         7. CoreDNS/networking
-
-    Mental model
-        kubelet runs static pods
-        etcd stores cluster state
-        apiserver exposes cluster API
-        everything else depends on those
 
 
 - New Toolbelt added
@@ -132,9 +126,9 @@ Interview lessons learned
         Role: Sr. Platform Engineer- Kubernetes & Middleware Platforms
         -Design/impl infra abstraction & API to deploy AI on Kubernetes
         -architect/deploy/manage Kubernetes platforms(AWS EKS & Red-Hat)
-        focus here. could answer have done PoC 
-            -HA Kafka clusters(mirroring/partitioning/tooling)  
-            -Managed Redis Enterprise clusters
+            focus here. could answer have done PoC 
+                -HA Kafka clusters(mirroring/partitioning/tooling)  
+                -Managed Redis Enterprise clusters
 
         -Build & manage helm charts, templating, parameterization, versioning
 
@@ -169,10 +163,9 @@ Interview lessons learned
                         NATs
                     Ingress, Services and mesh
                         aws load balancer controller
-                        istio 
+                        istio, nginx, traefik, HAProxy
                         cert-mamager 
                         kiali 
-                        nginx 
                     Deployments management tools
                         Argo CD
                         Argo Rollouts 
@@ -260,7 +253,7 @@ Interview lessons learned
                         •	circuit breaking / outlier detection
                         •	Great for “shielding” pods from bursts.
 
-                    3) At the dependency boundary (DB pool is an implicit cap)
+                    3) At the dependency boundary, DownStream|UpStream (DB pool is an implicit cap)
                         •	DB connection pool size is a hard ceiling.
                         •	If your in-flight cap exceeds pool capacity, you’ll just create queueing inside the app.
 
@@ -449,12 +442,14 @@ Interview lessons learned
                         its the ExternalSecret     synced
                         its the CSI secret mounted and ready
                         its the CSI secret re-read
+                            SIGHUP
                         its database reachable
                         its on the right namespace
                 NETWORK CONSTRAINT
                         what about the RBAC, MESH and network policies 
                 HEALTH MANAGEMNT & MITIGATIONS 
                     preStop
+                       SIGTERM
                     InitContainers
                     START-UP, LIVENESS, READINESS  probes
                     Argo CD sync waves
@@ -530,8 +525,8 @@ Interview lessons learned
             Infra and workloads must be deployed across environments in an immutable manner.
             Repeating deploys must produce the same outcome.
             How:
+                modularization / Packaging
                 declarative desired state 
-                modularization
                 remote state 
                 Git-based workflows
                 least privilege
@@ -594,7 +589,7 @@ FINOPS
     END-2-END
         visibility:
             Estimates with Infracost into CI/CD 
-            Cost Explorer dashboards
+            AWS Cost Explorer dashboards & Usage Reports for infra
             budgets and alerts
             Kubecost: workload-level visibility
     Call to Action
@@ -844,7 +839,7 @@ Polyglot system and Hybrid Workflows
             stern --tail 1 --timestamps --all-namespaces weave
         jq / yq
     GitOps & Deployment
-
+        Argo CD
         flux 
         Helm
     Cluster Observability (Monitoring & Logging)
@@ -852,8 +847,8 @@ Polyglot system and Hybrid Workflows
         Grafana              - Dashboard & visualization of metrics
         Loki                 - Centralized logging backend (used with Promtail/FluentBit)
         Fluent Bit / Fluentd - Collect and forward container logs to Loki, Elasticsearch, S3, etc
-    Jaeger / Tempo
-        Distributed tracing
+    Distributed tracing
+        Jaeger / Tempo
     Security & Policy
         Kyverno / OPA Gatekeeper - Policy enforcement in K8s → control which objects are allowed
         Kube-bench               - Run CIS benchmark tests for Kubernetes security posture
@@ -864,16 +859,18 @@ Polyglot system and Hybrid Workflows
         Kasten 
         Stash 
         AWS Backup + EBS snapshots
+        Database Vendor specific back-ups
     Cost Optimization
         Goldilocks
         Kubecost
     Service Mesh
-        App Mesh (AWS)
         Istio
         Linkerd
+        App Mesh (AWS) - Deprecated
     Misc Tools
-        lens 
+        lens / freelens
         Rancher
+        headlamp
 
     etcd back-up 
         ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
@@ -1171,9 +1168,37 @@ Polyglot system and Hybrid Workflows
 
 
     - Todos  ...here 
+        Madrid...?
+            Kite Equipement
+
+        gateway api E2E test 
+            traefik 
+                https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/gateway-api/
+                https://doc.traefik.io/traefik/getting-started/kubernetes/
+
+            nginx-gateway-fabric
+                https://docs.nginx.com/nginx-gateway-fabric/install/helm/
+                https://github.com/nginx/nginx-gateway-fabric/blob/main/examples/tcp-routing/gateway.yaml
+
+            HAProxy 
+                https://haproxy-ingress.github.io/docs/getting-started/
+                https://haproxy-ingress.github.io/docs/configuration/gateway-api/
+
+            istio 
+                to try based on argocd-apps/apps/istio.yaml
+                or https://istio.io/latest/docs/setup/additional-setup/gateway/
+                   https://istio.io/latest/blog/2022/getting-started-gtwapi/
+                or
+                    https://istio.io/latest/docs/setup/install/helm/
+                https://raw.githubusercontent.com/istio/istio/release-1.30/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+
+
+
         review app-end-user values files 
         Prometheus, graphana quantiles, metrics, rollout analysis 
         karpenter 
+        argo rollouts with analysis templates 
+            repeat
 
         Forced to learn some more shit
             CKA Exam
