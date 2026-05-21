@@ -1,61 +1,61 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: traefik-gateway
-#   namespace: argocd
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-# spec:
-#   project: default
-#   source:
-#     repoURL: https://traefik.github.io/charts
-#     chart: traefik
-#     targetRevision: 40.2.0
-#     helm:
-#       values: |
-#         tolerations:
-#           - key: "workload-type"
-#             operator: "Equal"
-#             value: "regular"
-#             effect: "NoSchedule"
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-gateway
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 40.2.0
+    helm:
+      values: |
+        tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
 
-#         deployment:
-#           replicas: 1
+        deployment:
+          replicas: 1
 
-#         service:
-#           spec:
-#             type: ClusterIP
+        service:
+          spec:
+            type: LoadBalancer
 
-#         gateway:
-#           enabled: false
+        gateway:
+          enabled: false
       
-#         providers:
-#           kubernetesGateway:
-#             enabled: true # Triggers the creation of the 'traefik' GatewayClass
+        providers:
+          kubernetesGateway:
+            enabled: true # Triggers the creation of the 'traefik' GatewayClass
 
-#         ingressRoute:
-#           dashboard:
-#             enabled: true
+        ingressRoute:
+          dashboard:
+            enabled: true
 
-#         api:
-#           dashboard: true
-#           insecure: false
+        api:
+          dashboard: true
+          insecure: false
 
-#         ports:
-#           websecure:
-#             http:
-#               tls:
-#                 enabled: false # NLB terminates TLS via ACM; Traefik receives plain HTTP on this port
+        ports:
+          websecure:
+            http:
+              tls:
+                enabled: false # NLB terminates TLS via ACM; Traefik receives plain HTTP on this port
 
-#         logs:
-#           general:
-#             level: ERROR # Production standard to reduce I/O and disk bloat
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: platform-system
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#     - CreateNamespace=true
+        logs:
+          general:
+            level: ERROR # Production standard to reduce I/O and disk bloat
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
