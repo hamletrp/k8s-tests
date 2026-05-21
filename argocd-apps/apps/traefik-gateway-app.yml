@@ -52,6 +52,11 @@ spec:
           dashboard: true
           insecure: false
 
+        ports:
+          websecure:
+            tls:
+              enabled: false # NLB terminates TLS via ACM; Traefik receives plain HTTP on this port
+
         logs:
           general:
             level: ERROR # Production standard to reduce I/O and disk bloat
