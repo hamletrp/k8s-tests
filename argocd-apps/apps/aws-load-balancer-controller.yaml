@@ -27,7 +27,7 @@ spec:
         # best practices, instead of tags
         vpcId: vpc-06d2a98b448073433
 
-        enableShield:true
+        enableShield: true
         # enableWaf: true
         enableWafv2: true
 
