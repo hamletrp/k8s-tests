@@ -37,7 +37,7 @@ Manual install
             k get service/argocd-server -n argocd
 
         port forwarding
-            k port-forward service/argocd-server -n argocd 9000:443
+            k port-forward service/argocd-server -n argocd 9000:8080
 
         htpasswd -bnBC 10 "" 'mySuperSecurepwd' | tr -d ':\n'
             $2y$10$p8B1ul1ThK3mMeJ.6p9JIOUFSJg/nQaiN92O6/yTS3fDyAd5JhBh.

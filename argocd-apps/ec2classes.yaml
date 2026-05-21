@@ -8,19 +8,23 @@ spec:
 
   # Required, discovers subnets to attach to instances
   subnetSelectorTerms:
-  # - tags:
-  # karpenter.sh/discovery: cluster-lab-13
-  - id: subnet-0ab24870d387ce680
-  - id: subnet-0aa2a99277cd87a8a
-  - id: subnet-07bfc989b56c67563
-  - id: subnet-024adad9d93d3f792
+  - tags:
+      karpenter.sh/discovery: cluster-lab-13
+      kubernetes.io/role/internal-elb: "1" 
+        # private subnets only
+        # or kubernetes.io/role/elb: "1"  for public subnets
+            #  requires this attr: associatePublicIPAddress: true
+
 
   # Required, discovers security groups to attach to instances
   securityGroupSelectorTerms:
-  # - tags:
-  #     karpenter.sh/discovery: cluster-lab-13
+  - tags:
+      alpha.eksctl.io/cluster-name: cluster-lab-13
+      karpenter.sh/discovery: cluster-lab-13
+
   # - name: my-security-group
-  - id: sg-0c4817f8e579a6ca0
+  # - id: sg-0c4817f8e579a6ca0
+
   # amiFamily: AL2023
   amiFamily: Bottlerocket
 

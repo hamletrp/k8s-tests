@@ -84,6 +84,25 @@ appsofapps
 
     to patch controllers and deployments
 
+EC2NodeClass security groups tags discoery 
+    check the actual security group by tag 
+        eksctl cluster defaults 
+            aws ec2 describe-security-groups \
+            --filters "Name=tag:alpha.eksctl.io/cluster-name,Values=cluster-lab-13" \
+            --query "SecurityGroups[*].{GroupName:GroupName,GroupId:GroupId,Tags:Tags,Description:Description}"
+
+        other clusters TBD to test 
+            aws ec2 describe-security-groups \
+            --filters "Name=tag:kubernetes.io/cluster/cluster-lab-13,Values=owned" \
+            --query "SecurityGroups[*].{GroupName:GroupName,GroupId:GroupId,Tags:Tags,Description:Description}"
+
+
+    list all tags 
+        aws ec2 describe-security-groups \
+        --filters "Name=tag-key,Values=kubernetes.io/cluster/cluster-lab-13" \
+        --query "SecurityGroups[*].{ID:GroupId,Name:GroupName,Tags:Tags}" \
+        --output json
+
 
 
 to run 
@@ -104,8 +123,7 @@ to run
 to run 
     rancher steps.txt
 
-OJO TO DELETE 
-    eksctl delete cluster --region=us-east-1 --name cluster-lab-12
+TO DELETE 
     eksctl delete cluster --region=us-east-1 --name cluster-lab-13
 
 --- 

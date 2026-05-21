@@ -21,20 +21,40 @@ spec:
       releaseName: aws-load-balancer-controller
       values: |
         clusterName: cluster-lab-13
+
         region: us-east-1
-        vpcId: vpc-000f2c58ad2b684d9 
+
+        # vpcId: vpc-06d2a98b448073433
+        vpcTags:
+          team: platform
+          environment: staging
+          eksctl.cluster.k8s.io/v1alpha1/cluster-name: cluster-lab-13
+
+        enableShield:true
+        # enableWaf: true
+        enableWafv2: true
+
+        serviceMonitor:
+          enabled: true
+
         ingressGroup:
           name: devops-group
+
         nameOverride: awsalb-load-balancer-controller
-        replicaCount: 2
+
+        replicaCount: 3
+
         autoscaling:
-          enabled: false
-          minReplicas: 2
+          enabled: true
+          minReplicas: 3
           maxReplicas: 4
           targetCPUUtilizationPercentage: 80
+
         serviceAccount:
-          create: false
           name: awsalb-load-balancer-controller-sa
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::722249351142:role/AmazonEKSLoadBalancerControllerRole-cluster-lab-13
+
         tolerations: 
           - key: "workload-type"
             operator: "Equal"
