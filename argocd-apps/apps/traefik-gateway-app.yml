@@ -54,8 +54,9 @@ spec:
 
         ports:
           websecure:
-            tls:
-              enabled: false # NLB terminates TLS via ACM; Traefik receives plain HTTP on this port
+            http:
+              tls:
+                enabled: false # NLB terminates TLS via ACM; Traefik receives plain HTTP on this port
 
         logs:
           general:
