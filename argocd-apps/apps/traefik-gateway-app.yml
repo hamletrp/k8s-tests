@@ -60,7 +60,7 @@ spec:
             level: ERROR # Production standard to reduce I/O and disk bloat
   destination:
     server: https://kubernetes.default.svc
-    namespace: traefik-system
+    namespace: platform-system
   syncPolicy:
     automated:
       prune: true
