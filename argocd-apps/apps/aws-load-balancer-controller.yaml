@@ -24,11 +24,8 @@ spec:
 
         region: us-east-1
 
-        # vpcId: vpc-06d2a98b448073433
-        vpcTags:
-          team: platform
-          environment: staging
-          eksctl.cluster.k8s.io/v1alpha1/cluster-name: cluster-lab-13
+        # best practices, instead of tags
+        vpcId: vpc-06d2a98b448073433
 
         enableShield:true
         # enableWaf: true
