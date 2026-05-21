@@ -1,0 +1,17 @@
+
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-gateway-to-argocd
+  namespace: argocd  # <-- MUST be deployed in the target service's namespace
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: gateway-infra # <-- Replace with the namespace where your HTTPRoute lives
+  to:
+    - group: "" # Empty string denotes core Kubernetes API group
+      kind: Service
+      name: argocd-server 
+        # Optional: limits access specifically to this service
+        # Removing 'name' opens this grant to ALL services in the argocd namespace

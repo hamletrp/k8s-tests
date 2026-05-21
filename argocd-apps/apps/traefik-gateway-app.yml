@@ -1,48 +1,66 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: traefik-gateway
-#   namespace: argocd
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-# spec:
-#   project: default
-#   source:
-#     repoURL: https://traefik.github.io/charts
-#     chart: traefik
-#     targetRevision: 40.2.0
-#     helm:
-#       values: |
-#         tolerations:
-#           - key: "workload-type"
-#             operator: "Equal"
-#             value: "regular"
-#             effect: "NoSchedule"
-#         deployment:
-#           replicas: 1
-#           gateway:
-#         listeners:
-#           web:
-#             namespacePolicy:
-#               from: All   
-#         providers:
-#           kubernetesGateway:
-#             enabled: true # Triggers the creation of the 'traefik' GatewayClass
-#         ingressRoute:
-#           dashboard:
-#             enabled: true
-#             matchRule: Host(`dashboard.traefik`)
-#             entryPoints:
-#               - web
-#         logs:
-#           general:
-#             level: ERROR # Production standard to reduce I/O and disk bloat
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: kube-system
-#   syncPolicy:
-#     automated:
-#       prune: false
-#       selfHeal: true
-#     syncOptions:
-#     - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-gateway
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 40.2.0
+    helm:
+      values: |
+        tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
+
+        deployment:
+          replicas: 1
+
+        service:
+          enabled: true # default
+          spec:
+            type: LoadBalancer # default 
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-type: "external"
+            service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+            service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+            service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
+            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404"
+            service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+
+        gateway:
+          enabled: false
+      
+        providers:
+          kubernetesGateway:
+            enabled: true # Triggers the creation of the 'traefik' GatewayClass
+
+        ingressRoute:
+          dashboard:
+            enabled: true
+            matchRule: Host(`dashboard.localhost`)
+            entryPoints:
+              - web
+
+        api:
+          dashboard: true
+          insecure: false
+
+        logs:
+          general:
+            level: ERROR # Production standard to reduce I/O and disk bloat
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

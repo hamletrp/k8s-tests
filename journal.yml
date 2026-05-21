@@ -1176,6 +1176,26 @@ Polyglot system and Hybrid Workflows
                 https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/gateway-api/
                 https://doc.traefik.io/traefik/getting-started/kubernetes/
 
+                labs 
+                    default gateway to one *.domain 
+                        ...here
+                    default gateway to multiple domains via httproutes
+
+                Dashboard 
+                    k port-forward deploy/traefik-gateway -n kube-system 9300:8080
+
+                    get nlb eni 
+                        aws ec2 describe-network-interfaces --filters Name=description,Values="ELB net/*k8s-kubesyst-traefikg-90ebd913ef*" | pbcopy
+                    get nlb node ip address 
+                        kubectl get pods -l app.kubernetes.io/name=traefik -n kube-system -o jsonpath='{.items[*].status.hostIP}'
+                        or via k9s
+
+             
+
+
+
+
+
             nginx-gateway-fabric
                 https://docs.nginx.com/nginx-gateway-fabric/install/helm/
                 https://github.com/nginx/nginx-gateway-fabric/blob/main/examples/tcp-routing/gateway.yaml
@@ -1550,7 +1570,15 @@ Questions:
 
         commands samples 
 
+            # patch to immediate delete force delete application 
+            kubectl patch application traefik-gateway -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
 
+            # patch force delete
+            kubectl patch svc traefik-gateway -n kube-system --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
+                        
+
+             # all appresources 
+             kubectl get all -l app.kubernetes.io/name=traefik -n kube-system
 
             ip addr show 
 
@@ -1592,6 +1620,25 @@ Questions:
 
             global repo search 
                 helm search hub nginx --list-repo-url | head -n15
+
+
+            kubectl run curl-test \
+                --rm -it \
+                --image=curlimages/curl \
+                --overrides='
+                {
+                "spec": {
+                    "tolerations": [
+                    {
+                        "key": "workload-type",
+                        "operator": "Equal",
+                        "value": "regular",
+                        "effect": "NoSchedule"
+                    }
+                    ]
+                }
+                }' \
+                -- sh
 
             k run dns-test --rm -it --image=busybox:1.36 -- nslookup <svc-name>.<ns>.svc
             k run dns-test --rm -it --image=busybox:1.36 -- dig <svc-name>.<ns>.svc
