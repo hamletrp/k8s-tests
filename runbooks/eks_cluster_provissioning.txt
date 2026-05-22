@@ -33,6 +33,8 @@ associate-iam-oidc-provider
 
 get oicd provider 
     aws eks describe-cluster --region us-east-1 --name cluster-lab-13 --query "cluster.identity.oidc.issuer" --output text
+    
+
 
 copy oidc provider to tfvars
 
@@ -64,13 +66,13 @@ appsofapps
         Experimental
             k apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
 
-    apply referencegrants crds 
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
+        apply referencegrants crds 
+            kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.5.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
+
     k apply -f ./argocd-apps/apps.yaml
         update prior to ^^ :
             awsalb: clusterName, region, vpcId
             karpenter: serviceAccount role-arn, clusterName, interruptionQueue
-            EC2NodeClass: role, subnets, securityGroup
     k apply -f ./argocd-apps/cluster-issuers.yaml
     k apply -f ./argocd-apps/cluster-roles.yaml
         none yet 

@@ -3,8 +3,11 @@ kind: Gateway
 metadata:
   name: traefik-prod-gateway-itsnotrocketscience
   namespace: gateway-infra
+  labels:
+    # CRITICAL: Must match the labelSelector in the controller
+    infra-tier: "itsnotrocketscience-gateway" 
 spec:
-  gatewayClassName: traefik
+  gatewayClassName: traefik-itsnotrocketscience
   listeners:
   - name: https
     protocol: HTTP # Correct: ACM terminates TLS at the NLB edge; traffic arrives here as plain HTTP

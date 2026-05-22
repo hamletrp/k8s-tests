@@ -29,6 +29,13 @@ Manual install
             k apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
 
 
+        http traffic inside the cluster
+            k -n argocd patch deployment argocd-server \
+            --type='json' \
+            -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}]'
+
+
+
         k delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
         clear && k get pods -n argocd
@@ -88,12 +95,6 @@ argo rollout test
                         k apply -f ./gitops/argocd/argocd-ingress.yaml
                         k apply -f ./gitops/argocd/argocd-ingress-alb.yaml
                         
-
-                    if not valid certificate 
-                        k -n argocd patch deployment argocd-server \
-                        --type='json' \
-                        -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}]'
-
 
                 HTTP 
                     # non-https requires to ask argo to allow insecure

@@ -1,0 +1,71 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-prod-gateway-ezparking
+  namespace: gateway-infra
+  labels:
+    # CRITICAL: Must match the labelSelector in the controller
+    infra-tier: "ezparking-gateway" 
+spec:
+  gatewayClassName: traefik-ezparking
+  listeners:
+  - name: https
+    protocol: HTTP # Correct: ACM terminates TLS at the NLB edge; traffic arrives here as plain HTTP
+    port: 8443 # matches traefik websecure entrypoint — NLB port 443 (ACM) → targetPort websecure
+    hostname: "*.ezparking.us"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            gateway-access: "traefik-prod-gateway"
+  - name: http
+    protocol: HTTP
+    port: 8000 # matches traefik web entrypoint — NLB port 80 → targetPort web
+    hostname: "*.ezparking.us"
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            gateway-access: "traefik-prod-gateway"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kiali-gateway-route
+  namespace: kiali-system
+spec:
+  parentRefs:
+  - name: traefik-prod-gateway-ezparking
+    namespace: gateway-infra
+    sectionName: https
+  hostnames:
+  - "kiali.ezparking.us"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+      - name: kiali
+        port: 20001
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: global-ezparking-http-to-https-redirect
+  namespace: kiali-system
+spec:
+  parentRefs:
+  - name: traefik-prod-gateway-ezparking
+    namespace: gateway-infra
+    sectionName: http # <-- Only targets the plain HTTP port 8000 listener
+  hostnames:
+  - "kiali.ezparking.us" # Can be a wildcard to upgrade all subdomains globally
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https   # Upgrades the scheme to https
+        statusCode: 301 # Permanent redirect

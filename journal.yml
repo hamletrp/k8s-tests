@@ -1182,8 +1182,8 @@ Polyglot system and Hybrid Workflows
                 labs 
                     default gateway to one *.domain and all internal untouch
                         ...here
-                           Karpenter NodeClasses prod grade large scale approach
                     default gateway to multiple domains via httproutes
+                        ezparking.us
 
 
 
@@ -1600,6 +1600,8 @@ Questions:
 
             # patch to immediate delete force delete application 
             kubectl patch application traefik-gateway -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
+            
+            kubectl patch application traefik-gateway-itsnotrocketscience -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
 
             # patch force delete
             kubectl patch svc traefik-gateway -n kube-system --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
