@@ -63,12 +63,6 @@ spec:
           labels:
             infra-tier: "itsnotrocketscience-gateway"
 
-        # --- FIX 2: BIND THE GATEWAY CLASS MATCH RULES THROUGH THE ARGUMENTS ARRAY ---
-        additionalArguments:
-          # This explicitly tells Traefik's core binary that it belongs specifically 
-          # to your custom 'traefik-itsnotrocketscience' string across the cluster footprint.
-          - "--providers.kubernetesgateway.gatewayclassname=traefik-itsnotrocketscience"
-
         ingressRoute:
           dashboard:
             enabled: true
