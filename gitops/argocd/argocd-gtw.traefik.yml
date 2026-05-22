@@ -7,8 +7,8 @@ spec:
   gatewayClassName: traefik
   listeners:
   - name: https
-    protocol: HTTP # Correct: Bypasses local crypto since ACM handles it at the AWS edge
-    port: 8000 # matches traefik specs for web
+    protocol: HTTP # Correct: ACM terminates TLS at the NLB edge; traffic arrives here as plain HTTP
+    port: 8443 # matches traefik websecure entrypoint — NLB port 443 (ACM) → targetPort websecure
     hostname: "*.itsnotrocketscience.tech"
     allowedRoutes:
       namespaces:
@@ -18,7 +18,7 @@ spec:
             gateway-access: "traefik-prod-gateway"
   - name: http
     protocol: HTTP
-    port: 8080
+    port: 8000 # matches traefik web entrypoint — NLB port 80 → targetPort web
     hostname: "*.itsnotrocketscience.tech"
     allowedRoutes:
       namespaces:
@@ -45,7 +45,7 @@ spec:
         type: PathPrefix
         value: /
     backendRefs:
-      - name: argocd-server
+      - name: argocd-server # requires --insecure on server
         namespace: argocd
         port: 80
 ---
@@ -58,7 +58,7 @@ spec:
   parentRefs:
   - name: traefik-prod-gateway-itsnotrocketscience
     namespace: gateway-infra
-    sectionName: http # <-- Only targets the plain HTTP port 8080 listener
+    sectionName: http # <-- Only targets the plain HTTP port 8000 listener
   hostnames:
   - "argocd.itsnotrocketscience.tech" # Can be a wildcard to upgrade all subdomains globally
   rules:
@@ -67,7 +67,35 @@ spec:
       requestRedirect:
         scheme: https   # Upgrades the scheme to https
         statusCode: 301 # Permanent redirect
+
 ---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik-dashboard-route
+  namespace: platform-system
+spec:
+  parentRefs:
+  - name: traefik-prod-gateway-itsnotrocketscience
+    namespace: gateway-infra
+    sectionName: https
+  hostnames:
+  - "traefik.itsnotrocketscience.tech"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /dashboard
+    - path:
+        type: PathPrefix
+        value: /api
+    backendRefs:
+      - name: api@internal              # Passes the virtual handler string safely
+        group: traefik.io               # Tells Gateway API to hand off validation to Traefik's engine
+        kind: TraefikService            # Explicitly declares it as a system custom resource
+        port: 8080 
+
+
 # apiVersion: gateway.networking.k8s.io/v1beta1
 # kind: ReferenceGrant
 # metadata:

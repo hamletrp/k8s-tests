@@ -97,6 +97,8 @@ CKA
 
 
 Interview lessons learned 
+    - Drafty Bird 
+        Next: to show the challenge live in my own k8s cluster 
     - SECURITY AND COMPLIANCE sample    
         * a secret never visible by anyone, NOT in etcd, written to disk
           and workload read it from there
@@ -1170,6 +1172,7 @@ Polyglot system and Hybrid Workflows
     - Todos  ...here 
         Madrid...?
             Kite Equipement
+            Bed & Gym CTG
 
         gateway api E2E test 
             traefik 
@@ -1177,20 +1180,11 @@ Polyglot system and Hybrid Workflows
                 https://doc.traefik.io/traefik/getting-started/kubernetes/
 
                 labs 
-                    default gateway to one *.domain 
+                    default gateway to one *.domain and all internal untouch
                         ...here
+                           Karpenter NodeClasses prod grade large scale approach
                     default gateway to multiple domains via httproutes
 
-                Dashboard 
-                    k port-forward deploy/traefik-gateway -n kube-system 9300:8080
-
-                    get nlb eni 
-                        aws ec2 describe-network-interfaces --filters Name=description,Values="ELB net/*k8s-kubesyst-traefikg-90ebd913ef*" | pbcopy
-                    get nlb node ip address 
-                        kubectl get pods -l app.kubernetes.io/name=traefik -n kube-system -o jsonpath='{.items[*].status.hostIP}'
-                        or via k9s
-
-             
 
 
 
@@ -1569,6 +1563,40 @@ Questions:
 
 
         commands samples 
+
+            aws elbv2 describe-listeners --load-balancer-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:loadbalancer/net/k8s-platform-traefikg-acf5d78bf7/f4b22920c9172efc \
+            --query "Listeners[?Port==\`443\`].Certificates" --output json
+
+            EC2NodeClass security groups tags discoery 
+                check the actual security group by tag 
+                    eksctl cluster defaults 
+                        aws ec2 describe-security-groups \
+                        --filters "Name=tag:alpha.eksctl.io/cluster-name,Values=cluster-lab-13" \
+                        --query "SecurityGroups[*].{GroupName:GroupName,GroupId:GroupId,Tags:Tags,Description:Description}"
+
+                        2 groups: 
+                            - "Description": "Communication between all nodes in the cluster"
+                            - "Description": "Communication between the control plane and worker nodegroups"
+
+                    other clusters TBD to test 
+                        aws ec2 describe-security-groups \
+                        --filters "Name=tag:kubernetes.io/cluster/cluster-lab-13,Values=owned" \
+                        --query "SecurityGroups[*].{GroupName:GroupName,GroupId:GroupId,Tags:Tags,Description:Description}"
+
+
+                list all tags 
+                    aws ec2 describe-security-groups \
+                    --filters "Name=tag-key,Values=kubernetes.io/cluster/cluster-lab-13" \
+                    --query "SecurityGroups[*].{ID:GroupId,Name:GroupName,Tags:Tags}" \
+                    --output json
+
+
+
+            get nlb eni 
+                aws ec2 describe-network-interfaces --filters Name=description,Values="ELB net/*k8s-kubesyst-traefikg-90ebd913ef*" | pbcopy
+            get nlb node ip address 
+                kubectl get pods -l app.kubernetes.io/name=traefik -n kube-system -o jsonpath='{.items[*].status.hostIP}'
+                or via k9s
 
             # patch to immediate delete force delete application 
             kubectl patch application traefik-gateway -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'

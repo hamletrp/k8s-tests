@@ -10,8 +10,7 @@ spec:
   subnetSelectorTerms:
   - tags:
       karpenter.sh/discovery: cluster-lab-13
-      kubernetes.io/role/internal-elb: "1" 
-        # private subnets only
+      kubernetes.io/role/internal-elb: "1" # private subnets only
         # or kubernetes.io/role/elb: "1"  for public subnets
             #  requires this attr: associatePublicIPAddress: true
 
