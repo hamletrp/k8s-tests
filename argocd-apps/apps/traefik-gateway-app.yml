@@ -42,8 +42,6 @@ spec:
           kubernetesGateway:
             enabled: true # Triggers the creation of the 'traefik' GatewayClass
 
-            experimentalChannel: true # Required to access the ALPHA statusAddress field in the provider configuration
-
             # 2. CRITICAL: Force this deployment to ONLY process Gateways with this matching label.
             # This prevents the public and private controllers from stepping on each other's configurations.
             # gateway must have this label: infra-tier=itsnotrocketscience-gateway
