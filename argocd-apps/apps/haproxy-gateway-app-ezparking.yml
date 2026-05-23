@@ -16,7 +16,7 @@ spec:
         nameOverride: "haproxy-gateway-ezparking"
 
         controller:
-          replicaCount: 1
+          replicaCount: 3
           ingressClass: haproxy-ezparking
 
           gatewayClassResource:
