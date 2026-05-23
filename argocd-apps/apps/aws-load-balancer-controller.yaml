@@ -25,7 +25,7 @@ spec:
         region: us-east-1
 
         # best practices, instead of tags
-        vpcId: vpc-0fca0ade4b8efe942
+        vpcId: vpc-08af2bbbae9bfe5b2
 
         enableShield: true
         # enableWaf: true
