@@ -55,7 +55,10 @@ iam:
   withOIDC: true
 
 managedNodeGroups:
-  - name: linux-nodes-13
+  - name: linux-nodes-13-v2
+    ssh:
+      allow: true
+      publicKeyName: ssh-ec2-eks-private-subnet
     # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
     instanceTypes: ["m5.large"]
     # ✅ Support multiple AZs by referencing multi-AZ subnets
@@ -93,8 +96,11 @@ managedNodeGroups:
       - key: "CriticalAddonsOnly"
         value: "true"
         effect: "NoSchedule"
-  # EKS Hybrid Nodes
-  - name: linux-nodes-13-2
+
+  - name: linux-nodes-13-2-v2
+    ssh:
+      allow: true
+      publicKeyName: ssh-ec2-eks-private-subnet
     # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
     instanceTypes: ["m5.large", "t3.medium"]
     # ✅ Support multiple AZs by referencing multi-AZ subnets

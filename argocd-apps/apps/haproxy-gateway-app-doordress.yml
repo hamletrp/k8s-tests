@@ -1,7 +1,7 @@
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
 # metadata:
-#   name: haproxy-gateway-ezparking
+#   name: haproxy-gateway-doordress
 #   namespace: argocd
 #   finalizers:
 #     - resources-finalizer.argocd.argoproj.io
@@ -13,11 +13,11 @@
 #     targetRevision: 0.17.0-alpha.2
 #     helm:
 #       values: |
-#         nameOverride: "haproxy-gateway-ezparking"
+#         nameOverride: "haproxy-gateway-doordress"
 
 #         controller:
 #           replicaCount: 3
-#           ingressClass: haproxy-ezparking
+#           ingressClass: haproxy-doordress
 
 #           gatewayClassResource:
 #             enabled: true
@@ -36,7 +36,7 @@
 #               service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
 #               service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
 #               service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-#               service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/248ba54a-5df7-44d8-ad76-050b9252da41"
+#               service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/3887c32b-9317-44ff-b2e0-10de121e1062"
 #               service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
 
 #   destination:

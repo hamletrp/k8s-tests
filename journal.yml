@@ -1186,6 +1186,7 @@ Polyglot system and Hybrid Workflows
                 https://haproxy-ingress.github.io/docs/getting-started/
                 https://haproxy-ingress.github.io/docs/configuration/gateway-api/
                 Done
+                 deploying a second gatewayclass
 
             nginx-gateway-fabric
                 https://docs.nginx.com/nginx-gateway-fabric/install/helm/
@@ -1560,6 +1561,48 @@ Questions:
 
         commands samples 
 
+
+            kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\n"}{end}'
+
+
+            eksctl get cluster --name cluster-lab-13
+            eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
+            node groups 
+                eksctl create nodegroup --config-file ./gitops/eksctl-cluster-config.yml
+
+                # verbose level 4 
+                eksctl delete nodegroup --cluster=cluster-lab-13 --name=linux-nodes-13 --verbose=4
+
+            watch -n 1 'kubectl get node'
+            watch -n 1 'kubectl get pods --all-namespaces --field-selector status.phase=Pending'
+
+            SSH ProxyJump
+                ssh -J user@bastion-public-ip user@private-target-ip
+
+                ssh -i ~/.ssh/ssh-ec2-eks-private-subnet.pem \
+                    -o ProxyCommand="ssh -i ~/.ssh/ssh-ec2-eks-private-subnet.pem -W %h:%p ec2-user@100.53.198.168" \
+                    ec2-user@192.168.18.169
+
+                ~/.ssh/config
+                    # 1. The Public-Facing Bastion Host Gateway
+                    Host bastion
+                        HostName 100.53.198.168
+                        User ec2-user
+                        IdentityFile ~/.ssh/ssh-ec2-eks-private-subnet.pem
+
+                    # 2. The Internal EKS Worker Node (Routes Through Bastion)
+                    Host eks-node
+                        HostName 192.168.18.169
+                        User ec2-user
+                        IdentityFile ~/.ssh/ssh-ec2-eks-private-subnet.pem
+                        ProxyJump bastion
+
+
+            # Syntax: nslookup <service>.<namespace>.svc.cluster.local <CoreDNS-Cluster-IP>
+            # <CoreDNS-Cluster-IP> e.g 10.100.0.10 CoreDNS ClusterIP
+            nslookup kiali.kiali-system.svc.cluster.local 10.100.0.10
+
+
             aws cloudtrail lookup-events \
                 --lookup-attributes AttributeKey=ResourceName,AttributeValue=i-0054f32bfcab0fccf \
                 --max-results 5 \
@@ -1571,6 +1614,15 @@ Questions:
             ssh -i /path/to/key.pem -J user@BASTION_PUBLIC_IP ec2-user@PRIVATE_SUBNET_IP
 
             ssh -i /path/to/key.pem ec2-user@PRIVATE_SUBNET_IP
+
+            install nslookup utils on amazon ami 
+                sudo dnf install -y bind-utils
+
+            sudo chmod 600 ~/.ssh/ssh-ec2-eks-private-subnet.pem
+
+            aws elbv2 describe-load-balancers \
+            --query "LoadBalancers[*].[LoadBalancerName, VpcId, AvailabilityZones[0].SubnetId, AvailabilityZones[1].SubnetId]" \
+            --output table
 
             aws elbv2 describe-listeners --load-balancer-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:loadbalancer/net/k8s-platform-traefikg-acf5d78bf7/f4b22920c9172efc \
             --query "Listeners[?Port==\`443\`].Certificates" --output json
