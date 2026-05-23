@@ -27,6 +27,11 @@ spec:
         # best practices, instead of tags
         vpcId: vpc-08af2bbbae9bfe5b2
 
+        controllerConfig:
+          featureGates:
+            NLBGatewayAPI: true
+            ALBGatewayAPI: true
+
         enableShield: true
         # enableWaf: true
         enableWafv2: true
