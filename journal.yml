@@ -1170,6 +1170,8 @@ Polyglot system and Hybrid Workflows
 
 
     - Todos  ...here 
+        prg-2026-1887237
+        1879089
         Madrid...?
             Kite Equipement
             Bed & Gym CTG
@@ -1178,25 +1180,16 @@ Polyglot system and Hybrid Workflows
             traefik 
                 https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/gateway-api/
                 https://doc.traefik.io/traefik/getting-started/kubernetes/
-
-                labs 
-                    default gateway to one *.domain and all internal untouch
-                        ...here
-                    default gateway to multiple domains via httproutes
-                        ezparking.us
-
-
-
-
-
-
-            nginx-gateway-fabric
-                https://docs.nginx.com/nginx-gateway-fabric/install/helm/
-                https://github.com/nginx/nginx-gateway-fabric/blob/main/examples/tcp-routing/gateway.yaml
+                Done
 
             HAProxy 
                 https://haproxy-ingress.github.io/docs/getting-started/
                 https://haproxy-ingress.github.io/docs/configuration/gateway-api/
+                Done
+
+            nginx-gateway-fabric
+                https://docs.nginx.com/nginx-gateway-fabric/install/helm/
+                https://github.com/nginx/nginx-gateway-fabric/blob/main/examples/tcp-routing/gateway.yaml
 
             istio 
                 to try based on argocd-apps/apps/istio.yaml
@@ -1206,7 +1199,10 @@ Polyglot system and Hybrid Workflows
                     https://istio.io/latest/docs/setup/install/helm/
                 https://raw.githubusercontent.com/istio/istio/release-1.30/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
 
-
+            karpenter test
+            cloud9 or aws cloudshell
+            video about kiali 
+            video about jaeger
 
         review app-end-user values files 
         Prometheus, graphana quantiles, metrics, rollout analysis 
@@ -1563,6 +1559,18 @@ Questions:
 
 
         commands samples 
+
+            aws cloudtrail lookup-events \
+                --lookup-attributes AttributeKey=ResourceName,AttributeValue=i-0054f32bfcab0fccf \
+                --max-results 5 \
+                --query "Events[*].{Time:EventTime,Name:EventName,User:Username,Error:ErrorCode}" \
+                --output table
+
+            aws ssm start-session --target INSTANCE_ID
+
+            ssh -i /path/to/key.pem -J user@BASTION_PUBLIC_IP ec2-user@PRIVATE_SUBNET_IP
+
+            ssh -i /path/to/key.pem ec2-user@PRIVATE_SUBNET_IP
 
             aws elbv2 describe-listeners --load-balancer-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:loadbalancer/net/k8s-platform-traefikg-acf5d78bf7/f4b22920c9172efc \
             --query "Listeners[?Port==\`443\`].Certificates" --output json

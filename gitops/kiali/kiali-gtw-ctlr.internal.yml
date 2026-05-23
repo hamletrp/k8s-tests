@@ -1,0 +1,126 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-gateway-internal
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 40.2.0
+    helm:
+      values: |
+        tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
+
+        deployment:
+          replicas: 1
+
+        service:
+          nameOverride: "traefik-gateway-internal-svc"
+          spec:
+            type: LoadBalancer
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-type: "external"
+            service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
+            service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+            service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
+            service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+
+            # service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+            # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/248ba54a-5df7-44d8-ad76-050b9252da41"
+
+        gateway:
+          enabled: false
+      
+        providers:
+          kubernetesGateway:
+            enabled: true # Triggers the creation of the 'traefik' GatewayClass
+
+            labelSelector: "infra-tier=traefik-internal-gateway"
+            
+            statusAddress:
+              destination: Service
+              service:
+                name: traefik-gateway-internal-svc # Change to chart service name, nameOverride above
+                namespace: platform-system
+                        
+        gatewayClass:
+          enabled: true # redundant but default
+          name: traefik-internal
+          labels:
+            infra-tier: "traefik-internal-gateway"
+
+        ingressRoute:
+          dashboard:
+            enabled: true
+
+        api:
+          dashboard: true
+          insecure: false
+
+        ports:
+          websecure:
+            http:
+              tls:
+                enabled: false # NLB terminates TLS via ACM; Traefik receives plain HTTP on this port
+
+        logs:
+          general:
+            level: ERROR # Production standard to reduce I/O and disk bloat
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-gateway-internal
+  namespace: gateway-infra
+  labels:
+    # CRITICAL: Must match the labelSelector in the controller
+    infra-tier: "ezparking-gateway" 
+spec:
+  gatewayClassName: traefik-internal
+  listeners:
+  - name: http-internal
+    protocol: HTTP
+    port: 8000 # matches traefik web entrypoint — NLB port 80 → targetPort web
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            gateway-access: "traefik-prod-gateway"
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute 
+metadata:
+  name: internal-app-route
+  namespace: kiali-system
+spec:
+  parentRefs:
+    - name: traefik-gateway-internal
+      namespace: gateway-infra
+      sectionName: http-internal
+  rules:
+    - backendRefs:
+        - name: kiali
+          port: 20001          
+          namespace: kiali-system
+
+

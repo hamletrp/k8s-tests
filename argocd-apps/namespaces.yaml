@@ -1,6 +1,22 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: httpbingo
+  labels:
+    gateway-access: "haproxy-prod-gateway"
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: haproxy-system
+  labels:
+    gateway-access: "haproxy-prod-gateway"
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: kiali-system
   labels:
     gateway-access: "traefik-prod-gateway"

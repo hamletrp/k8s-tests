@@ -14,6 +14,8 @@ Manual install
     https://github.com/devopsjourney1/argo-examples/blob/master/readme.md
         
         k apply -f ./argocd-apps/namespaces.yaml
+        Applicationset CRDS 
+            k apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
 
         k apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
@@ -25,11 +27,8 @@ Manual install
         && k patch deployment/argocd-server  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
         && k patch statefulset/argocd-application-controller  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
 
-        And for the applicationset CRDS 
-            k apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
 
-
-        http traffic inside the cluster
+        http !SSL, traffic inside the cluster
             k -n argocd patch deployment argocd-server \
             --type='json' \
             -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--insecure"}]'

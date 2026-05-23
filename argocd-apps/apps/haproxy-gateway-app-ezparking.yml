@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: haproxy-gateway-ezparking
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://haproxy-ingress.github.io/charts
+    chart: haproxy-ingress
+    targetRevision: 0.17.0-alpha.2
+    helm:
+      values: |
+        nameOverride: "haproxy-gateway-ezparking"
+
+        controller:
+          replicaCount: 1
+          ingressClass: haproxy-ezparking
+
+          gatewayClassResource:
+            enabled: true
+
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
+
+          service:
+            type: LoadBalancer
+            annotations:
+              service.beta.kubernetes.io/aws-load-balancer-type: "external"
+              service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+              service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+              service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
+              service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+              service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/248ba54a-5df7-44d8-ad76-050b9252da41"
+              service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: haproxy-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
