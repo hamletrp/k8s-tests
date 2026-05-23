@@ -1,0 +1,94 @@
+apiVersion: gateway.k8s.aws/v1beta1
+kind: LoadBalancerConfiguration
+metadata:
+  name: internet-facing-config
+  namespace: platform-system
+spec:
+  # default is: internal
+  scheme: internet-facing
+
+---
+apiVersion: gateway.k8s.aws/v1beta1
+kind: TargetGroupConfiguration
+metadata:
+  name: custom-tg-config
+spec:
+  targetReference:
+    name: backend
+  defaultConfiguration:
+    # default is: instance
+    targetType: ip
+
+---
+apiVersion: gateway.k8s.aws/v1beta1
+kind: TargetGroupConfiguration
+metadata:
+  name: jaeger-tg-config
+  namespace: jaeger-system
+spec:
+  targetReference:
+    group: ""
+    kind: Service
+    name: jaeger-query # Binds directly to your Jaeger service configuration
+  defaultConfiguration:
+    healthCheckConfig:
+      healthCheckPort: "80"
+      healthCheckProtocol: HTTP
+      healthCheckPath: "/" # Update to Jaeger's explicit health path if "/" returns a 404
+
+--- 
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: aws-alb-gateway-api
+spec:
+  controllerName: gateway.k8s.aws/nlb
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: doordress-alb-gateway
+  namespace: platform-system
+spec:
+  gatewayClassName: aws-alb-gateway-api
+  infrastructure:
+    parametersRef:
+      kind: LoadBalancerConfiguration
+      name: internet-facing-config
+      group: gateway.k8s.aws
+  listeners:
+  - name: https
+    protocol: TLS
+    port: 443
+    hostname: "jaeger.doordress.us"
+    tls:
+      mode: Terminate 
+      options:
+        aws.gateway.networking.k8s.io/certificate-arn: "arn:aws:acm:us-east-1:722249351142:certificate/3887c32b-9317-44ff-b2e0-10de121e1062"
+    allowedRoutes:
+      namespaces:
+        from: All
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: doordress-default-route
+  namespace: jaeger-system
+spec:
+  parentRefs:
+  - name: doordress-alb-gateway
+    namespace: platform-system
+    sectionName: https
+  hostnames:
+  - "jaeger.doordress.us"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+      - name: jaeger-query
+        namespace: jaeger-system
+        port: 80
