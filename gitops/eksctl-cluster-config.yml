@@ -14,6 +14,10 @@ metadata:
 
 vpc:
   manageSharedNodeSecurityGroupRules: true
+  tags:
+    environment: staging
+    kubernetes.io/cluster/cluster-lab-13: "owned" 
+    ManagedBy: "eksctl"
 
 addons:
   - name: coredns

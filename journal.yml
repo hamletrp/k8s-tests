@@ -939,6 +939,7 @@ Polyglot system and Hybrid Workflows
                     pre-integrated in kube-prometheus-stack
                     Ready-to-use dashboards for cluster, nodes, etc.    
                         directly from Grafana community
+                            load by id
 
             Logging
                 Fluentd 
@@ -1180,17 +1181,23 @@ Polyglot system and Hybrid Workflows
             traefik 
                 https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/gateway-api/
                 https://doc.traefik.io/traefik/getting-started/kubernetes/
-                Done
+                Done - 2 gatewayclasses
 
             HAProxy 
                 https://haproxy-ingress.github.io/docs/getting-started/
                 https://haproxy-ingress.github.io/docs/configuration/gateway-api/
-                Done
-                 deploying a second gatewayclass
+                Done - 2 gatewayclasses
 
             nginx-gateway-fabric
                 https://docs.nginx.com/nginx-gateway-fabric/install/helm/
-                https://github.com/nginx/nginx-gateway-fabric/blob/main/examples/tcp-routing/gateway.yaml
+                https://docs.nginx.com/nginx-gateway-fabric/how-to/data-plane-configuration/
+                ...here
+                
+
+                then review captures 
+                then rest a day 
+                then 3 exams simulation 
+                then CKA exam
 
             istio 
                 to try based on argocd-apps/apps/istio.yaml
@@ -1561,10 +1568,6 @@ Questions:
 
         commands samples 
 
-
-            kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\n"}{end}'
-
-
             eksctl get cluster --name cluster-lab-13
             eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
             node groups 
@@ -1577,6 +1580,9 @@ Questions:
             watch -n 1 'kubectl get pods --all-namespaces --field-selector status.phase=Pending'
 
             SSH ProxyJump
+                ssh -i /path/to/key.pem -J user@BASTION_PUBLIC_IP ec2-user@PRIVATE_SUBNET_IP
+                ssh -i /path/to/key.pem ec2-user@PRIVATE_SUBNET_IP
+
                 ssh -J user@bastion-public-ip user@private-target-ip
 
                 ssh -i ~/.ssh/ssh-ec2-eks-private-subnet.pem \
@@ -1611,10 +1617,6 @@ Questions:
 
             aws ssm start-session --target INSTANCE_ID
 
-            ssh -i /path/to/key.pem -J user@BASTION_PUBLIC_IP ec2-user@PRIVATE_SUBNET_IP
-
-            ssh -i /path/to/key.pem ec2-user@PRIVATE_SUBNET_IP
-
             install nslookup utils on amazon ami 
                 sudo dnf install -y bind-utils
 
@@ -1644,13 +1646,14 @@ Questions:
                         --query "SecurityGroups[*].{GroupName:GroupName,GroupId:GroupId,Tags:Tags,Description:Description}"
 
 
-                list all tags 
+                list all tags security-groups
                     aws ec2 describe-security-groups \
                     --filters "Name=tag-key,Values=kubernetes.io/cluster/cluster-lab-13" \
                     --query "SecurityGroups[*].{ID:GroupId,Name:GroupName,Tags:Tags}" \
                     --output json
 
-
+                list all tags security-groups
+                    aws ec2 describe-subnets --query "Subnets[*].{SubnetId:SubnetId, Tags:Tags}" --output json | pbcopy
 
             get nlb eni 
                 aws ec2 describe-network-interfaces --filters Name=description,Values="ELB net/*k8s-kubesyst-traefikg-90ebd913ef*" | pbcopy
@@ -1711,7 +1714,6 @@ Questions:
             global repo search 
                 helm search hub nginx --list-repo-url | head -n15
 
-
             kubectl run curl-test \
                 --rm -it \
                 --image=curlimages/curl \
@@ -1756,6 +1758,7 @@ Questions:
              --sort-by=.status.podIP
 
             Deployment on UP-TO-DATE 0 
+                kubectl rollout status deployment test
                 check status, must says psused 
                     kubectl rollout resume deployment test
 
@@ -1909,7 +1912,7 @@ Questions:
 
 
             kustomize 
-                kustomize build argo-cd/overlays/production | kubectl apply --filename -
+                k kustomize build argo-cd/overlays/production | kubectl apply -f -
 
             $ k -n argo-events port-forward $EVENTSOURCE_POD_NAME 12000:12000 &
             "$" toss it in the background

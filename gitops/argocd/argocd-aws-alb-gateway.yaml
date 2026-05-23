@@ -11,32 +11,20 @@ spec:
 apiVersion: gateway.k8s.aws/v1beta1
 kind: TargetGroupConfiguration
 metadata:
-  name: custom-tg-config
-spec:
-  targetReference:
-    name: backend
-  defaultConfiguration:
-    # default is: instance
-    targetType: ip
-
----
-apiVersion: gateway.k8s.aws/v1beta1
-kind: TargetGroupConfiguration
-metadata:
   name: jaeger-tg-config
   namespace: jaeger-system
 spec:
   targetReference:
     group: ""
     kind: Service
-    name: jaeger-query # Binds directly to your Jaeger service configuration
+    name: jaeger-query
   defaultConfiguration:
     healthCheckConfig:
       healthCheckPort: "80"
       healthCheckProtocol: HTTP
       healthCheckPath: "/" # Update to Jaeger's explicit health path if "/" returns a 404
 
---- 
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
@@ -63,7 +51,7 @@ spec:
     port: 443
     hostname: "jaeger.doordress.us"
     tls:
-      mode: Terminate 
+      mode: Terminate
       options:
         aws.gateway.networking.k8s.io/certificate-arn: "arn:aws:acm:us-east-1:722249351142:certificate/3887c32b-9317-44ff-b2e0-10de121e1062"
     allowedRoutes:
@@ -71,8 +59,8 @@ spec:
         from: All
 
 ---
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
 metadata:
   name: doordress-default-route
   namespace: jaeger-system
@@ -81,14 +69,8 @@ spec:
   - name: doordress-alb-gateway
     namespace: platform-system
     sectionName: https
-  hostnames:
-  - "jaeger.doordress.us"
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-      - name: jaeger-query
-        namespace: jaeger-system
-        port: 80
+  - backendRefs:
+    - name: jaeger-query
+      namespace: jaeger-system
+      port: 80
