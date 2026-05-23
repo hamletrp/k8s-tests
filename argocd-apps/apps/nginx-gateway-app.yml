@@ -14,6 +14,12 @@ spec:
     helm:
       releaseName: nginx-gateway-fabric
       valuesObject:
+        certGenerator:
+          tolerations:
+            - key: "workload-type"
+              operator: "Equal"
+              value: "regular"
+              effect: "NoSchedule"
         nginxGateway:
           name: nginx-gateway-fabric
           gatewayClassName: nginx-gateway
