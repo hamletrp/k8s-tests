@@ -33,12 +33,11 @@ spec:
             effect: "NoSchedule"
             
         nginx:
-          pod:
-            tolerations:
-            - key: "workload-type"
-              operator: "Equal"
-              value: "regular"
-              effect: "NoSchedule"
+          tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
   destination:
     server: https://kubernetes.default.svc
     namespace: platform-system
