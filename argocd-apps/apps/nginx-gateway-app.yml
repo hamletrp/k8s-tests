@@ -24,8 +24,14 @@ spec:
         nginxGateway:
           name: nginx-gateway-fabric
           gatewayClassName: nginx-gateway
+
+          config:
+            logging:
+              level: debug
+
           labels:
             infra-tier: "nginx-gateway-fabric" 
+
           tolerations:
           - key: "workload-type"
             operator: "Equal"
@@ -33,6 +39,7 @@ spec:
             effect: "NoSchedule"
             
         nginx:
+          debug: true
           pod:
             tolerations:
             - key: "workload-type"
