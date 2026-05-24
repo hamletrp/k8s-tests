@@ -29,8 +29,8 @@ spec:
 
         controllerConfig:
           featureGates:
-            NLBGatewayAPI: true
-            ALBGatewayAPI: true
+            NLBGatewayAPI: false
+            ALBGatewayAPI: false
 
         enableShield: true
         # enableWaf: true
