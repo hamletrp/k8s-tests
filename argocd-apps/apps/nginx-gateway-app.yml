@@ -23,6 +23,8 @@ spec:
         nginxGateway:
           name: nginx-gateway-fabric
           gatewayClassName: nginx-gateway
+          labels:
+            infra-tier: "nginx-gateway-fabric" 
           tolerations:
           - key: "workload-type"
             operator: "Equal"
