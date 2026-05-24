@@ -97,6 +97,37 @@ spec:
     - name: web-service
       port: 80
 
+--- weighted 
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: shop-weighted-route
+  namespace: gateway-infra
+spec:
+  # Links the route directly to your internet-facing NGINX Gateway
+  parentRefs:
+    - name: nginx-gateway-doordress
+      namespace: gateway-infra
+      sectionName: https
+  hostnames:
+    - "shop.doordress.us"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: / # Captures all paths under the same route boundary
+      backendRefs:
+        # 1. Primary/Stable Version Target (90% of traffic)
+        - name: shop-service-v1
+          port: 80
+          weight: 90
+        
+        # 2. Canary/Experimental Version Target (10% of traffic)
+        - name: shop-service-v2
+          port: 80
+          weight: 10
+
+
 # high cpu consumer nodes 
 
 #   student-node ~ ➜  ssh cluster1-controlplane "kubectl top node --no-headers | sort -nr -k2 | head -1"
@@ -282,6 +313,234 @@ ports:
 # helm repo update
 # helm install metrics-server metrics-server/metrics-server
 # edit deploy manifest: --kubelet-insecure-tls
+
+Scenario 1: Find the Pod Using the Most CPU
+  kubectl top pod -n payments --sort-by=cpu
+
+Scenario 2: Find Highest Memory Consumer
+  kubectl top pod -A --sort-by=memory
+
+Scenario 3: Node Resource Consumption
+  kubectl top node --sort-by=cpu
+
+Last State:
+ Terminated
+ Reason: OOMKilled
+  Crashloopbackoff
+    look at --previous logs 
+
+Scenario 6: Verify Metrics Server
+  Check the deployment 
+
+Scenario 11: Watch Real-Time Resource Usage
+  watch kubectl top pod -A
+  watch kubectl top node
+
+Scenario 13: Resource Quota Inspection
+
+Scenario 14: LimitRange Inspection
+
+nginx  0/1 ContainerCreating:
+  FailedCreatePodSandBox
+  network plugin not ready
+  Or CNI plugin not initialized
+
+  worker1 NotReady
+  Describe node
+
+  May show
+  NetworkPluginNotReady
+  ———-
+
+  Root Cause
+
+  CNI DaemonSet missing or unhealthy.
+
+  Restore CNI manifest
+  or restart failing pods
+
+CNI plugin could Failed to connect to API server
+
+  Check cni files
+
+  ls /etc/cni/net.d/
+
+  Same as 
+  /etc/kubernetes
+  /etc/systemd
+
+dnsPolicy must be 
+
+dnsPolicy: ClusterFirst or Default
+
+Always check config;
+
+kubectl get configmap coredns \
+-n kube-system -o yaml
+
+
+Etcd health:
+
+ETCDCTL_API=3 etcdctl endpoint health \
+ --endpoints=https://127.0.0.1:2379 \
+ --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+ --cert=/etc/kubernetes/pki/etcd/server.crt \
+ --key=/etc/kubernetes/pki/etcd/server.key
+
+
+Bonus Scenario: List Keys in etcd
+
+ETCDCTL_API=3 etcdctl get / --prefix --keys-only \
+ --endpoints=https://127.0.0.1:2379 \
+ --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+ --cert=/etc/kubernetes/pki/etcd/server.crt \
+ --key=/etc/kubernetes/pki/etcd/server.key
+
+Forward unknown DNS queries to: 8.8.8.8
+
+  .:53 {
+      kubernetes cluster.local
+      forward . 8.8.8.8
+  }
+
+  Restart rollout
+
+Scenario 2
+  Create Custom DNS Record
+
+  Resolve: db.internal.local
+  To: 10.10.10.50
+  ———
+
+  .:53 {
+      hosts {
+          10.10.10.50 db.internal.local
+          fallthrough
+      }
+
+      kubernetes cluster.local
+      forward . /etc/resolv.conf
+  }
+
+
+Scenario 5
+  Stub Domain Forwarding
+
+  company.internal
+  192.168.100.10
+  ———
+
+  company.internal:53 {
+      forward . 192.168.100.10
+  }
+
+
+  Keep Kubernetes block:
+  .:53 {
+      kubernetes cluster.local
+      forward . /etc/resolv.conf
+  }
+
+
+  initContainers:
+  - name: wait-db
+    image: busybox
+    command:
+    - sh
+    - -c
+    - |
+      until nslookup mysql.default.svc.cluster.local
+      do
+        echo waiting...
+        sleep 2
+      done
+
+  initContainers:
+  - name: migrate
+    image: liquibase
+    command:
+    - liquibase
+    - update
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

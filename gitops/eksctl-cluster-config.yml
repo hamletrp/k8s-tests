@@ -11,13 +11,11 @@ metadata:
     karpenter.sh/discovery: cluster-lab-13
     karpenter.sh/managed-by: "team-h"
     k8s.io/cluster-autoscaler/cluster-lab-13: owned
+    kubernetes.io/cluster/cluster-lab-13: "owned" 
+    ManagedBy: "eksctl"
 
 vpc:
   manageSharedNodeSecurityGroupRules: true
-  tags:
-    environment: staging
-    kubernetes.io/cluster/cluster-lab-13: "owned" 
-    ManagedBy: "eksctl"
 
 addons:
   - name: coredns
