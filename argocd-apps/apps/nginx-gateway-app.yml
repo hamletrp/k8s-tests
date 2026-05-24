@@ -20,6 +20,7 @@ spec:
               operator: "Equal"
               value: "regular"
               effect: "NoSchedule"
+
         nginxGateway:
           name: nginx-gateway-fabric
           gatewayClassName: nginx-gateway
@@ -30,6 +31,8 @@ spec:
             operator: "Equal"
             value: "regular"
             effect: "NoSchedule"
+            
+        nginx:
           pod:
             tolerations:
             - key: "workload-type"
