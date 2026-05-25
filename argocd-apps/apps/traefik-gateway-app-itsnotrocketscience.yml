@@ -77,7 +77,7 @@ spec:
 
         logs:
           general:
-            level: ERROR # Production standard to reduce I/O and disk bloat
+            level: DEBUG # Production standard to reduce I/O and disk bloat
   destination:
     server: https://kubernetes.default.svc
     namespace: platform-system
