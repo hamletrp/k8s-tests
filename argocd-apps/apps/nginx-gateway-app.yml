@@ -27,7 +27,7 @@ spec:
 
           config:
             logging:
-              level: debug
+              level: info
 
           labels:
             infra-tier: "nginx-gateway-fabric" 
