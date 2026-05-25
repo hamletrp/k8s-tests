@@ -25,6 +25,14 @@ spec:
           name: nginx-gateway-fabric
           gatewayClassName: nginx-gateway
 
+          replicas: 2
+
+          autoscaling:
+            enabled: true
+            minReplicas: 2
+            maxReplicas: 5
+            targetCPUUtilizationPercentage: 80
+
           config:
             logging:
               level: info
