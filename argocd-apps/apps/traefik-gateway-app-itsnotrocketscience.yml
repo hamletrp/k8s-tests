@@ -77,7 +77,7 @@ spec:
 
         logs:
           general:
-            level: DEBUG # Production standard to reduce I/O and disk bloat
+            level: INFO # Production standard to reduce I/O and disk bloat
   destination:
     server: https://kubernetes.default.svc
     namespace: platform-system
