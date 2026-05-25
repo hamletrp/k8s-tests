@@ -1,0 +1,143 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: project-a-prod
+  namespace: gateway-infra
+  labels:
+    infra-tier: "nginx-gateway-fabric" 
+spec:
+  gatewayClassName: nginx-gateway
+  infrastructure:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "external"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:722249351142:certificate/3887c32b-9317-44ff-b2e0-10de121e1062,arn:aws:acm:us-east-1:722249351142:certificate/e19f1d72-44f4-4dea-aba9-cd251fccf404"
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=true
+  listeners:
+  - name: https-doordress
+    protocol: HTTP
+    port: 443
+    hostname: "*.doordress.us"
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: http-doordress
+    protocol: HTTP
+    port: 80
+    hostname: "*.doordress.us"
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-itsnotrocketscience
+    protocol: HTTP
+    port: 443
+    hostname: "*.itsnotrocketscience.tech"
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: http-itsnotrocketscience
+    protocol: HTTP
+    port: 80
+    hostname: "*.itsnotrocketscience.tech"
+    allowedRoutes:
+      namespaces:
+        from: All
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argocd-nginx-gateway-route
+  namespace: argocd
+spec:
+  parentRefs:
+  - name: project-a-prod
+    namespace: gateway-infra
+    sectionName: https-doordress
+  hostnames:
+  - "argocd.doordress.us"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+      - name: argocd-server
+        namespace: argocd
+        port: 80
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argocd-nginx-gateway-route-redirect
+  namespace: argocd
+spec:
+  parentRefs:
+  - name: project-a-prod
+    namespace: gateway-infra
+    sectionName: http-doordress
+  hostnames:
+  - "argocd.doordress.us"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https   # Upgrades the scheme to https
+        statusCode: 301 # Permanent redirect
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kiali-nginx-gateway-route
+  namespace: kiali-system
+spec:
+  parentRefs:
+  - name: project-a-prod
+    namespace: gateway-infra
+    sectionName: https-itsnotrocketscience
+  hostnames:
+  - "kiali.itsnotrocketscience.tech"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+      - name: kiali
+        namespace: kiali-system
+        port: 20001
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kiali-nginx-gateway-route-redirect
+  namespace: kiali-system
+spec:
+  parentRefs:
+  - name: project-a-prod
+    namespace: gateway-infra
+    sectionName: http-itsnotrocketscience
+  hostnames:
+  - "kiali.itsnotrocketscience.tech"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https   # Upgrades the scheme to https
+        statusCode: 301 # Permanent redirect
+
+---
