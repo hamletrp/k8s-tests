@@ -25,11 +25,11 @@ spec:
           name: nginx-gateway-fabric
           gatewayClassName: nginx-gateway
 
-          replicas: 2
+          replicas: 1
 
           autoscaling:
             enable: true
-            minReplicas: 2
+            minReplicas: 1
             maxReplicas: 5
             targetCPUUtilizationPercentage: 70
             behavior:
@@ -58,9 +58,30 @@ spec:
             effect: "NoSchedule"
             
         nginx:
+          replicas: 2
+
+          autoscaling:
+            enable: true
+            minReplicas: 2
+            maxReplicas: 5
+            targetCPUUtilizationPercentage: 50
+            behavior:
+              scaleDown:
+                policies:
+                - type: Pods
+                  value: 1
+                  periodSeconds: 180
+              scaleUp:
+                  policies:
+                  - type: Pods
+                    value: 2
+                    periodSeconds: 60
+
           service:
             loadBalancerClass: "service.k8s.aws/nlb"
+
           debug: false
+
           pod:
             tolerations:
             - key: "workload-type"
