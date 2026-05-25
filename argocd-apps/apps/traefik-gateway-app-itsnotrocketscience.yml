@@ -78,6 +78,8 @@ spec:
         logs:
           general:
             level: INFO # Production standard to reduce I/O and disk bloat
+          access:
+            enabled: true 
   destination:
     server: https://kubernetes.default.svc
     namespace: platform-system

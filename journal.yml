@@ -1200,6 +1200,7 @@ Polyglot system and Hybrid Workflows
 
             nginx-gateway-fabric
                 https://docs.nginx.com/nginx-gateway-fabric/install/helm/
+                    kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.6.2" | kubectl apply -f -
                 https://docs.nginx.com/nginx-gateway-fabric/how-to/data-plane-configuration/
                 ...here
                     to test 2 certificates/domains
@@ -1213,6 +1214,8 @@ Polyglot system and Hybrid Workflows
                 then rest a day 
                 then 3 exams simulation 
                 then CKA exam
+                then SE CSI Driver
+                then an actual prometheus-stack / graphana / alert manager intance 
 
             istio 
                 to try based on argocd-apps/apps/istio.yaml
@@ -1581,7 +1584,83 @@ Questions:
                 Prometheus Pushgateway for job-style metrics (push on completion)
 
 
-        commands samples 
+        commands: 
+
+            check on loadbalancers target groups #debugging
+                # 1. Fetch your Target Group ARN
+                export TG_ARN=$(aws elbv2 describe-target-groups --region us-east-1 --query "TargetGroups[?contains(TargetGroupName, 'nginx')].TargetGroupArn" --output text)
+
+                # 2. Watch the Target IPs move from Unhealthy -> Healthy
+                watch -n 1 "aws elbv2 describe-target-health --region us-east-1 \
+                --target-group-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:targetgroup/k8s-gatewayi-nginxgat-09bcf13bec/3d9b4df69f136b7b --query 'TargetHealthDescriptions[*].[Target.Id, Target.Port, TargetHealth.State, TargetHealth.Reason]'"
+
+                # 2. View the health reason details
+                aws elbv2 describe-target-health --region us-east-1 \
+                 --target-group-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:targetgroup/k8s-gatewayi-nginxgat-09bcf13bec/3d9b4df69f136b7b \
+                 --query "TargetHealthDescriptions[*].[Target.Id, TargetHealth.State, TargetHealth.Reason, TargetHealth.Description]" \
+                 --output table
+
+                 aws elbv2 describe-target-health --region us-east-1 \
+                 --target-group-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:targetgroup/k8s-gatewayi-nginxgat-9b91be1b19/8db2cb661b2aa0a6
+
+                aws elbv2 describe-target-health \
+                --region us-east-1 \
+                --target-group-arn arn:aws:elasticloadbalancing:us-east-1:722249351142:targetgroup/k8s-gatewayi-nginxgat-05f5525e61/4763cdb009d2c917 \
+                --query "TargetHealthDescriptions[*].{PodIP:Target.Id, CheckedPort:Target.Port, HealthState:TargetHealth.State, AWSReason:TargetHealth.Reason, ErrorDescription:TargetHealth.Description}" \
+                --output table
+
+                aws elbv2 describe-target-groups \
+                --region us-east-1 \
+                --target-group-arns arn:aws:elasticloadbalancing:us-east-1:722249351142:targetgroup/k8s-gatewayi-nginxgat-05f5525e61/4763cdb009d2c917 \
+                --query "TargetGroups[*].{Name:TargetGroupName, Protocol:HealthCheckProtocol, Port:HealthCheckPort, Path:HealthCheckPath, ValidCodes:Matcher.HttpCode, Interval:HealthCheckIntervalSeconds}" \
+                --output table
+
+                aws elbv2 describe-load-balancers \
+                --region us-east-1 \
+                --load-balancer-arns arn:aws:elasticloadbalancing:us-east-1:722249351142:loadbalancer/net/k8s-gatewayi-nginxgat-88a25638f2/5d5edb35f4138f28 \
+                --query "LoadBalancers[0].SecurityGroups[*]" \
+                --output text
+
+                sg-03f7350b5ff45b4a7    sg-055ab99d1bf9febfc
+
+                aws ec2 describe-security-group-rules \
+                --region us-east-1 \
+                --filters "Name=group-id,Values=sg-055ab99d1bf9febfc" \
+                --query "SecurityGroupRules[?!IsEgress].{RuleId:SecurityGroupRuleId, Protocol:IpProtocol, Port:FromPort, Cidr:CidrIpv4, Description:Description}" \
+                --output table
+
+
+                change HTTP request carries a default host header matching the internal Kubernetes service
+                 string. 
+                 Because that string does not match your wildcard domain (*.doordress.us), 
+                 NGINX's routing engine rejects it as an unmapped host and returns 
+                 its default catch-all 404 Not Found page.
+                    curl -I -H "Host: domainname" http://svc.ns.svc.cluster.local
+                    curl -I -H "Host: argocd.doordress.us" http://nginx-gateway-doordress-nginx-gateway.gateway-infra.svc.cluster.local
+
+
+
+                k logs networking/aws-load-balancer-controller-awsalb-load-balancer-controller \
+                -f --tail=20 
+
+                k logs gateway-infra/nginx-gateway-doordress-nginx-gateway \
+                --container=nginx -f --tail=20 
+
+                k logs -n gateway-infra deploy/nginx-gateway-doordress-nginx-gateway \
+                --container=nginx -f --tail=20 
+
+                k logs -n gateway-infra nginx-gateway-doordress-nginx-gateway \
+                --container=nginx -f --tail=20 
+
+                k logs -n gateway-infra nginx-gateway-doordress-nginx-gateway \
+                --container=nginx -f --tail=20 | grep -E "404|ELB"
+
+                k exec -it nginx-gateway-doordress-nginx-gateway \
+                -- sh
+
+                # B. Force-patch the metadata annotations directly into the API server
+                kubectl patch svc nginx-gateway-doordress-nginx-gateway -n gateway-infra --type=merge \
+                -p '{"metadata":{"annotations":{"service.beta.kubernetes.io/aws-load-balancer-healthcheck-success-codes":"200,301","service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol":"HTTP","service.beta.kubernetes.io/aws-load-balancer-healthcheck-path":"/"}}}'
 
             eksctl get cluster --name cluster-lab-13
             eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
