@@ -39,7 +39,7 @@ spec:
             effect: "NoSchedule"
             
         nginx:
-          debug: true
+          debug: false
           pod:
             tolerations:
             - key: "workload-type"
