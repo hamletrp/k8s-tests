@@ -39,6 +39,8 @@ spec:
             effect: "NoSchedule"
             
         nginx:
+          service:
+            loadBalancerClass: "service.k8s.aws/nlb"
           debug: false
           pod:
             tolerations:
