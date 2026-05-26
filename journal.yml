@@ -1169,15 +1169,31 @@ Polyglot system and Hybrid Workflows
         IBM Kubecost
             Done
 
+    gateway api E2E test 
+        traefik 
+            https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/gateway-api/
+            https://doc.traefik.io/traefik/getting-started/kubernetes/
+            Done - 2 gatewayclasses
+
+        HAProxy 
+            https://haproxy-ingress.github.io/docs/getting-started/
+            https://haproxy-ingress.github.io/docs/configuration/gateway-api/
+            Done - 2 gatewayclasses
+
+        nginx-gateway-fabric
+            https://docs.nginx.com/nginx-gateway-fabric/install/helm/
+                kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.6.2" | kubectl apply -f -
+            https://docs.nginx.com/nginx-gateway-fabric/how-to/data-plane-configuration/
+            Done
+
+
 
     - Todos  ...here 
-        prg-2026-1887237
-        1879089
         Madrid...?
             Kite Equipement
             Bed & Gym CTG
             Budget Madrid
-                    ? Lower Back Inyection
+                    ? Lower Back Therapy/Inyection
                     ? Sports Massage
                   500 CKA Exam
                 1,000 Airfair
@@ -1186,49 +1202,29 @@ Polyglot system and Hybrid Workflows
                     ? Loans and Parkings
                     ? Clothes/Sneakers
 
+        external-dns
+        aws ack controller eks for pod identity association
+        ztunnel
+        then review captures 
+        then rest a day 
+        then 3 exams simulation 
+        then CKA exam
+        then SE CSI Driver
+        then an actual prometheus-stack / graphana / alert manager intance 
 
-        gateway api E2E test 
-            traefik 
-                https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/gateway-api/
-                https://doc.traefik.io/traefik/getting-started/kubernetes/
-                Done - 2 gatewayclasses
 
-            HAProxy 
-                https://haproxy-ingress.github.io/docs/getting-started/
-                https://haproxy-ingress.github.io/docs/configuration/gateway-api/
-                Done - 2 gatewayclasses
+        karpenter test
+        video about kiali 
+        video about jaeger
+        cloud9 or aws cloudshell
 
-            nginx-gateway-fabric
-                https://docs.nginx.com/nginx-gateway-fabric/install/helm/
-                    kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.6.2" | kubectl apply -f -
-                https://docs.nginx.com/nginx-gateway-fabric/how-to/data-plane-configuration/
-                ...here
-                    to test 2 certificates/domains
-                        # rt1,arn:aws:acm:...:cert2
-                        - name: https-newdomain          # new listener
-                          protocol: HTTP
-                          port: 443
-                          hostname: "*.newdomain.com"
-
-                then review captures 
-                then rest a day 
-                then 3 exams simulation 
-                then CKA exam
-                then SE CSI Driver
-                then an actual prometheus-stack / graphana / alert manager intance 
-
-            istio 
-                to try based on argocd-apps/apps/istio.yaml
-                or https://istio.io/latest/docs/setup/additional-setup/gateway/
-                   https://istio.io/latest/blog/2022/getting-started-gtwapi/
-                or
-                    https://istio.io/latest/docs/setup/install/helm/
-                https://raw.githubusercontent.com/istio/istio/release-1.30/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
-
-            karpenter test
-            cloud9 or aws cloudshell
-            video about kiali 
-            video about jaeger
+        istio 
+            to try based on argocd-apps/apps/istio.yaml
+            or https://istio.io/latest/docs/setup/additional-setup/gateway/
+                https://istio.io/latest/blog/2022/getting-started-gtwapi/
+            or
+                https://istio.io/latest/docs/setup/install/helm/
+            https://raw.githubusercontent.com/istio/istio/release-1.30/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
 
         review app-end-user values files 
         Prometheus, graphana quantiles, metrics, rollout analysis 
@@ -1640,11 +1636,18 @@ Questions:
 
 
 
-                k logs -n platform-system deploy/nginx-gateway-fabric \
+                k logs -n platform-system deploy/ack-eks-controller-eks-chart \
                 -f --tail=20 
 
                 k logs -n gateway-infra deploy/project-a-prod-nginx-gateway \
                 -f --tail=20 
+
+                aws eks list-pod-identity-associations --cluster-name cluster-lab-13
+
+                aws eks delete-pod-identity-association \
+                --cluster-name "cluster-lab-13" \
+                --association-id "a-c2zducpzjrze1jdgu"
+
 
 
                 k logs gateway-infra/nginx-gateway-doordress-nginx-gateway \

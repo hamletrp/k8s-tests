@@ -1,0 +1,14 @@
+apiVersion: eks.services.k8s.aws/v1alpha1
+kind: PodIdentityAssociation
+metadata:
+  name: external-dns-access
+  namespace: platform-system
+spec:
+  clusterName: "cluster-lab-13"
+  namespace: platform-system
+  
+  # 2. The Kubernetes Service Account to grant permissions to
+  serviceAccount: "external-dns-controller-sa"
+  
+  # 3. The ARN of the AWS IAM Role providing the permissions
+  roleARN: "arn:aws:iam::722249351142:role/ExternalDnsControllerRole-cluster-lab-13"

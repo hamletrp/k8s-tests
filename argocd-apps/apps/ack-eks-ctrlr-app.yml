@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-eks-ctrlr
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: oci://public.ecr.aws/aws-controllers-k8s/eks-chart
+    chart: eks-chart
+    targetRevision: 1.3.3
+    helm:
+      releaseName: ack-eks-controller 
+      valuesObject:
+        aws: 
+          region: us-east-1
+
+        serviceAccount:
+          name: ack-eks-controller-sa
+
+        log:
+          level: info
+
+        deployment:
+          tolerations:
+          - key: "workload-type"
+            operator: "Equal"
+            value: "regular"
+            effect: "NoSchedule"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
