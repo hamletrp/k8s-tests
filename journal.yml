@@ -23,6 +23,27 @@ WIDE HORIZON OBJECTIVES PRIORITIES
 
 regulatory requirements? (PCI-DSS, HIPAA, SOC2, FedRAMP)
 
+UPGRADING nodes - DECOMMISSIOING nodes 
+    Requires statefulsets to match the LABEL
+        topology.kubernetes.io/zone: us-east-1a
+
+    ISSUE FACED pending pods loops
+        RESOLVED by provisioning a new node/group with right LABEL
+
+individual EC2 worker nodes run out of Elastic Network Interfaces (ENIs)/ 2dary IP slots
+    Enable Prefix Delegation
+        Add these 2 env vars 
+    │       ENABLE_PREFIX_DELEGATION:  true                                                                                                       │
+    │       WARM_IP_TARGET:            3
+
+        k set env daemonset aws-node -n kube-system ENABLE_PREFIX_DELEGATION=true
+        k set env daemonset aws-node -n kube-system WARM_IP_TARGET=3
+
+        * REQUIRES to restart deployments 
+          or delete pods in "container-creating" state
+
+
+
 Static Application Security Testing (SAST)
     SonarQube
     Snyk Code
@@ -1185,7 +1206,10 @@ Polyglot system and Hybrid Workflows
                 kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.6.2" | kubectl apply -f -
             https://docs.nginx.com/nginx-gateway-fabric/how-to/data-plane-configuration/
             Done
-
+        external-dns
+            Done - fully automate ingress/gateway up to route53
+        aws ack controller eks for pod identity association
+            Done
 
 
     - Todos  ...here 
@@ -1202,8 +1226,6 @@ Polyglot system and Hybrid Workflows
                     ? Loans and Parkings
                     ? Clothes/Sneakers
 
-        external-dns
-        aws ack controller eks for pod identity association
         ztunnel
         then review captures 
         then rest a day 
@@ -1635,6 +1657,7 @@ Questions:
                     curl -I -H "Host: argocd.doordress.us" http://nginx-gateway-doordress-nginx-gateway.gateway-infra.svc.cluster.local
 
 
+                k get node -l topology.kubernetes.io/zone
 
                 k logs -n platform-system deploy/ack-eks-controller-eks-chart \
                 -f --tail=20 
@@ -1675,7 +1698,13 @@ Questions:
                 eksctl create nodegroup --config-file ./gitops/eksctl-cluster-config.yml
 
                 # verbose level 4 
-                eksctl delete nodegroup --cluster=cluster-lab-13 --name=linux-nodes-13 --verbose=4
+                eksctl delete nodegroup --cluster=cluster-lab-13 --name=linux-nodes-13-2-v3 --verbose=4
+
+                eksctl upgrade nodegroup \
+                --cluster=cluster-lab-13 \
+                --name=linux-nodes-13-v3 \
+                --region=us-east-1
+
 
             watch -n 1 'kubectl get node'
             watch -n 1 'kubectl get pods --all-namespaces --field-selector status.phase=Pending'

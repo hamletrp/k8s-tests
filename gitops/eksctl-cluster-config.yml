@@ -40,6 +40,11 @@ addons:
   #   serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
   - name: vpc-cni
     version: latest 
+    configurationValues: |
+      env:
+        ENABLE_PREFIX_DELEGATION: "true"
+        WARM_PREFIX_TARGET: "1" # Keeps 1 full block of 16 IPs warm per node
+        WARM_IP_TARGET: "1" # Backup pool for instant scheduling bursts
   - name: metrics-server
     version: v0.7.2-eksbuild.4
     configurationValues: |
@@ -102,7 +107,7 @@ managedNodeGroups:
         value: "true"
         effect: "NoSchedule"
 
-  - name: linux-nodes-13-2-v3
+  - name: linux-nodes-13-2-v4
     # ssh: # deprecated for security reasons add 2ns sec group with tag that intefere with aws alb ctrlr
     #   allow: true
     #   publicKeyName: ssh-ec2-eks-private-subnet
@@ -115,14 +120,44 @@ managedNodeGroups:
     instanceTypes: ["m5.large", "t3.medium"]
     # ✅ Support multiple AZs by referencing multi-AZ subnets
     # availabilityZones: ["us-east-1a", "us-east-1b"]
-    desiredCapacity: 2
-    minSize: 2
+    desiredCapacity: 1
+    minSize: 1
     maxSize: 6
     volumeSize: 40
     maxPodsPerNode: 110
     labels:
       cluster-autoscaler-enabled: "true"
       nodegroup: worker-nodes-regular
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/cluster-lab-13: "owned"
+    taints:
+      - key: "workload-type"
+        value: "regular"
+        effect: "NoSchedule"
+
+  - name: linux-nodes-13-1-v1
+    # ssh: # deprecated for security reasons add 2ns sec group with tag that intefere with aws alb ctrlr
+    #   allow: true
+    #   publicKeyName: ssh-ec2-eks-private-subnet
+
+    # Instantly grants secure console access without SSH keys or SGs
+    iam:
+      instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-13-nodegroup-linu-NodeInstanceRole
+
+    # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
+    instanceTypes: ["m5.large", "t3.medium"]
+    # ✅ Support multiple AZs by referencing multi-AZ subnets
+    # availabilityZones: ["us-east-1a", "us-east-1b"]
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 1
+    volumeSize: 40
+    maxPodsPerNode: 110
+    labels:
+      cluster-autoscaler-enabled: "true"
+      nodegroup: worker-nodes-regular
+      topology.kubernetes.io/zone: us-east-1a
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/cluster-lab-13: "owned"
