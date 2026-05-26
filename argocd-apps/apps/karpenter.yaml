@@ -9,7 +9,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: karpenter
+    namespace: platform-system
     server: https://kubernetes.default.svc
   project: default
   source:

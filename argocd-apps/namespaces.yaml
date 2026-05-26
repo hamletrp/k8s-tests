@@ -45,11 +45,11 @@ metadata:
   labels:
     gateway-access: "traefik-prod-gateway"
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: networking
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: networking
 
 ---
 apiVersion: v1
