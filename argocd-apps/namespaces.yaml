@@ -51,11 +51,11 @@ metadata:
 # metadata:
 #   name: networking
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: external-secrets
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: external-secrets
 
 
 ---
@@ -73,11 +73,11 @@ metadata:
   labels:
     gateway-access: "traefik-prod-gateway"
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cert-manager
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: cert-manager
 
 
 ---
