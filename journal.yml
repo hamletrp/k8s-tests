@@ -1606,6 +1606,11 @@ Questions:
 
         commands: 
 
+            terraform state #issues 
+                can remove missing/issued resource from state - will be re-created
+                    terraform state rm aws_eks_pod_identity_association.external_dns
+
+
             Permisions 
                 chmod 777
                     rwxrwxrwx - Shared local scratch spaces - /tmp
@@ -1678,7 +1683,7 @@ Questions:
 
                 k get node -l topology.kubernetes.io/zone
 
-                k logs -n platform-system deploy/external-dns \
+                k logs -n platform-system deploy/karpenter \
                 -f --tail=20 
 
                 k logs -n gateway-infra deploy/project-a-prod-nginx-gateway \

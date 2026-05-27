@@ -37,7 +37,7 @@ spec:
             clusterName: "cluster-lab-13"
             interruptionQueue: "karpenter-interruption-queue-cluster-lab-13"
           controller: 
-            replicas: 3
+            replicas: 1
             resources:
               requests:
                 cpu: 1
