@@ -81,6 +81,7 @@ appsofapps
         none yet 
     k apply -f ./argocd-apps/secret-stores.yaml
     k apply -f ./argocd-apps/secrets.yaml
+    k apply -f ./argocd-apps/pod-id-associations.yml
     k apply -f ./argocd-apps/ec2classes.yaml
         set: subnets & security groups
     k apply -f ./argocd-apps/nodepools.yaml

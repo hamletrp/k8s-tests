@@ -1226,7 +1226,6 @@ Polyglot system and Hybrid Workflows
                     ? Loans and Parkings
                     ? Clothes/Sneakers
 
-        ztunnel
         then rest a day 
         then 3 exams simulation 
         then CKA exam
@@ -1234,6 +1233,7 @@ Polyglot system and Hybrid Workflows
             https://artifacthub.io/packages/helm/secret-store-csi-driver/secrets-store-csi-driver
             https://github.com/aws/secrets-store-csi-driver-provider-aws
             https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation
+        ztunnel
         then an actual prometheus-stack / graphana / alert manager intance 
 
 
@@ -1678,7 +1678,7 @@ Questions:
 
                 k get node -l topology.kubernetes.io/zone
 
-                k logs -n platform-system deploy/ack-eks-controller-eks-chart \
+                k logs -n platform-system deploy/external-dns \
                 -f --tail=20 
 
                 k logs -n gateway-infra deploy/project-a-prod-nginx-gateway \

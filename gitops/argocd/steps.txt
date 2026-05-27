@@ -17,6 +17,9 @@ Manual install
 
         k apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+        Applicationset CRDS 
+            k apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
+
         k patch deployment/argocd-applicationset-controller -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
         && k patch deployment/argocd-dex-server -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
         && k patch deployment/argocd-notifications-controller -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
@@ -24,9 +27,6 @@ Manual install
         && k patch deployment/argocd-repo-server -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
         && k patch deployment/argocd-server  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]' \
         && k patch statefulset/argocd-application-controller  -n argocd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "workload-type","operator": "Equal","value": "regular","effect": "NoSchedule"}]}]'
-
-        Applicationset CRDS 
-            k apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.0/manifests/install.yaml
 
 
         http !SSL, traffic inside the cluster
