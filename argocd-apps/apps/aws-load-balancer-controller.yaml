@@ -25,7 +25,7 @@ spec:
         region: us-east-1
 
         # best practices, instead of tags
-        vpcId: vpc-09692356b834ef925
+        vpcId: vpc-01b5f748bb8093f52
 
         controllerConfig:
           featureGates:
