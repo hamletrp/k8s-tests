@@ -88,7 +88,7 @@ kind: Deployment
 metadata:
   name: stress
 spec:
-  replicas: 350
+  replicas: 15
   selector:
     matchLabels:
       app: stress
@@ -111,7 +111,7 @@ spec:
           command: ["sleep", "3600"]
 EOF
 
-k scale deploy stress --replicas 600
+k scale deploy stress --replicas 60
 k delete deploy stress
 
 kubectl drain ip-192-168-102-26.ec2.internal --ignore-daemonsets --delete-emptydir-data
