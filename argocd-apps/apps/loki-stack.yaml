@@ -22,7 +22,7 @@ spec:
       ref: values  
   destination:
     server: https://kubernetes.default.svc
-    namespace: gateway-infra
+    namespace: platform-system
   syncPolicy:
     automated:
       prune: true

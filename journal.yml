@@ -1221,17 +1221,19 @@ Polyglot system and Hybrid Workflows
                     ? Sports Massage
                   500 CKA Exam
                 1,000 Airfair
-                    ? Colombia Visa Renewal Trip
+                    ? Colombia Renewal Trip
                     ? Credit Card mins
                     ? Loans and Parkings
                     ? Clothes/Sneakers
 
         ztunnel
-        then review captures 
         then rest a day 
         then 3 exams simulation 
         then CKA exam
         then SE CSI Driver
+            https://artifacthub.io/packages/helm/secret-store-csi-driver/secrets-store-csi-driver
+            https://github.com/aws/secrets-store-csi-driver-provider-aws
+            https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation
         then an actual prometheus-stack / graphana / alert manager intance 
 
 
@@ -1603,6 +1605,23 @@ Questions:
 
 
         commands: 
+
+            Permisions 
+                chmod 777
+                    rwxrwxrwx - Shared local scratch spaces - /tmp
+                chmod 755
+                    rwxr-xr-x - Public directories, script assets, and exec
+                chmod 700
+                    rwx------ - secure exec 
+                chmod 666
+                    rw-rw-rw- - General system sockets or data streams RW 
+                chmod 644
+                    rw-r--r-- - Standard config files
+                chmod 600
+                    rw------- - Sensitive configuration values. ~/.kube/config
+                chmod 400
+                    r-------- - private keys - pem, ssh
+                
 
             check on loadbalancers target groups #debugging
                 # 1. Fetch your Target Group ARN
