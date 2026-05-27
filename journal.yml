@@ -1210,6 +1210,12 @@ Polyglot system and Hybrid Workflows
             Done - fully automate ingress/gateway up to route53
         aws ack controller eks for pod identity association
             Done
+        Secret Store CSI Driver
+            https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation
+            https://artifacthub.io/packages/helm/secret-store-csi-driver/secrets-store-csi-driver
+            Done 
+
+
 
 
     - Todos  ...here 
@@ -1225,14 +1231,10 @@ Polyglot system and Hybrid Workflows
                     ? Credit Card mins
                     ? Loans and Parkings
                     ? Clothes/Sneakers
-
+        
         then rest a day 
         then 3 exams simulation 
         then CKA exam
-        then SE CSI Driver
-            https://artifacthub.io/packages/helm/secret-store-csi-driver/secrets-store-csi-driver
-            https://github.com/aws/secrets-store-csi-driver-provider-aws
-            https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation
         ztunnel
         then an actual prometheus-stack / graphana / alert manager intance 
 
@@ -1683,7 +1685,10 @@ Questions:
 
                 k get node -l topology.kubernetes.io/zone
 
-                k logs -n platform-system deploy/karpenter \
+                k logs -n platform-system ds/secrets-store-csi-driver-provider-aws \
+                -f --tail=20 
+
+                k logs -n platform-system deploy/ack-eks-controller-eks-chart \
                 -f --tail=20 
 
                 k logs -n gateway-infra deploy/project-a-prod-nginx-gateway \
@@ -1693,9 +1698,11 @@ Questions:
 
                 aws eks delete-pod-identity-association \
                 --cluster-name "cluster-lab-13" \
-                --association-id "a-c2zducpzjrze1jdgu"
+                --association-id "a-wcknvljthc9yrohj9"
 
-
+                clear && k logs \
+                -l app.kubernetes.io/instance=external-dns \
+                 -n platform-system -f --tail 20
 
                 k logs gateway-infra/nginx-gateway-doordress-nginx-gateway \
                 --container=nginx -f --tail=20 

@@ -1,3 +1,20 @@
+## does not work with ss csi driver
+# apiVersion: eks.services.k8s.aws/v1alpha1
+# kind: PodIdentityAssociation
+# metadata:
+#   name: ap-abc-access
+#   namespace: httpbingo
+# spec:
+#   clusterName: "cluster-lab-13"
+#   namespace: httpbingo
+  
+#   # 2. The Kubernetes Service Account to grant permissions to
+#   serviceAccount: "ap-abc-sa"
+  
+#   # 3. The ARN of the AWS IAM Role providing the permissions
+#   roleARN: "arn:aws:iam::722249351142:role/APABCCredRole-cluster-lab-13"
+
+---
 apiVersion: eks.services.k8s.aws/v1alpha1
 kind: PodIdentityAssociation
 metadata:
