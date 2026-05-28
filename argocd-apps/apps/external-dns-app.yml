@@ -22,6 +22,15 @@ spec:
 
         logLevel: debug
 
+        env:
+        - name: AWS_REGION
+          value: "us-east-1"
+        # ADD THESE TWO VARIABLES: Forces the internal AWS Go SDK to print its raw authorization calls
+        - name: AWS_LOG_LEVEL
+          value: "LogDebugWithSigning"
+        - name: AWS_SDK_LOAD_CONFIG
+          value: "1"
+
         # -- _Kubernetes_ resources to monitor for DNS entries.
         sources:
           - ingress
