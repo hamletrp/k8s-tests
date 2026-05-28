@@ -16,7 +16,9 @@ spec:
       valuesObject:
         provider:
           name: aws
-          region: us-east-1
+
+        aws:
+          region: "us-east-1"
 
         # -- _Kubernetes_ resources to monitor for DNS entries.
         sources:
