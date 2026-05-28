@@ -15,6 +15,12 @@
     - Shift-left CI/CD pipeline orchestration
     - AND Configuratin Management and GitOps-driven deployments with ArgoCD and related tools
 
+    * All these technologies and across all projects that I have neen involved in are
+      Highly Available 
+      Scalable
+      Reliant 
+      AND Security Compliant
+
     AND PERHAPS IS IMPORTANT TO MENTION...
     * I went thru the degree, so I am Graduated and also AWS Certified 
 
@@ -69,17 +75,10 @@
 
 
 - CULTURAL FIT INTERVVIEW:
-    * Core specs 
-        you will contribute to building and scaling our AI platform 
-        by ensuring our systems on AWS, Kubernetes, and GitOps workflows 
-        are reliable, observable, and automated.
-
     - good env: 
         colaborative, creativity and room for PoCs
         AND posibilities to growth 
         PLUS shared responsibilities
-
-
 
     - like about the company 
         innovation and a mature team... important on today fast evolution in our industry
@@ -140,11 +139,6 @@
 
 
 - CULTURAL FIT INTERVVIEW:
-    * Core specs 
-        you will contribute to building and scaling our AI platform 
-        by ensuring our systems on AWS, Kubernetes, and GitOps workflows 
-        are reliable, observable, and automated.
-
     - good env: 
         colaborative, creative and room for PoCs
         AND posibilities to growth 
@@ -196,9 +190,6 @@
         
         - 6 months plan 
             The Staff Mindset Shift
-                You are not optimizing:
-                    •	Pull request throughput
-
                 You are optimizing:
                     •	standardizing environments
                     •	Organizational friction
@@ -210,10 +201,12 @@
                 - standardizing environments 
                 - reducing operational friction
 
+
+
             Month 0–1: Deep Listening Mode
                 Focus
-                    Architecture (real vs diagram)
                     SDLC
+                    Architecture (real vs diagram)
                     Deployment and release pipeline
                     Incident history
                         Read past postmortems
@@ -337,14 +330,18 @@ RECENT CALLS
     Not previous E2E experience with RKE2. Thought here the main points to address prior to any cluster provisioning, based on EKS:
         1- To define Region and Availability zones or data centers strategy
             Meaning data centers geographycally isolated
+            *PLUS: Compute and storage capacity planning 
         2- VPC and networking design 
             Meaning the network segmentation: private and public subnets 
-        3- Cluster add-ons
+        3- Clusters architectural planning 
+            Multi-tenant
+            Separate Clusters
+        4- Cluster add-ons Strategies
             DNS Resolution, Storage, networking, Load balancing, ingress and certificates management
         4- The design of a compute strategy
-            i.e workload-aware node pools and autoscaling
+            i.e workload-aware COMPUTE PLACEMENT node pools and autoscaling
         5- Security, secrets configs and access management 
-        6- Deployment, delivery strategy
+        6- Deployment, delivery pipelines
         7- Monitoring and obsevability
 
     though all of this is directly influenced by the projects size, required proyected workloads capacity, number of environments and multi-account organization

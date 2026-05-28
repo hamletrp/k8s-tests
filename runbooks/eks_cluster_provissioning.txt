@@ -15,7 +15,7 @@ Create cluster
 
     eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
 
-    eksctl get cluster --name cluster-lab-13 --region us-east-1l
+    eksctl get cluster --name cluster-lab-13 --region us-east-1
 
     node groups 
         eksctl create nodegroup --config-file ./gitops/eksctl-cluster-config.yml
@@ -37,7 +37,14 @@ associate-iam-oidc-provider
     eksctl utils associate-iam-oidc-provider --region us-east-1  --cluster cluster-lab-13 --approve
 
 get oicd provider 
-    aws eks describe-cluster --region us-east-1 --name cluster-lab-13 --query "cluster.identity.oidc.issuer" --output text
+        aws eks describe-cluster --region us-east-1 --name cluster-lab-13 \
+        --query "cluster.identity.oidc.issuer" --output text  | tr '/' '\n'
+    full 
+        aws eks describe-cluster --region us-east-1 --name cluster-lab-13 \
+        --query "cluster.identity.oidc.issuer" --output text
+    just the id - f# is the position array 
+        aws eks describe-cluster --region us-east-1 --name cluster-lab-13 \
+        --query "cluster.identity.oidc.issuer" --output text | cut -d'/' -f5
     
 copy oidc provider to tfvars
 

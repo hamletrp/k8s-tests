@@ -87,12 +87,12 @@ managedNodeGroups:
     desiredCapacity: 2
     minSize: 2
     maxSize: 2
-    # volumeSize: 40 # suggested >= 100 Gib This volume is for the OS and kubelet — not for pods.
+    volumeSize: 60 # suggested >= 100 Gib This volume is for the OS and kubelet — not for pods.
     # volumeType: gp3 # gp2 (default), gp3, io1, etc.
     # volumeEncrypted: true
     # volumeKmsKeyID: arn:aws:kms:us-east-1:123456789012:key/abcd-efgh-ijkl
     ## 🧠 Bonus Tip: Monitor with kubelet_volume_stats
-    # maxPodsPerNode: 110
+    maxPodsPerNode: 150
     labels:
       cluster-autoscaler-enabled: "true"
       nodegroup: worker-nodes-core
@@ -107,36 +107,6 @@ managedNodeGroups:
         value: "true"
         effect: "NoSchedule"
 
-  # - name: linux-nodes-13-2-v4
-  #   # ssh: # deprecated for security reasons add 2ns sec group with tag that intefere with aws alb ctrlr
-  #   #   allow: true
-  #   #   publicKeyName: ssh-ec2-eks-private-subnet
-
-  #   # Instantly grants secure console access without SSH keys or SGs
-  #   iam:
-  #     instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-13-nodegroup-linu-NodeInstanceRole
-
-  #   # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
-  #   instanceTypes: ["m5.large", "t3.medium"]
-  #   # ✅ Support multiple AZs by referencing multi-AZ subnets
-  #   # availabilityZones: ["us-east-1a", "us-east-1b"]
-  #   desiredCapacity: 1
-  #   minSize: 1
-  #   maxSize: 6
-  #   volumeSize: 40
-  #   maxPodsPerNode: 110
-  #   labels:
-  #     cluster-autoscaler-enabled: "true"
-  #     nodegroup: worker-nodes-regular
-  #     node-role.kubernetes.io/worker: ""
-  #   tags:
-  #     k8s.io/cluster-autoscaler/enabled: "true"
-  #     k8s.io/cluster-autoscaler/cluster-lab-13: "owned"
-  #   taints:
-  #     - key: "workload-type"
-  #       value: "regular"
-  #       effect: "NoSchedule"
-
   - name: linux-nodes-13-1-v1
     # ssh: # deprecated for security reasons add 2ns sec group with tag that intefere with aws alb ctrlr
     #   allow: true
@@ -147,14 +117,14 @@ managedNodeGroups:
       instanceRoleARN: arn:aws:iam::722249351142:role/eksctl-cluster-lab-13-nodegroup-linu-NodeInstanceRole
 
     # ami: ami-0123456789abcdef0  # your custom EKS-compatible AMI
-    instanceTypes: ["m5.large", "t3.medium"]
+    instanceTypes: ["t3.medium"]
     # ✅ Support multiple AZs by referencing multi-AZ subnets
     # availabilityZones: ["us-east-1a", "us-east-1b"]
-    desiredCapacity: 2
-    minSize: 2
+    desiredCapacity: 1
+    minSize: 1
     maxSize: 2
-    volumeSize: 40
-    maxPodsPerNode: 110
+    volumeSize: 60
+    maxPodsPerNode: 120
     labels:
       cluster-autoscaler-enabled: "true"
       nodegroup: worker-nodes-regular
