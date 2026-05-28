@@ -1,54 +1,54 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: external-dns
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://kubernetes-sigs.github.io/external-dns/
-    chart: external-dns
-    targetRevision: 1.21.1
-    helm:
-      releaseName: external-dns
-      valuesObject:
-        provider:
-          name: aws
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: external-dns
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://kubernetes-sigs.github.io/external-dns/
+#     chart: external-dns
+#     targetRevision: 1.21.1
+#     helm:
+#       releaseName: external-dns
+#       valuesObject:
+#         provider:
+#           name: aws
 
-        aws:
-          region: "us-east-1"
+#         aws:
+#           region: "us-east-1"
 
-        # -- _Kubernetes_ resources to monitor for DNS entries.
-        sources:
-          - ingress
-          - gateway-httproute
+#         # -- _Kubernetes_ resources to monitor for DNS entries.
+#         sources:
+#           - ingress
+#           - gateway-httproute
 
-        domainFilters: 
-          - itsnotrocketscience.tech
-          - doordress.us
+#         domainFilters: 
+#           - itsnotrocketscience.tech
+#           - doordress.us
 
-        txtOwnerId: eks-hamlet-cluster
+#         txtOwnerId: eks-hamlet-cluster
 
-        serviceAccount:
-          name: external-dns-controller-sa
+#         serviceAccount:
+#           name: external-dns-controller-sa
 
-        tolerations:
-        - key: "workload-type"
-          operator: "Equal"
-          value: "regular"
-          effect: "NoSchedule"
+#         tolerations:
+#         - key: "workload-type"
+#           operator: "Equal"
+#           value: "regular"
+#           effect: "NoSchedule"
 
-        interval: 30s
+#         interval: 30s
 
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: platform-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: platform-system
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
