@@ -20,6 +20,8 @@ spec:
         aws:
           region: "us-east-1"
 
+        logLevel: debug
+
         # -- _Kubernetes_ resources to monitor for DNS entries.
         sources:
           - ingress
