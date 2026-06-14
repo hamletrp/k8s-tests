@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: account-grpc-route
+  namespace: app-space
+spec:
+  parentRefs:
+  - name: api-gateway
+    namespace: gateway-infra
+  rules:
+  - matches:
+    - method:
+        service: com.projecta.AccountService
+    backendRefs:
+    - name: grpc-account-service
+      port: 9000

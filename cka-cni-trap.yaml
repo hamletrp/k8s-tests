@@ -1,0 +1,52 @@
+##  kind create cluster --config ./cka-cni-trap.yaml --name cka-sim
+
+## calico, service discovery: depends on kube-proxy
+## docker exec -it cka-sim-control-plane kubeadm init phase addon kube-proxy --kubeconfig /etc/kubernetes/admin.conf
+## docker exec -it cka-sim-control-plane cat /var/lib/kubelet/kubeadm-flags.env
+## docker exec -it cka-sim-worker ls -lh /etc/cni/net.d/
+
+## kind delete cluster --name cka-sim
+
+## did not work messing up kubelet for the worker node
+# kind: Cluster
+# apiVersion: kind.x-k8s.io/v1alpha4
+# name: cka-sim
+# networking:
+#   disableDefaultCNI: false # removes kindnet
+# nodes:
+# - role: control-plane       # Master Node (cka-sim-control-plane)
+# - role: worker              # Worker Node (cka-sim-worker)
+
+## 1. Access the worker node's host filesystem via Docker
+# docker exec -it cka-sim-worker sh -c '
+#   echo "KUBELET_KUBEADM_FLAGS=\"--container-runtime-endpoint=unix:///var/run/containrd/container.sock\"" > /var/lib/kubelet/kubeadm-flags.env
+#   systemctl restart kubelet
+# '
+
+---
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+ disableDefaultCNI: true  # removes cni. default kindnet
+ kubeProxyMode: "none"    # Disables kube-proxy entirely (Mimics a Cilium removal wipe!)
+ podSubnet: "10.244.0.0/16"
+nodes:
+- role: control-plane      # Master Node
+- role: worker             # Worker Node
+
+# ---
+# apiVersion: operator.tigera.io/v1
+# kind: Installation
+# metadata:
+#   name: default
+# spec:
+#   calicoNetwork:
+#     ipPools:
+#     - blockSize: 26
+#       cidr: 10.244.0.0/16
+#       encapsulation: VXLAN # or VXLANCrossSubnet # default should work
+#       natOutgoing: Enabled
+#       nodeSelector: all()
+#     # nodeAddressAutodetectionV4: # default should work
+#       # interface: "^eth.*|^ens.*" # default should work
+#       # kubernetes: NodeInternalIP # EKS, GKE, etc default should work

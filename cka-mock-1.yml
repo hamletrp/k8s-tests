@@ -51,6 +51,11 @@ value: 1000000
 globalDefault: false
 description: "This priority class is for high-priority applications."
 
+
+# enforce pod security
+  k label namespace restricted-ns pod-security.kubernetes.io/enforce=restricted
+  k label namespace restricted-ns pod-security.kubernetes.io/enforce-verion=xyc-label
+
 # helm install --generate-name ./new-version --namespace default
 
 # Modify the Deployment to Fit Within the ResourceQuota
@@ -81,6 +86,8 @@ spec:
   parentRefs:
   - name: nginx-gateway
     namespace: nginx-gateway
+  hostnames:
+    - "badaldhdlakhdlak.com"
   rules:
   - matches:
     - path:
@@ -449,7 +456,9 @@ Scenario 5
     - sh
     - -c
     - |
-      until nslookup mysql.default.svc.cluster.local
+      # until nslookup mysql.default.svc.cluster.local
+      # until curl --max-time 2 -sN http://service-am-i-ready:80
+      until wget -T2 -O- http://mysql:3609 
       do
         echo waiting...
         sleep 2
@@ -459,15 +468,154 @@ Scenario 5
   - name: migrate
     image: liquibase
     command:
+    - /bin/sh
+    - -c
     - liquibase
     - update
 
+---
+kubectl apply -f - << EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-cka04-svcn
+  annotations:
+    # TODO:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service-cka04-svcn
+            port:
+              number: 80
+EOF
 
 
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.forwarding = 1
+
+Steps upgrading an existing node:
+    - from control plane: k drain <nodename> --ignore-daemonsets --delete-emptydir-data
+    - ssh into the node 
+    - update kubeadm, kubelet, kubectl to the same version as control plane
+      sudo apt-get update && sudo apt-get install -y --allow-change-held-packages kubeadm=1.35.2-1.1 kubelet=1.35.2-1.1
+    - execute upgrade:
+      sudo systemctl daemon-reload
+      sudo systemctl restart kubelet
+      sudo kubeadm upgrade node
+    - from control plane: kubectl uncordon <nodename>
+
+Steps adding a new node to cluster - just need to match the version:
+    - note master node version 
+    - kubeadm token create --print-join-command
+    - note both
+    - export VER=v1.35.2-1.1
+    - sudo apt-get update
+    - sudo apt-get install -y kubeadm=$VER kubelet=$VER kubectl=$VER --allow-change-held-packages
+    - sudo systemctl daemon-reload && sudo systemctl enable kubelet && sudo systemctl start kubelet
+    - run join command 
+    - check node is ready - from master 
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traffic-director
+  namespace: default
+spec:
+  parentRefs:
+  - name: my-gateway
+  hostnames:
+  - "r500.gateway"  # Replicated host configuration from your old Ingress
+  rules:
+  # 1. New Extended Rule: Route /auto based on User-Agent header
+  - matches:
+    - path:
+        type: Exact
+        value: /auto
+      headers:
+      - name: User-Agent
+        value: mobile
+    backendRefs:
+    - name: mobile-backend
+      port: 80
+
+  - matches:
+    - path:
+        type: Exact
+        value: /auto
+    backendRefs:
+    - name: desktop-backend  # Fallback for non-mobile User-Agents hitting /auto
+      port: 80
+
+  # 2. Legacy Replicated Rule: Standard default route from old Ingress
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: main-backend
+      port: 80
 
 
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: np-backend
+  namespace: project-snake
+spec:
+  podSelector:
+    matchLabels:
+      app: backend  # 1. This policy attaches to and controls the backend pods
+  policyTypes:
+  - Egress          # 2. Controls outbound connections leaving the backend pods
+  egress:
+  # Rule A: Allow backend to talk to db1 on port 1111
+  - to:
+    - podSelector:
+        matchLabels:
+          app: db1
+    ports:
+    - protocol: TCP
+      port: 1111
+  # Rule B: Allow backend to talk to db2 on port 2222
+  - to:
+    - podSelector:
+        matchLabels:
+          app: db2
+    ports:
+    - protocol: TCP
+      port: 2222
 
+---
+# httproutes matches
+- matches:
+  - path:
+      type: Exact
+      value: /auto
+  backendRefs:
+  - name: web-desktop
+    port: 80
 
+- matches:
+  - path:
+      type: Exact
+      value: /auto
+    headers:
+    - type: Exact
+      name: user-agent
+      value: mobile
+  backendRefs:
+  - name: web-mobile
+    port: 80
 
 
 

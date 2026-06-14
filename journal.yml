@@ -1216,10 +1216,18 @@ Polyglot system and Hybrid Workflows
             Done 
 
 
-
-
     - Todos  ...here 
-        Madrid...?
+        CKA exam
+            TECHTALENT26
+
+        Rafay 
+            https://docs.rafay.co/learn/quickstart/eaas/aws/101/setup/
+
+
+        Visa trip 
+            Arturo med, HGH, laptop, cologne, clothes, etc
+
+        Madrid?
             Kite Equipement
             Bed & Gym CTG
             Budget Madrid
@@ -1232,43 +1240,18 @@ Polyglot system and Hybrid Workflows
                     ? Loans and Parkings
                     ? Clothes/Sneakers
         
-        then rest a day 
-        then 3 exams simulation 
-        then CKA exam
-        ztunnel
-        then an actual prometheus-stack / graphana / alert manager intance 
+        - the $.10 || $.20 cents winings pa'l
+            
+        Prometheus
+            graphana quantiles
+            metrics
 
+        Azure AKS course ?
+        OpenShift ?
+            https://www.coursera.org/learn/foundations-of-red-hat-cloud-native-development/lecture/W9cMy/guided-exercise-contrasting-kubernetes-distributions
 
-        karpenter test
-        video about kiali 
-        video about jaeger
-        cloud9 or aws cloudshell
-
-        istio 
-            to try based on argocd-apps/apps/istio.yaml
-            or https://istio.io/latest/docs/setup/additional-setup/gateway/
-                https://istio.io/latest/blog/2022/getting-started-gtwapi/
-            or
-                https://istio.io/latest/docs/setup/install/helm/
-            https://raw.githubusercontent.com/istio/istio/release-1.30/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
-
-        review app-end-user values files 
-        Prometheus, graphana quantiles, metrics, rollout analysis 
-        karpenter 
-        argo rollouts with analysis templates 
-            repeat
-
-        Forced to learn some more shit
-            CKA Exam
-                code: KILLER30
-
-
-
-            Azure AKS course ?
-            OpenShift ?
-                https://www.coursera.org/learn/foundations-of-red-hat-cloud-native-development/lecture/W9cMy/guided-exercise-contrasting-kubernetes-distributions
-
-
+        Hacking thru raspberry pi on random wifi 
+            are there value to steal and make some cash?
 
 
 
@@ -1606,7 +1589,252 @@ Questions:
                 Prometheus Pushgateway for job-style metrics (push on completion)
 
 
-        commands: 
+        commands:
+
+            k run test --rm --restart=Never --image curlimages/curl --attach \
+            -- curl -m2 -I -s -w '%{time_total}\n' http://websvc:80
+
+            Kubelet issues - control plane 
+                systemctl cat kubelet
+                    # shows details about kubeadm.config overrides ExecStart 
+                     # bottomline: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+                sudo ln -s /usr/bin/kubelet /usr/local/bin/kubelet
+                    # create symlink to have kubelet in the PATH, if not already there
+                ls -lh /etc/kubernetes/kubelet.conf
+                    # check if kubelet.conf exists and its permissions
+                    # regenerate if missing 
+                    sudo kubeadm init phase kubeconfig kubelet
+                AUTHORIZATIO ERRORS 
+                    sudo rm /etc/kubernetes/pki/apiserver-kubelet-client.*
+                    sudo kubeadm init phase certs apiserver-kubelet-client
+                    THEN
+                        Restart the API Server Static Pod
+                        Restart your CNI Plugin DaemonSet
+                        Restart kubelet 
+                    POTENTIALLY 
+                        sudo kubeadm init phase certs apiserver --config kubeadm-config.yaml
+                            # kubeadm-config 
+                                k get cm/kubeadm-config -n kube-system -oyaml
+
+                        sudo grep -i "staticPodPath" /var/lib/kubelet/config.yaml
+                        check: /var/lib/kubelet/kubeadm-flags.env
+                            # --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock
+
+
+            kubectl exec <pod-name> -- printenv
+
+            kubectl exec host-aliases-pod -- cat /etc/hosts
+
+            sudo crictl events --since 5m
+                # shows recent events related to container runtime (e.g., container crashes, image pull errors) in the last 5 minutes.
+
+            
+            calico setup 
+                notes 
+                    k get felixconfiguration default -o jsonpath='{.spec.bpfEnabled}'
+                    # false if kube-proxy/iptables mode, true if eBPF mode
+
+                curl -sl https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-operator.yaml > tigera.yaml
+                k apply -f tigera.yaml --server-side
+
+                curl -sl https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/custom-resources.yaml > custom-resources.yaml
+                k apply -f custom-resources.yaml --server-side
+
+                installation default change: bgp, encapsulation, nodeAddressAutodetectionV4
+                    spec:
+                        calicoNetwork:
+                            bgp: Disabled # default should work # 👈 ADD THIS (Turns off BIRD daemon entirely)
+                            encapsulation: VXLAN # default should work # Ensure encapsulation is set to VXLAN
+                            # nodeAddressAutodetectionV4: # default should work
+                            #     kubernetes: NodeInternalIP # default should work
+                                # orinterface: "^eth.*"
+                                #or canReach: 8.8.8.8
+                                #or interface: eth0 
+                AND AND AND - requires kube-proxy
+                    kubeadm init phase addon kube-proxy --config /etc/kubernetes/kubeadm-config.yaml
+                ip tables wipeout 
+                    sudo iptables -F
+                    sudo iptables -t nat -F
+                    sudo iptables -t mangle -F
+                    sudo iptables -t nat -X
+                rollout restart kube-proxy
+                
+            to avoid CRD size LIMIT 
+                kubectl create -f tigera-operator.yaml --server-side
+                kubectl apply -f tigera-operator.yaml --server-side
+
+
+            kubeadm certs renew apiserver
+            kubeadm certs renew apiserver-etcd-client
+            kubeadm certs renew apiserver-kubelet-client
+
+            kubectl top pods -A --containers
+
+            kubectl get pods -n project-c13 -o jsonpath='{range .items[?(@.status.qosClass=="BestEffort")]}{.metadata.name}{"\n"}{end}'
+
+            sudo chown kube /etc/kubernetes/admin.conf
+                # change to "kube" user owner 
+
+            sudo chown kube:group3 /etc/kubernetes/admin.conf
+                # change to "kube" user owner, group group3
+
+            sudo chown :docker /var/run/docker.sock
+                # change to "docker" group only
+
+            certs update 
+                # Overwrite your user config with the newly generated version
+                cp /etc/kubernetes/admin.conf $HOME/.kube/config
+
+                # Fix ownership permissions so your regular user can read it
+                chown $(id -u):$(id -g) $HOME/.kube/config
+            
+
+            sudo grep cluster-cidr /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+            sudo iptables -t nat -S | grep -i "svc-a"
+                -t nat  # network address translation
+                -S      # Selected raw string commands
+
+            helm template argo-cd argo/argo-cd --namespace argocd \
+            --version 7.7.3 --skip-crds > /argo-helm.yaml
+
+            kubelet not running
+                Missing kubelet 
+                    - install it matching kubeadm version 
+                        - apt-get install -y kubelet=1.32.0-1.1
+                    - sudo systemctl enable kubelet
+                    - sudo systemctl daemon-reload
+                    - sudo systemctl start kubelet
+                if set via proxy or something else, can be running as a static pod
+                    sudo systemctl list-units --type=service | grep -E "k3s|microk8s|k0s|kube"
+
+
+            curl --cacert /etc/kubernetes/pki/ca.crt  \
+                 --cert /etc/kubernetes/pki/apiserver-kubelet-client.crt  \
+                 --key /etc/kubernetes/pki/apiserver-kubelet-client.key   \
+                 https://10.244.127.203:6443/livez  
+
+            curl --cacert /etc/kubernetes/pki/etcd/ca.crt  \
+                 --cert /etc/kubernetes/pki/etcd/healthcheck-client.crt  \
+                 --key /etc/kubernetes/pki/etcd/healthcheck-client.key   \
+                 https://127.0.0.1:2379/readyz  
+                    # /health
+                    # /readyz 
+                    # livez
+
+            sudo journalctl -u kubelet -n 200 --no-pager | grep -E "manifest|kube-apiserver"
+
+            python3 -c "import yaml; \ 
+            yaml.safe_load(open('/etc/kubernetes/manifests/kube-apiserver.yaml'))"
+
+
+            kubectl get priorityclass | grep -v "system-"
+                # -v invert-match, so exclude them 
+
+            pods default autogenerated directories 
+                ls -lh /var/run/secrets/kubernetes.io/serviceaccount/
+                    token, ca.crt, namespace
+                /etc/resolv.conf    
+                    coredns stuff 
+                /etc/hosts
+                    cluster communication mappings
+                /etc/hostname
+                    pod name
+                /var/log/pods/ - on the node
+                /var/log/containers/ - on the node
+                    pod/containers redirects stdout/stderr  
+                /etc/podinfo - custom defined 
+                    kubelet update with nodename, namespace, ip, etc
+
+
+            kubectl get crd <CRD_NAME> -o jsonpath='{.spec.group}'
+
+            k api-resources --namespaced -o name > /opt/course/16/resources.txt
+            kubectl api-resources --api-group=projectcalico.org
+
+
+            wget -T2 -O- http://service-am-i-ready:80
+                -T2 # timeout seconds 
+                -O- # directs the output to standard output (the terminal) instead of saving to a file. 
+
+            curl --max-time 2 -sN http://service-am-i-ready:80
+                --max-time 2 # timeout seconds 
+                -sN # silent and no output buffer
+
+        openssl x509 -in /var/lib/kubelet/pki/kubelet.crt -text -noout
+            | grep "Validity" -A2
+            | grep "Extended Key Usage" -A1
+            | grep "Issuer"
+
+            k get ns | grep Terminating | awk '{print $1}' \
+            | xargs -I {} kubectl patch ns {} --type merge -p '{"metadata":{"finalizers":null}}'
+
+
+            xargs 
+            always passes the output of a previous command to the next command
+                "file1 file2" | xargs rm
+                    exec: rm file1 file2
+                xargs rm 
+                    one call raw space separated
+                xargs -I {} rm {}
+                    one call for each item "{}" object placeholder, can by anything
+                    eg. "file1 file2" | xargs -I {} rm {}
+                        rm file1
+                        rm file2
+            
+            awk 
+            is a data-scanning and processing language. It processes text line-by-line.
+            It automatically splits each line into fields (columns) based on whitespace/tabs
+                awk 'pattern { action }' filename or cat app.log | awk 'pattern { action }'
+                    Pattern: Tells awk which lines to look at (optional).
+                    Action: Tells awk what to do with those lines (like print).
+                cat app.log | awk '/ERROR/ {print $2}'
+
+
+                Core Concepts
+                    $0: Represents the entire line.
+                    $1, $2, $3: represent the 1st, 2nd, and 3rd columns.
+                    $NF: Represents the last column (Number of Fields).
+                    NR: Represents the current line number (Number of Records).
+                    -F: Changes the field separator (e.g., -F',' for CSV files).
+                awk '{print $1, $NF}'
+
+            jq 
+             is a lightweight and flexible command-line JSON processor.
+                cat file.json | jq 'filter'
+                cat file.json | jq .
+                    pretty json printing 
+
+                aws route53 list-hosted-zones --max-items 2 \
+                | jq '.HostedZones[] | {Id, Name}' 
+
+                aws route53 list-hosted-zones --max-items 2 \
+                | jq -r '.HostedZones[0].Id'
+
+                kubectl get svc -A -o json \
+                | jq -r '.items[]
+                | select(.spec.type=="LoadBalancer")
+                | [.metadata.namespace,.metadata.name,.status.loadBalancer.ingress[0].hostname]
+                | @tsv'
+
+                
+                aws eks list-clusters \
+                | jq -r '.clusters[]' \
+                | xargs -I{} aws eks describe-cluster --name {} \
+                | jq -r '.cluster | [.name, .status, .version, .endpoint] | @tsv'
+                        # @tsv tab searated results
+
+            | wc -l
+                # wordcount utility with -l flag
+                # counts the number of lines in the output
+
+
+            # Enable DNS Hostnames
+            aws ec2 modify-vpc-attribute --vpc-id YOUR_VPC_ID --enable-dns-hostnames "{\"Value\":true}"
+
+            # Enable DNS Support
+            aws ec2 modify-vpc-attribute --vpc-id YOUR_VPC_ID --enable-dns-support "{\"Value\":true}"
+
 
             terraform state #issues 
                 can remove missing/issued resource from state - will be re-created
@@ -1688,13 +1916,24 @@ Questions:
                 k logs -n platform-system ds/secrets-store-csi-driver-provider-aws \
                 -f --tail=20 
 
-                k logs -n platform-system deploy/ack-eks-controller-eks-chart \
+                k logs -n platform-system deploy/external-dns \
                 -f --tail=20 
 
                 k logs -n gateway-infra deploy/project-a-prod-nginx-gateway \
                 -f --tail=20 
 
+                aws cloudtrail lookup-events \
+                --lookup-attributes AttributeKey=EventName,AttributeValue=AssumeRole \
+                --start-time "2026-05-28T16:48:00Z" \
+                --end-time "2026-05-28T16:49:00Z" \
+                --query 'Events[].{time:EventTime,detail:CloudTrailEvent}' \
+                --output json | jq '.[].detail | fromjson | select(.requestParameters.roleArn | contains("ExternalDnsControllerRole")) | .requestParameters.tags'
+
                 aws eks list-pod-identity-associations --cluster-name cluster-lab-13
+
+                aws eks describe-pod-identity-association \
+                --cluster-name "cluster-lab-13" \
+                --association-id "a-uackudubx1ebp8axd"
 
                 aws eks delete-pod-identity-association \
                 --cluster-name "cluster-lab-13" \
@@ -1710,6 +1949,14 @@ Questions:
                 k logs -n gateway-infra deploy/nginx-gateway-doordress-nginx-gateway \
                 --container=nginx -f --tail=20 
 
+                k logs -n kube-system ds/eks-pod-identity-agent \
+                --container=nginx -f --tail=20 
+
+                clear && k logs \
+                -l app.kubernetes.io/instance=eks-pod-identity-agent \
+                 -n kube-system -f --tail 20
+
+
                 k logs -n gateway-infra nginx-gateway-doordress-nginx-gateway \
                 --container=nginx -f --tail=20 
 
@@ -1724,7 +1971,13 @@ Questions:
                 -p '{"metadata":{"annotations":{"service.beta.kubernetes.io/aws-load-balancer-healthcheck-success-codes":"200,301","service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol":"HTTP","service.beta.kubernetes.io/aws-load-balancer-healthcheck-path":"/"}}}'
 
             eksctl get cluster --name cluster-lab-13
+            
             eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
+
+            eksctl create addon -f ./gitops/eksctl-cluster-config.yml
+
+            eksctl utils write-kubeconfig --cluster=cluster-lab-13 --region=us-east-1
+
             node groups 
                 eksctl create nodegroup --config-file ./gitops/eksctl-cluster-config.yml
 
@@ -1738,7 +1991,7 @@ Questions:
 
 
             watch -n 1 'kubectl get node'
-            watch -n 1 'kubectl get pods --all-namespaces --field-selector status.phase=Pending'
+            watch -n 2 'kubectl get pods -A --field-selector status.phase=Pending'
 
             SSH ProxyJump
                 ssh -i /path/to/key.pem -J user@BASTION_PUBLIC_IP ec2-user@PRIVATE_SUBNET_IP
@@ -1824,6 +2077,8 @@ Questions:
 
             # patch to immediate delete force delete application 
             kubectl patch application traefik-gateway -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
+
+            kubectl patch application kube-prometheus-stack -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
             
             kubectl patch application traefik-gateway-itsnotrocketscience -n argocd --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
 
@@ -1929,6 +2184,8 @@ Questions:
                 --pod-network-cidr=192.168.0.0/16 \
                 --ignore-preflight-errors=NumCPU,Mem
 
+            sudo apt-get install -y --allow-change-held-packages kubeadm
+
                 kubeadm token create --print-join-command
                     per node 
                 
@@ -1994,6 +2251,7 @@ Questions:
                     /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
                 journalctl -u kubelet | grep failed
+                    or cat /var/log/syslog | grep kubelet
                 systemctl status kubelet
                 systemctl restart kubelet
 

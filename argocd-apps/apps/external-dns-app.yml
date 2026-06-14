@@ -20,16 +20,11 @@ spec:
         aws:
           region: "us-east-1"
 
-        logLevel: debug
+        extraArgs:
+          # default is public only
+          - --aws-zone-type=all
 
-        env:
-        - name: AWS_REGION
-          value: "us-east-1"
-        # ADD THESE TWO VARIABLES: Forces the internal AWS Go SDK to print its raw authorization calls
-        - name: AWS_LOG_LEVEL
-          value: "LogDebugWithSigning"
-        - name: AWS_SDK_LOAD_CONFIG
-          value: "1"
+        logLevel: debug
 
         # -- _Kubernetes_ resources to monitor for DNS entries.
         sources:

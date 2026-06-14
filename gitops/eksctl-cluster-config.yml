@@ -10,8 +10,8 @@ metadata:
     team: platform
     karpenter.sh/discovery: cluster-lab-13
     karpenter.sh/managed-by: "team-h"
-    k8s.io/cluster-autoscaler/cluster-lab-13: owned
     kubernetes.io/cluster/cluster-lab-13: "owned" 
+    k8s.io/cluster-autoscaler/cluster-lab-13: owned
     ManagedBy: "eksctl"
 
 vpc:
@@ -31,7 +31,7 @@ addons:
           value: "true"
           effect: "NoSchedule"
   - name: kube-proxy
-    version: latest
+    version: v1.35.3-eksbuild.11
   - name: eks-pod-identity-agent
     version: latest 
   # # provisioned via terraform, due to limitations of configurationValues tolerations, afinity et
@@ -39,14 +39,15 @@ addons:
   #   version: latest
   #   serviceAccountRoleARN: arn:aws:iam::722249351142:role/AmazonEKS_EBS_CSI_DriverRole-cluster-lab-13
   - name: vpc-cni
-    version: latest 
+    version: v1.22.1-eksbuild.2
     configurationValues: |
+      enableNetworkPolicy: "true"
       env:
         ENABLE_PREFIX_DELEGATION: "true"
         WARM_PREFIX_TARGET: "1" # Keeps 1 full block of 16 IPs warm per node
         WARM_IP_TARGET: "1" # Backup pool for instant scheduling bursts
   - name: metrics-server
-    version: v0.7.2-eksbuild.4
+    version: v0.8.1-eksbuild.10
     configurationValues: |
       tolerations:
         - key: "workload-type"

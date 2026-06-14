@@ -1,0 +1,66 @@
+# ==============================================================================
+# PROD CONFIGURATION FOR ISTIO AMBIENT ZTUNNEL
+# ==============================================================================
+
+# 1. Image Hardening & Pull Policies
+image:
+  repository: gcr.io/istio-release/ztunnel
+  tag: 1.24.0                     # pin exact semantic versions in prod
+  pullPolicy: IfNotPresent
+
+# 2. Performance & Thread Optimization
+# Adjusts worker thread concurrency to prevent CPU throttling.
+# By default, ztunnel automatically maps threads to match host cores.
+config:
+  numWorkerThreads: 0             # 0 instructs ztunnel to auto-detect and use all available CPU cores
+
+# 3. Observability & Telemetry Logging
+# Configures machine-readable JSON logs for aggregation tools (Datadog, Loki, FluentBit).
+logAsJson: true                   # Output structured JSON format for log parsers
+logLevel: info                    # info handles high traffic cleanly. Avoid debug/trace in prod.
+
+# 4. Critical Resource Allocation & Schedulers
+# Prevents memory pressure and drops eviction risk while bypassing CPU limits.
+resources:
+  requests:
+    cpu: 500m                     # Baseline processing reservation for a standard cloud node
+    memory: 512Mi                 # Scaled to hold workload registry caches safely
+  limits:
+    memory: 2Gi                   # Prevent ztunnel from consuming entire node space if leaks occur
+    # cpu: "DO NOT SET"           # WARNING: Never set CPU limits on ztunnel. 
+                                  # Let numWorkerThreads manage CPU usage to prevent CFS throttling.
+
+# 5. Security Context & Linux Capabilities
+# Implements strict Linux privilege boundaries required for ambient interception.
+securityContext:
+  readOnlyRootFilesystem: true    # Block runtime modifications to proxy image files
+  runAsNonRoot: true              # Execute safely outside root user space
+  runAsUser: 1337                 # Canonical Istio sidecar proxy run identity
+  runAsGroup: 1337
+  capabilities:
+    drop:
+      - ALL                       # Clear generic operational capabilities
+    add:
+      - NET_ADMIN                 # Required to configure host networking tables
+      - NET_RAW                   # Required to process raw TCP traffic capture sockets
+
+# 6. High Availability Pod Disruption & Scheduling
+priorityClassName: system-node-critical # Guarantees ztunnel schedules before normal workloads
+terminationGracePeriodSeconds: 30       # Allow open HBONE connections 30s to drain during node recycling
+
+# 7. Environment Tuning Overrides
+env:
+  - name: TERMINATION_DRAIN_DURATION
+    value: "20s"                  # Grace window to route traffic away before ztunnel pod exits
+
+
+
+--- # must be 
+# apiVersion: security.istio.io/v1beta1
+# kind: PeerAuthentication
+# metadata:
+#   name: secure-app-space
+#   namespace: app-space
+# spec:
+#   mtls:
+#     mode: STRICT # Rejects raw, unencrypted TCP connections at the node edge

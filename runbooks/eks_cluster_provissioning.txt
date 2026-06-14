@@ -13,6 +13,14 @@ Create cluster
     nodes labels 
         cluster-autoscaler-enabled=true
 
+Check if any ClusterConfig or addons config etc
+    https://schema.eksctl.io/
+    aws eks describe-addon-configuration --addon-name vpc-cni --addon-version v1.22.1-eksbuild.2 | pbcopy
+
+    check netpol are enabled 
+        k get cm/amazon-vpc-cni -n kube-system -ojsonpath='{.data}' | jq
+        kubectl get daemonset aws-node -n kube-system -o yaml | grep -A2 enable-network-policy
+
     eksctl create cluster -f ./gitops/eksctl-cluster-config.yml
 
     eksctl get cluster --name cluster-lab-13 --region us-east-1
@@ -167,3 +175,26 @@ eksctl create addon \
   --cluster-name your-cluster-name \
   --addon-name eks-pod-identity-agent \
   --region your-region
+
+
+kubectl run test --rm --attach -it --restart=Never --image=curlimages/curl --overrides='
+{
+  "spec": {
+    "tolerations": [
+      {
+        "key": "workload-type",
+        "operator": "Equal",
+        "value": "core",
+        "effect": "NoSchedule"
+      },
+      {
+        "key": "CriticalAddonsOnly",
+        "operator": "Equal",
+        "value": "true",
+        "effect": "NoSchedule"
+      }
+    ]
+  }
+}
+' -- sh
+
