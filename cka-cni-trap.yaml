@@ -4,6 +4,7 @@
 ## docker exec -it cka-sim-control-plane kubeadm init phase addon kube-proxy --kubeconfig /etc/kubernetes/admin.conf
 ## docker exec -it cka-sim-control-plane cat /var/lib/kubelet/kubeadm-flags.env
 ## docker exec -it cka-sim-worker ls -lh /etc/cni/net.d/
+## docker exec -it cka-sim-control-plane ls -lh /etc/cni/net.d/
 
 ## kind delete cluster --name cka-sim
 
